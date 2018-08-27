@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -23,7 +24,6 @@ public class UserServiceImpl implements UserService {
     public User save(User user) {
         User oldUser = userRepository.findByAccount(user.getAccount());
         if (oldUser != null) {
-            logger.info("user existed...");
             throw new BusinessException("USER_IS_EXISTED");
         }
         return userRepository.save(user);
@@ -32,6 +32,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public User getUserById(String id) {
+        Optional<User> optional = userRepository.findById(id);
+        return optional.isPresent() ? optional.get() : null;
+    }
+
+    @Override
+    public User update(User user) {
+        Optional<User> optional = userRepository.findById(user.getId());
+        if(!optional.isPresent())
+        {
+            throw new BusinessException("USER_NOT_EXISTED");
+        }
+        return null;
     }
 
 }

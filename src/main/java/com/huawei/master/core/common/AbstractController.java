@@ -1,6 +1,7 @@
 package com.huawei.master.core.common;
 
 
+import com.google.common.collect.Maps;
 import com.huawei.master.core.system.exception.BaseException;
 import com.huawei.master.core.system.HttpCode;
 import com.huawei.master.core.system.exception.IllegalParameterException;
@@ -74,7 +75,7 @@ public abstract class AbstractController {
      */
     protected ResponseEntity<ModelMap> setModelMap(ModelMap modelMap, HttpCode code, Object data) {
         if (!modelMap.isEmpty()) {
-            Map<String, Object> map = new LinkedHashMap<String, Object>();
+            Map<String, Object> map = Maps.newLinkedHashMap();
             map.putAll(modelMap);
             modelMap.clear();
             for (Iterator<String> iterator = map.keySet().iterator(); iterator.hasNext();) {

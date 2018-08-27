@@ -1,6 +1,5 @@
 package com.huawei.master.core.user.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 
 public class User {
@@ -9,7 +8,6 @@ public class User {
      * id
      */
     @Id
-    @JsonIgnore
     private String id;
 
     /**

@@ -8,4 +8,8 @@ public interface UserService {
     User save(User user);
 
     List<User> getUsers();
+
+    User getUserById(String id);
+
+    User update(User user);
 }
