@@ -1,5 +1,6 @@
-package com.huawei.master.core.system;
+package com.huawei.master.core.system.exception;
 
+import com.huawei.master.core.system.HttpCode;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.ui.ModelMap;
 

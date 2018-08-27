@@ -1,5 +1,6 @@
 package com.huawei.master.core.user.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 
 public class User {
@@ -8,7 +9,8 @@ public class User {
      * id
      */
     @Id
-    private Long id;
+    @JsonIgnore
+    private String id;
 
     /**
      * 登陆帐户
@@ -28,18 +30,18 @@ public class User {
     /**
      * 姓名
      */
-    private String userName;
+    private String name;
 
     /**
      * 地址
      */
     private String address;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -67,12 +69,12 @@ public class User {
         this.type = type;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAddress() {

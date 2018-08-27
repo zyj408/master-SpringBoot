@@ -30,7 +30,7 @@ public class UserController extends AbstractController {
         Assert.isNotBlank(user.getAccount(), "ACCOUNT");
         Assert.length(user.getAccount(), 3, 15, "ACCOUNT");
 
-        userService.save(user);
+        User savedUser = userService.save(user);
         return setSuccessModelMap(modelMap);
     }
 

@@ -1,4 +1,7 @@
-package com.huawei.master.core.system;
+package com.huawei.master.core.system.exception;
+
+import com.huawei.master.core.system.HttpCode;
+import com.huawei.master.core.system.exception.BaseException;
 
 public class IllegalParameterException extends BaseException {
     public IllegalParameterException() {

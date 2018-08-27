@@ -1,9 +1,9 @@
 package com.huawei.master.core.common;
 
 
-import com.huawei.master.core.system.BaseException;
+import com.huawei.master.core.system.exception.BaseException;
 import com.huawei.master.core.system.HttpCode;
-import com.huawei.master.core.system.IllegalParameterException;
+import com.huawei.master.core.system.exception.IllegalParameterException;
 import com.huawei.master.core.utils.JacksonMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.UnauthorizedException;
@@ -85,14 +85,7 @@ public abstract class AbstractController {
             }
         }
         if (data != null) {
-            if (data instanceof Page) {
-                Page<?> page = (Page<?>) data;
-                modelMap.put("rows", page.getRecords());
-                modelMap.put("current", page.getCurrent());
-                modelMap.put("size", page.getSize());
-                modelMap.put("pages", page.getPages());
-                modelMap.put("total", page.getTotal());
-            } else if (data instanceof List<?>) {
+           if (data instanceof List<?>) {
                 modelMap.put("rows", data);
                 modelMap.put("total", ((List<?>) data).size());
             } else {

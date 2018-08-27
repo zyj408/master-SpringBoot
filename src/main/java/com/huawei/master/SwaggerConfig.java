@@ -22,7 +22,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.huawei.master.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.huawei.master.core.user.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }

@@ -1,5 +1,6 @@
 package com.huawei.master.core.user.service.impl;
 
+import com.huawei.master.core.system.exception.BusinessException;
 import com.huawei.master.core.user.dao.UserRepository;
 import com.huawei.master.core.user.domain.User;
 import com.huawei.master.core.user.service.UserService;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -20,13 +20,13 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public void save(User user) {
+    public User save(User user) {
         User oldUser = userRepository.findByAccount(user.getAccount());
         if (oldUser != null) {
             logger.info("user existed...");
-            return;
+            throw new BusinessException("USER_IS_EXISTED");
         }
-        oldUser = userRepository.save(user);
+        return userRepository.save(user);
     }
 
     @Override
