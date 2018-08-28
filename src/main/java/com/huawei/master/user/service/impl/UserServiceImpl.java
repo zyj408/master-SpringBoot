@@ -1,5 +1,7 @@
-package com.huawei.master.core.user.utils;
+package com.huawei.master.user.service.impl;
 
+import com.huawei.master.user.dao.UserRepository;
+import com.huawei.master.user.service.UserService;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.DisabledAccountException;
@@ -9,20 +11,20 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service("userService")
+public class UserServiceImpl implements UserService {
 
-public class LoginUtils {
+    private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
-    /**
-     * 日志服务
-     */
-    private static Logger logger = LoggerFactory.getLogger(LoginUtils.class);
+    @Autowired
+    private UserRepository userRepository;
 
-    private LoginUtils() {
-    }
-
-    public static final Boolean login(String account, String password, String host) {
-        UsernamePasswordToken token = new UsernamePasswordToken(account, password, host);
+    @Override
+    public boolean login(String account, String password, String clientIp) {
+        UsernamePasswordToken token = new UsernamePasswordToken(account, password, clientIp);
         token.setRememberMe(true);
         Subject subject = SecurityUtils.getSubject();
 

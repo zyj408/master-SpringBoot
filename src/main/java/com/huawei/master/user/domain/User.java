@@ -1,4 +1,4 @@
-package com.huawei.master.core.user.domain;
+package com.huawei.master.user.domain;
 
 import org.springframework.data.annotation.Id;
 

@@ -1,4 +1,4 @@
-package com.huawei.master.core.user.utils;
+package com.huawei.master.user.utils;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.shiro.SecurityUtils;

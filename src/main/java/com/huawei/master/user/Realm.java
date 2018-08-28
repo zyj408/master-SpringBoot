@@ -1,6 +1,6 @@
-package com.huawei.master.core.user;
+package com.huawei.master.user;
 
-import com.huawei.master.core.user.utils.ShiroUtils;
+import com.huawei.master.user.utils.ShiroUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
