@@ -1,6 +1,7 @@
 package com.huawei.master.user;
 
-import com.huawei.master.user.utils.ShiroUtils;
+import com.huawei.master.user.service.AuthorizeService;
+import com.huawei.master.user.service.UserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -11,6 +12,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -24,11 +26,17 @@ public class Realm extends AuthorizingRealm {
      */
     private static Logger logger = LoggerFactory.getLogger(Realm.class);
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private AuthorizeService authorizeService;
+
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        Long userId = (Long) ShiroUtils.getCurrentUser();
-
+        Long userId = userService.getCurrentUser();
+        authorizeService.queryPermissionByUserId(userId);
         List<String> permissions = new ArrayList<String>();
         info.addStringPermissions(permissions);
         return info;

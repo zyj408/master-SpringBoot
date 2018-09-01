@@ -14,7 +14,7 @@ import java.util.*;
 @RestController
 @Api(value = "用户管理", description = "用户管理")
 @RequestMapping(value = "/rest/user")
-public class UserController {
+public class UserRestfull {
 
     @Autowired
     private UserRepository userRepository;
