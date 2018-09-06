@@ -2,6 +2,8 @@ package com.huawei.master.user.domain;
 
 import org.springframework.data.annotation.Id;
 
+import java.util.List;
+
 public class User {
 
     /**
@@ -34,6 +36,11 @@ public class User {
      * 地址
      */
     private String address;
+
+    /**
+     * 角色
+     */
+    private List<Role> roles;
 
     public String getId() {
         return id;
@@ -81,5 +88,13 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }
