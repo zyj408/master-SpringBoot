@@ -2,7 +2,7 @@ package com.huawei.master.app.domain;
 
 import org.springframework.data.annotation.Id;
 
-public class Commont {
+public class Comment {
 
     @Id
     private String id;
