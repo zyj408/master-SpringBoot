@@ -28,9 +28,8 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("iBase4J-API").description("©2016 Copyright. Powered By iBase4J.")
-                // .termsOfServiceUrl("")
-                .contact(new Contact("iBase4J", "", "iBase4J@163.com")).license("Apache License Version 2.0")
+        return new ApiInfoBuilder().title("书籍管理平台接口").description("©2016 Copyright. Powered By Zhouyujie.")
+                .contact(new Contact("Zhouyujie", "", "zyj_408@163.com")).license("Apache License Version 2.0")
                 .licenseUrl("https://github.com/springfox/springfox/blob/master/LICENSE").version("2.0").build();
     }
 
