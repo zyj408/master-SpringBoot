@@ -23,7 +23,7 @@ public class BookRestful {
 
     @PostMapping
     @ApiOperation(value = "创建书籍", notes = "根据book对象创建书籍")
-    @ApiImplicitParam(name = "book", value = "书籍详细实体book", required = true, dataType = "book")
+    @ApiImplicitParam(name = "book", value = "书籍详细实体book", required = true, dataType = "Book")
     public String postook(@RequestBody Book book) {
         bookRepository.save(book);
         return "success";
@@ -47,7 +47,7 @@ public class BookRestful {
     @ApiOperation(value = "更新书籍详细信息", notes = "根据id来指定更新对象，并根据传过来的信息来更新书籍详细信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "书籍ID", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "book", value = "书籍详细实体book", required = true, dataType = "book")
+            @ApiImplicitParam(name = "book", value = "书籍详细实体book", required = true, dataType = "Book")
     })
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public String putBook(@PathVariable String id, @RequestBody Book book) {

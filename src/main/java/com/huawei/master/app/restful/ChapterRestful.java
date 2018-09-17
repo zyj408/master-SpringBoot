@@ -23,7 +23,7 @@ public class ChapterRestful {
 
     @PostMapping
     @ApiOperation(value = "创建章节", notes = "根据chapter对象创建章节")
-    @ApiImplicitParam(name = "chapter", value = "章节详细实体chapter", required = true, dataType = "chapter")
+    @ApiImplicitParam(name = "chapter", value = "章节详细实体chapter", required = true, dataType = "Chapter")
     public String postChapter(@RequestBody Chapter chapter) {
         chapterRepository.save(chapter);
         return "success";
@@ -47,7 +47,7 @@ public class ChapterRestful {
     @ApiOperation(value = "更新章节详细信息", notes = "根据id来指定更新对象，并根据传过来的信息来更新章节详细信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "章节ID", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "chapter", value = "章节详细实体chapter", required = true, dataType = "chapter")
+            @ApiImplicitParam(name = "chapter", value = "章节详细实体chapter", required = true, dataType = "Chapter")
     })
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public String putChapter(@PathVariable String id, @RequestBody Chapter chapter) {

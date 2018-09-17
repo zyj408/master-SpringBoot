@@ -22,7 +22,7 @@ public class CommentRestful {
 
     @PostMapping
     @ApiOperation(value = "创建评论", notes = "根据comment对象创建评论")
-    @ApiImplicitParam(name = "comment", value = "评论详细实体comment", required = true, dataType = "comment")
+    @ApiImplicitParam(name = "comment", value = "评论详细实体comment", required = true, dataType = "Comment")
     public String postComment(@RequestBody Comment comment) {
         commentRepository.save(comment);
         return "success";
@@ -46,7 +46,7 @@ public class CommentRestful {
     @ApiOperation(value = "更新评论详细信息", notes = "根据id来指定更新对象，并根据传过来的信息来更新评论详细信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "评论ID", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "comment", value = "评论详细实体comment", required = true, dataType = "comment")
+            @ApiImplicitParam(name = "comment", value = "评论详细实体comment", required = true, dataType = "Comment")
     })
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public String putComment(@PathVariable String id, @RequestBody Comment comment) {
