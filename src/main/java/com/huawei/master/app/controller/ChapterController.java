@@ -1,6 +1,6 @@
 package com.huawei.master.app.controller;
 
-import com.huawei.master.app.controller.dto.ChapterScore;
+import com.huawei.master.app.controller.dto.request.ChapterScore;
 import com.huawei.master.app.service.ChapterService;
 import com.huawei.master.core.common.AbstractController;
 import com.huawei.master.core.utils.Assert;

@@ -1,9 +1,12 @@
 package com.huawei.master.app.controller;
 
-import com.huawei.master.app.controller.dto.WorkshopRelation;
+import com.google.common.collect.Lists;
+import com.huawei.master.app.controller.dto.reponse.WorkshopDetail;
+import com.huawei.master.app.controller.dto.request.WorkshopRelation;
+import com.huawei.master.app.dao.WorkshopRepository;
+import com.huawei.master.app.domain.Workshop;
 import com.huawei.master.app.service.WorkshopService;
 import com.huawei.master.core.common.AbstractController;
-import com.huawei.master.core.common.Page;
 import com.huawei.master.core.utils.Assert;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -15,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @Api(value = "讨论会管理", description = "讨论会管理")
 @RequestMapping(value = "/workshop")
@@ -23,7 +29,10 @@ public class WorkshopController extends AbstractController {
     @Autowired
     private WorkshopService workshopService;
 
-    // 书籍关联章节
+    @Autowired
+    private WorkshopRepository workshopRepository;
+
+    // 章节关联讨论会
     @ApiOperation(value = "讨论会关联章节", notes = "讨论会关联章节")
     @PostMapping("/relation")
     @ApiImplicitParam(name = "relation", value = "关联信息", required = true, dataType = "WorkshopRelation")
@@ -35,15 +44,16 @@ public class WorkshopController extends AbstractController {
         return setSuccessModelMap(modelMap);
     }
 
-    // 书籍关联章节
-    @ApiOperation(value = "查询讨论会", notes = "查询讨论会")
-    @PostMapping("/query")
-    public Object query(@RequestBody Page page, ModelMap modelMap) {
+    // 讨论会详情
+    @ApiOperation(value = "讨论会详情", notes = "讨论会详情")
+    @PostMapping("/detail")
+    @ApiImplicitParam(name = "workshopIds", value = "讨论会IDs", required = true, dataType = "List")
+    public Object detail(@RequestBody List<String> workshopIds, ModelMap modelMap) {
+        Assert.notEmpty(workshopIds, "WORKSHOP_IDS");
+        List<Workshop> workshops = Lists.newArrayList(workshopRepository.findAllById(workshopIds));
 
-        Assert.notNull(page.getPage(), "PAGE");
-        Assert.notNull(page.getRows(), "ROWS");
-
-
-        return setSuccessModelMap(modelMap);
+        List<WorkshopDetail> workshopDetails = workshops.stream().map(w -> new WorkshopDetail(w)).collect(Collectors.toList());
+        return setSuccessModelMap(modelMap, workshopDetails);
     }
+
 }

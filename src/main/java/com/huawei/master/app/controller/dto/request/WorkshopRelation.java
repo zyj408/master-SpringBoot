@@ -1,4 +1,4 @@
-package com.huawei.master.app.controller.dto;
+package com.huawei.master.app.controller.dto.request;
 
 import java.util.List;
 

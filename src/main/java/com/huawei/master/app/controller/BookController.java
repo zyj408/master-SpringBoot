@@ -1,7 +1,7 @@
 package com.huawei.master.app.controller;
 
-import com.huawei.master.app.controller.dto.BookRelation;
-import com.huawei.master.app.controller.dto.BookScore;
+import com.huawei.master.app.controller.dto.request.BookRelation;
+import com.huawei.master.app.controller.dto.request.BookScore;
 import com.huawei.master.app.service.BookService;
 import com.huawei.master.core.common.AbstractController;
 import com.huawei.master.core.utils.Assert;
