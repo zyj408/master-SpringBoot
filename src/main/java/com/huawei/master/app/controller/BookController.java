@@ -1,6 +1,7 @@
 package com.huawei.master.app.controller;
 
 import com.huawei.master.app.controller.dto.BookRelation;
+import com.huawei.master.app.controller.dto.BookScore;
 import com.huawei.master.app.service.BookService;
 import com.huawei.master.core.common.AbstractController;
 import com.huawei.master.core.utils.Assert;
@@ -26,12 +27,25 @@ public class BookController extends AbstractController {
     @ApiOperation(value = "书籍关联章节", notes = "书籍关联章节")
     @PostMapping("/relation")
     @ApiImplicitParam(name = "relation", value = "关联信息", required = true, dataType = "BookRelation")
-    public Object relation(@RequestBody BookRelation relation, ModelMap modelMap) {
+    public Object relate(@RequestBody BookRelation relation, ModelMap modelMap) {
 
         Assert.notNull(relation.getBookId(), "BOOK_ID");
         Assert.notEmpty(relation.getChapterIds(), "CHAPTER_ID");
 
         bookService.relate(relation.getBookId(), relation.getChapterIds());
+        return setSuccessModelMap(modelMap);
+    }
+
+    // 书籍评分
+    @ApiOperation(value = "书籍评分", notes = "书籍评分")
+    @PostMapping("/score")
+    @ApiImplicitParam(name = "score", value = "评分信息", required = true, dataType = "BookScore")
+    public Object score(@RequestBody BookScore score, ModelMap modelMap) {
+
+        Assert.notNull(score.getBookId(), "BOOK_ID");
+        Assert.max(score.getScore(), 5, "BOOK_SCORE");
+
+        bookService.addScore(score.getBookId(), score.getScore());
         return setSuccessModelMap(modelMap);
     }
 }

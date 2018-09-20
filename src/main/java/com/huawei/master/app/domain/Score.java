@@ -11,6 +11,14 @@ public class Score {
 
     private Integer times;
 
+    public Score(Integer sum, Integer times) {
+        this.sum = sum;
+        this.times = times;
+    }
+
+    public Score() {
+    }
+
     public String getId() {
         return id;
     }

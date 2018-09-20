@@ -11,6 +11,8 @@ public class Workshop {
     @Id
     private String id;
 
+    private String name;
+
     private String picUrl;
 
     private String description;
@@ -20,6 +22,7 @@ public class Workshop {
     private String address;
 
     private String host;
+
     @DBRef
     @JsonIgnore
     private List<Chapter> chapters;
@@ -30,6 +33,14 @@ public class Workshop {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPicUrl() {
