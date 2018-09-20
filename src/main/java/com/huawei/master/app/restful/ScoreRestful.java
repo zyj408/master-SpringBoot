@@ -23,7 +23,7 @@ public class ScoreRestful {
 
     @PostMapping
     @ApiOperation(value = "创建评分", notes = "根据Score对象创建评分")
-    @ApiImplicitParam(name = "Score", value = "评分详细实体Score", required = true, dataType = "Score")
+    @ApiImplicitParam(name = "score", value = "评分详细实体Score", required = true, dataType = "Score")
     public String postScore(@RequestBody Score score) {
         scoreRepository.save(score);
         return "success";
@@ -47,7 +47,7 @@ public class ScoreRestful {
     @ApiOperation(value = "更新评分详细信息", notes = "根据id来指定更新对象，并根据传过来的信息来更新评分详细信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "评分ID", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "Score", value = "评分详细实体Score", required = true, dataType = "Score")
+            @ApiImplicitParam(name = "score", value = "评分详细实体Score", required = true, dataType = "Score")
     })
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public String putScore(@PathVariable String id, @RequestBody Score score) {

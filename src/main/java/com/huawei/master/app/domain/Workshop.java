@@ -11,14 +11,15 @@ public class Workshop {
     @Id
     private String id;
 
-    private String startTime;
-
-    private String endTime;
-
     private String picUrl;
 
     private String description;
 
+    private String time;
+
+    private String address;
+
+    private String host;
     @DBRef
     @JsonIgnore
     private List<Chapter> chapters;
@@ -29,22 +30,6 @@ public class Workshop {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
     }
 
     public String getPicUrl() {
@@ -61,6 +46,30 @@ public class Workshop {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
     }
 
     public List<Chapter> getChapters() {

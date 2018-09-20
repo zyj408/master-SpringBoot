@@ -22,7 +22,7 @@ public class WorkshopRestful {
 
     @PostMapping
     @ApiOperation(value = "创建讨论会", notes = "根据Workshop对象创建讨论会")
-    @ApiImplicitParam(name = "Workshop", value = "讨论会详细实体Workshop", required = true, dataType = "Workshop")
+    @ApiImplicitParam(name = "workshop", value = "讨论会详细实体Workshop", required = true, dataType = "Workshop")
     public String postWorkshop(@RequestBody Workshop workshop) {
         workshopRepository.save(workshop);
         return "success";
@@ -46,7 +46,7 @@ public class WorkshopRestful {
     @ApiOperation(value = "更新讨论会详细信息", notes = "根据id来指定更新对象，并根据传过来的信息来更新讨论会详细信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "讨论会ID", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "Workshop", value = "讨论会详细实体Workshop", required = true, dataType = "Workshop")
+            @ApiImplicitParam(name = "workshop", value = "讨论会详细实体Workshop", required = true, dataType = "Workshop")
     })
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public String putWorkshop(@PathVariable String id, @RequestBody Workshop workshop) {
