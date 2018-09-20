@@ -1,6 +1,7 @@
 package com.huawei.master.app.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
@@ -20,6 +21,7 @@ public class Book {
     private Float price;
 
     @DBRef
+    @JsonIgnore
     private List<Chapter> chapters;
 
     @DBRef

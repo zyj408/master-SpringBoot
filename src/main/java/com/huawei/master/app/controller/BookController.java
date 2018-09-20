@@ -25,7 +25,7 @@ public class BookController extends AbstractController {
     // 书籍关联章节
     @ApiOperation(value = "书籍关联章节", notes = "书籍关联章节")
     @PostMapping("/relation")
-    @ApiImplicitParam(name = "relation", value = "关联信息", required = true, dataType = "Relation")
+    @ApiImplicitParam(name = "relation", value = "关联信息", required = true, dataType = "BookRelation")
     public Object relation(@RequestBody BookRelation relation, ModelMap modelMap) {
 
         Assert.notNull(relation.getBookId(), "BOOK_ID");

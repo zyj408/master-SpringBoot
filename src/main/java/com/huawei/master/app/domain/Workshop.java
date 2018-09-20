@@ -1,5 +1,6 @@
 package com.huawei.master.app.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
@@ -19,6 +20,7 @@ public class Workshop {
     private String description;
 
     @DBRef
+    @JsonIgnore
     private List<Chapter> chapters;
 
     public String getId() {

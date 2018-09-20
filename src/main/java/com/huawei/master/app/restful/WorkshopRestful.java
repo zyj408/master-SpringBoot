@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @Api(value = "讨论会管理", description = "讨论会管理")
-@RequestMapping(value = "/rest/Workshop")
+@RequestMapping(value = "/rest/workshop")
 public class WorkshopRestful {
 
     @Autowired

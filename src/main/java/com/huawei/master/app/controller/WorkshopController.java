@@ -25,7 +25,7 @@ public class WorkshopController extends AbstractController {
     // 书籍关联章节
     @ApiOperation(value = "讨论会关联章节", notes = "讨论会关联章节")
     @PostMapping("/relation")
-    @ApiImplicitParam(name = "relation", value = "关联信息", required = true, dataType = "Relation")
+    @ApiImplicitParam(name = "relation", value = "关联信息", required = true, dataType = "WorkshopRelation")
     public Object relation(@RequestBody WorkshopRelation relation, ModelMap modelMap) {
 
         Assert.notNull(relation.getWorkshopId(), "WORKSHOP_ID");
