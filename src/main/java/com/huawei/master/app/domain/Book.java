@@ -1,6 +1,10 @@
 package com.huawei.master.app.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+
+import java.util.List;
 
 public class Book {
 
@@ -13,7 +17,9 @@ public class Book {
 
     private String description;
 
-    private String[] chapters;
+    @DBRef
+    @JsonIgnore
+    private List<Chapter> chapters;
 
     private Double score;
 
@@ -35,11 +41,11 @@ public class Book {
         this.name = name;
     }
 
-    public String[] getChapters() {
+    public List<Chapter> getChapters() {
         return chapters;
     }
 
-    public void setChapters(String[] chapters) {
+    public void setChapters(List<Chapter> chapters) {
         this.chapters = chapters;
     }
 
