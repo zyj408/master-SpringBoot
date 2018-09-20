@@ -10,6 +10,7 @@ import com.huawei.master.core.system.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service("bookService")
@@ -21,6 +22,11 @@ public class BookServiceImpl implements BookService {
     @Autowired
     private ChapterRepository chapterRepository;
 
+    /**
+     * 书本&章节关联操作
+     * @param bookId
+     * @param chapterIds
+     */
     @Override
     public void relate(String bookId, List<String> chapterIds) {
         if (!bookRepository.existsById(bookId)) {
@@ -33,8 +39,15 @@ public class BookServiceImpl implements BookService {
         }
 
         Book book = bookRepository.findById(bookId).get();
-        Iterable<Chapter> iterable = chapterRepository.findAllById(chapterIds);
-        book.setChapters(Lists.newArrayList(iterable));
+        ArrayList<Chapter> chapters = Lists.newArrayList(chapterRepository.findAllById(chapterIds));
+
+        //书本关联章节
+        book.setChapters(chapters);
         bookRepository.save(book);
+
+        chapters.stream().forEach(c -> {
+            c.setBook(book);
+            chapterRepository.save(c);
+        });
     }
 }

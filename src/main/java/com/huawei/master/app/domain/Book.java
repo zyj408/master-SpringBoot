@@ -1,6 +1,6 @@
 package com.huawei.master.app.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
@@ -17,13 +17,13 @@ public class Book {
 
     private String description;
 
+    private Float price;
+
     @DBRef
-    @JsonIgnore
     private List<Chapter> chapters;
 
-    private Double score;
-
-    private Double price;
+    @DBRef
+    private Score score;
 
     public String getId() {
         return id;
@@ -41,12 +41,12 @@ public class Book {
         this.name = name;
     }
 
-    public List<Chapter> getChapters() {
-        return chapters;
+    public String getPicUrl() {
+        return picUrl;
     }
 
-    public void setChapters(List<Chapter> chapters) {
-        this.chapters = chapters;
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
     }
 
     public String getDescription() {
@@ -57,27 +57,27 @@ public class Book {
         this.description = description;
     }
 
-    public String getPicUrl() {
-        return picUrl;
-    }
-
-    public void setPicUrl(String picUrl) {
-        this.picUrl = picUrl;
-    }
-
-    public Double getScore() {
+    public Score getScore() {
         return score;
     }
 
-    public void setScore(Double score) {
+    public void setScore(Score score) {
         this.score = score;
     }
 
-    public Double getPrice() {
+    public List<Chapter> getChapters() {
+        return chapters;
+    }
+
+    public void setChapters(List<Chapter> chapters) {
+        this.chapters = chapters;
+    }
+
+    public Float getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(Float price) {
         this.price = price;
     }
 }
