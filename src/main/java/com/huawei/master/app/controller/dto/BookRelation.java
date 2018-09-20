@@ -2,7 +2,7 @@ package com.huawei.master.app.controller.dto;
 
 import java.util.List;
 
-public class Relation {
+public class BookRelation {
     private String bookId;
 
     private List<String> chapterIds;
