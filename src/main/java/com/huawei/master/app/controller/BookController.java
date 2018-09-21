@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.huawei.master.app.controller.dto.reponse.BookDetailResp;
 import com.huawei.master.app.controller.dto.reponse.WorkshopDetailResp;
 import com.huawei.master.app.controller.dto.request.BookDetailReq;
+import com.huawei.master.app.controller.dto.request.BookQueryReq;
 import com.huawei.master.app.controller.dto.request.BookRelationReq;
 import com.huawei.master.app.controller.dto.request.BookScoreReq;
 import com.huawei.master.app.dao.BookRepository;
@@ -49,14 +50,34 @@ public class BookController extends AbstractController {
         return setSuccessModelMap(modelMap);
     }
 
-    // 讨论会详情
+    // 书籍详情
     @ApiOperation(value = "书籍详情", notes = "书籍详情")
     @PostMapping("/detail")
     @ApiImplicitParam(name = "bookDetailReq", value = "书籍IDs", required = true, dataType = "BookDetailReq")
     public Object detail(@RequestBody BookDetailReq bookDetailReq, ModelMap modelMap) {
-        Assert.notEmpty(bookDetailReq.getBookIds(), "BOOK_IDS");
-        ArrayList<Book> books = Lists.newArrayList(bookRepository.findAllById(bookDetailReq.getBookIds()));
 
+        Assert.notEmpty(bookDetailReq.getBookIds(), "BOOK_IDS");
+
+        ArrayList<Book> books = Lists.newArrayList(bookRepository.findAllById(bookDetailReq.getBookIds()));
+        List<BookDetailResp> bookDetails = books.stream().map(b -> new BookDetailResp(b)).collect(Collectors.toList());
+        return setSuccessModelMap(modelMap, bookDetails);
+    }
+
+    // 书籍查询
+    @ApiOperation(value = "书籍查询", notes = "书籍查询")
+    @PostMapping("/query")
+    @ApiImplicitParam(name = "bookQueryReq", value = "书籍IDs", required = true, dataType = "BookQueryReq")
+    public Object query(@RequestBody BookQueryReq bookQueryReq, ModelMap modelMap) {
+
+        Assert.notNull(bookQueryReq.getPage().getPage(), "PAGE");
+        Assert.max(bookQueryReq.getPage().getRows(), 20, "ROWS");
+
+        if(bookQueryReq.getName() == null)
+        {
+            bookQueryReq.setName("");
+        }
+
+        List<Book> books = bookService.query(bookQueryReq);
         List<BookDetailResp> bookDetails = books.stream().map(b -> new BookDetailResp(b)).collect(Collectors.toList());
         return setSuccessModelMap(modelMap, bookDetails);
     }

@@ -3,6 +3,9 @@ package com.huawei.master.app.controller.dto.request;
 import java.util.List;
 
 public class WorkshopDetailReq {
+
+    private List<String> workshopIds;
+
     public List<String> getWorkshopIds() {
         return workshopIds;
     }
@@ -10,8 +13,5 @@ public class WorkshopDetailReq {
     public void setWorkshopIds(List<String> workshopIds) {
         this.workshopIds = workshopIds;
     }
-
-    private List<String> workshopIds;
-
 
 }
