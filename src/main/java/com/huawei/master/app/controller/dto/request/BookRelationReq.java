@@ -2,17 +2,17 @@ package com.huawei.master.app.controller.dto.request;
 
 import java.util.List;
 
-public class WorkshopRelation {
-    private String workshopId;
+public class BookRelationReq {
+    private String bookId;
 
     private List<String> chapterIds;
 
-    public String getWorkshopId() {
-        return workshopId;
+    public String getBookId() {
+        return bookId;
     }
 
-    public void setWorkshopId(String workshopId) {
-        this.workshopId = workshopId;
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
     }
 
     public List<String> getChapterIds() {

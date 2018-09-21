@@ -5,7 +5,7 @@ import com.huawei.master.app.domain.Workshop;
 
 import java.util.List;
 
-public class WorkshopDetail {
+public class WorkshopDetailResp {
 
     private String id;
 
@@ -23,10 +23,10 @@ public class WorkshopDetail {
 
     private List<Chapter> chapters;
 
-    public WorkshopDetail() {
+    public WorkshopDetailResp() {
     }
 
-    public WorkshopDetail(Workshop workshop) {
+    public WorkshopDetailResp(Workshop workshop) {
         this.id = workshop.getId();
         this.name = workshop.getName();
         this.picUrl = workshop.getPicUrl();

@@ -1,17 +1,17 @@
 package com.huawei.master.app.controller.dto.request;
 
-public class BookScore {
+public class ChapterScoreReq {
 
-    private String bookId;
+    private String chapterId;
 
     private Integer score;
 
-    public String getBookId() {
-        return bookId;
+    public String getChapterId() {
+        return chapterId;
     }
 
-    public void setBookId(String bookId) {
-        this.bookId = bookId;
+    public void setChapterId(String chapterId) {
+        this.chapterId = chapterId;
     }
 
     public Integer getScore() {

@@ -1,8 +1,9 @@
 package com.huawei.master.app.controller;
 
 import com.google.common.collect.Lists;
-import com.huawei.master.app.controller.dto.reponse.WorkshopDetail;
-import com.huawei.master.app.controller.dto.request.WorkshopRelation;
+import com.huawei.master.app.controller.dto.reponse.WorkshopDetailResp;
+import com.huawei.master.app.controller.dto.request.WorkshopDetailReq;
+import com.huawei.master.app.controller.dto.request.WorkshopRelationReq;
 import com.huawei.master.app.dao.WorkshopRepository;
 import com.huawei.master.app.domain.Workshop;
 import com.huawei.master.app.service.WorkshopService;
@@ -35,8 +36,8 @@ public class WorkshopController extends AbstractController {
     // 章节关联讨论会
     @ApiOperation(value = "讨论会关联章节", notes = "讨论会关联章节")
     @PostMapping("/relation")
-    @ApiImplicitParam(name = "relation", value = "关联信息", required = true, dataType = "WorkshopRelation")
-    public Object relate(@RequestBody WorkshopRelation relation, ModelMap modelMap) {
+    @ApiImplicitParam(name = "relation", value = "关联信息", required = true, dataType = "WorkshopRelationReq")
+    public Object relate(@RequestBody WorkshopRelationReq relation, ModelMap modelMap) {
 
         Assert.notNull(relation.getWorkshopId(), "WORKSHOP_ID");
         Assert.notEmpty(relation.getChapterIds(), "CHAPTER_ID");
@@ -47,12 +48,12 @@ public class WorkshopController extends AbstractController {
     // 讨论会详情
     @ApiOperation(value = "讨论会详情", notes = "讨论会详情")
     @PostMapping("/detail")
-    @ApiImplicitParam(name = "workshopIds", value = "讨论会IDs", required = true, dataType = "List")
-    public Object detail(@RequestBody List<String> workshopIds, ModelMap modelMap) {
-        Assert.notEmpty(workshopIds, "WORKSHOP_IDS");
-        List<Workshop> workshops = Lists.newArrayList(workshopRepository.findAllById(workshopIds));
+    @ApiImplicitParam(name = "workshopDetailReq", value = "讨论会IDs", required = true, dataType = "WorkshopDetailReq")
+    public Object detail(@RequestBody WorkshopDetailReq workshopDetailReq, ModelMap modelMap) {
+        Assert.notEmpty(workshopDetailReq.getWorkshopIds(), "WORKSHOP_IDS");
+        List<Workshop> workshops = Lists.newArrayList(workshopRepository.findAllById(workshopDetailReq.getWorkshopIds()));
 
-        List<WorkshopDetail> workshopDetails = workshops.stream().map(w -> new WorkshopDetail(w)).collect(Collectors.toList());
+        List<WorkshopDetailResp> workshopDetails = workshops.stream().map(w -> new WorkshopDetailResp(w)).collect(Collectors.toList());
         return setSuccessModelMap(modelMap, workshopDetails);
     }
 

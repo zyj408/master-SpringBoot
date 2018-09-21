@@ -1,6 +1,6 @@
 package com.huawei.master.app.controller;
 
-import com.huawei.master.app.controller.dto.request.ChapterScore;
+import com.huawei.master.app.controller.dto.request.ChapterScoreReq;
 import com.huawei.master.app.service.ChapterService;
 import com.huawei.master.core.common.AbstractController;
 import com.huawei.master.core.utils.Assert;
@@ -25,8 +25,8 @@ public class ChapterController extends AbstractController {
     // 书籍关联章节
     @ApiOperation(value = "章节评分", notes = "章节评分")
     @PostMapping("/score")
-    @ApiImplicitParam(name = "score", value = "评分信息", required = true, dataType = "ChapterScore")
-    public Object score(@RequestBody ChapterScore score, ModelMap modelMap) {
+    @ApiImplicitParam(name = "score", value = "评分信息", required = true, dataType = "ChapterScoreReq")
+    public Object score(@RequestBody ChapterScoreReq score, ModelMap modelMap) {
 
         Assert.notNull(score.getChapterId(), "CHAPTER_ID");
         Assert.max(score.getScore(), 5, "CHAPTER_SCORE");
