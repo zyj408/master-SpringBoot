@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Api(value = "章节管理", description = "章节管理")
+@Api(value = "章节业务", description = "章节业务")
 @RequestMapping(value = "/chapter")
 public class ChapterController extends AbstractController {
 

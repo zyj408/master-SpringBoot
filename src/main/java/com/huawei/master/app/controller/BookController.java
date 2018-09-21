@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@Api(value = "书籍管理", description = "书籍管理")
+@Api(value = "书籍业务", description = "书籍业务")
 @RequestMapping(value = "/book")
 public class BookController extends AbstractController {
 

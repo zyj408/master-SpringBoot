@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@Api(value = "讨论会管理", description = "讨论会管理")
+@Api(value = "讨论会业务", description = "讨论会业务")
 @RequestMapping(value = "/workshop")
 public class WorkshopController extends AbstractController {
 
@@ -56,5 +56,6 @@ public class WorkshopController extends AbstractController {
         List<WorkshopDetailResp> workshopDetails = workshops.stream().map(w -> new WorkshopDetailResp(w)).collect(Collectors.toList());
         return setSuccessModelMap(modelMap, workshopDetails);
     }
+
 
 }
