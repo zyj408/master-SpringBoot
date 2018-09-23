@@ -4,7 +4,7 @@ import com.huawei.master.user.domain.User;
 
 public interface UserService {
 
-    boolean login(String account, String s, String clientIp);
+    boolean login(String account, String password, String clientIp);
 
     void register(User user);
 

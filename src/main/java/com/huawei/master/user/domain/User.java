@@ -1,6 +1,7 @@
 package com.huawei.master.user.domain;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.List;
 
@@ -38,8 +39,14 @@ public class User {
     private String address;
 
     /**
+     * 是否使能
+     */
+    private Boolean enable;
+
+    /**
      * 角色
      */
+    @DBRef
     private List<Role> roles;
 
     public String getId() {
@@ -88,6 +95,14 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Boolean getEnable() {
+        return enable;
+    }
+
+    public void setEnable(Boolean enable) {
+        this.enable = enable;
     }
 
     public List<Role> getRoles() {

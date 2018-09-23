@@ -23,7 +23,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@Api(value = "登陆管理", description = "登陆管理")
+@Api(value = "登陆业务", description = "登陆业务")
 @RequestMapping(value = "/user")
 public class UserController extends AbstractController {
 
