@@ -24,7 +24,7 @@ public class BookRestful {
     @PostMapping
     @ApiOperation(value = "创建书籍", notes = "根据book对象创建书籍")
     @ApiImplicitParam(name = "book", value = "书籍详细实体book", required = true, dataType = "Book")
-    public String postook(@RequestBody Book book) {
+    public String postBook(@RequestBody Book book) {
         bookRepository.save(book);
         return "success";
     }

@@ -1,6 +1,6 @@
 package com.huawei.master.app.controller.dto.request;
 
-import com.huawei.master.core.common.Page;
+import com.huawei.master.core.bean.Page;
 
 public class BookQueryReq {
     private String name;

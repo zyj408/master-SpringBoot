@@ -7,7 +7,7 @@ import com.huawei.master.app.dao.WorkshopRepository;
 import com.huawei.master.app.domain.Chapter;
 import com.huawei.master.app.domain.Workshop;
 import com.huawei.master.app.service.WorkshopService;
-import com.huawei.master.core.common.Page;
+import com.huawei.master.core.bean.Page;
 import com.huawei.master.core.system.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;

@@ -1,5 +1,7 @@
 package com.huawei.master.core.common;
 
+import com.huawei.master.core.bean.Page;
+
 import java.util.HashMap;
 import java.util.Map;
 

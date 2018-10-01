@@ -1,4 +1,4 @@
-package com.huawei.master.core.common;
+package com.huawei.master.core.bean;
 
 public class Page {
 

@@ -1,5 +1,7 @@
 package com.huawei.master.user.restful;
 
+import com.huawei.master.core.bean.ObjectIdResp;
+import com.huawei.master.core.utils.JacksonMapper;
 import com.huawei.master.user.dao.UserRepository;
 import com.huawei.master.user.domain.User;
 import io.swagger.annotations.Api;
@@ -23,8 +25,8 @@ public class UserRestful {
     @ApiOperation(value = "创建用户", notes = "根据User对象创建用户")
     @ApiImplicitParam(name = "user", value = "用户详细实体user", required = true, dataType = "User")
     public String postUser(@RequestBody User user) {
-        userRepository.save(user);
-        return "success";
+        User store = userRepository.save(user);
+        return JacksonMapper.serialize(new ObjectIdResp(store.getId()));
     }
 
     @GetMapping

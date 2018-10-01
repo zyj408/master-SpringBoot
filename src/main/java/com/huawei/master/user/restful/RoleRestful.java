@@ -1,5 +1,7 @@
 package com.huawei.master.user.restful;
 
+import com.huawei.master.core.bean.ObjectIdResp;
+import com.huawei.master.core.utils.JacksonMapper;
 import com.huawei.master.user.dao.RoleRepository;
 import com.huawei.master.user.domain.Role;
 import io.swagger.annotations.Api;
@@ -24,8 +26,8 @@ public class RoleRestful {
     @ApiOperation(value = "创建角色", notes = "根据Role对象创建角色")
     @ApiImplicitParam(name = "role", value = "角色详细实体role", required = true, dataType = "Role")
     public String postRole(@RequestBody Role role) {
-        roleRepository.save(role);
-        return "success";
+        Role store = roleRepository.save(role);
+        return JacksonMapper.serialize(new ObjectIdResp(store.getId()));
     }
 
     @GetMapping
