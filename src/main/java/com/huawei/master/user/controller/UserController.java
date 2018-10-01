@@ -4,7 +4,7 @@ import com.huawei.master.core.common.AbstractController;
 import com.huawei.master.core.config.Resources;
 import com.huawei.master.core.system.HttpCode;
 import com.huawei.master.core.system.exception.LoginException;
-import com.huawei.master.user.controller.dto.Login;
+import com.huawei.master.user.controller.dto.request.LoginReq;
 import com.huawei.master.user.domain.User;
 import com.huawei.master.user.service.UserService;
 import com.huawei.master.core.utils.Assert;
@@ -12,7 +12,6 @@ import com.huawei.master.core.utils.WebUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +32,8 @@ public class UserController extends AbstractController {
     // 登录
     @ApiOperation(value = "用户登录", notes = "用户登录")
     @PostMapping("/login")
-    @ApiImplicitParam(name = "login", value = "登陆信息", required = true, dataType = "Login")
-    public Object login(@RequestBody Login login, ModelMap modelMap,
+    @ApiImplicitParam(name = "login", value = "登陆信息", required = true, dataType = "LoginReq")
+    public Object login(@RequestBody LoginReq login, ModelMap modelMap,
                         HttpServletRequest request) {
         Assert.notNull(login.getAccount(), "ACCOUNT");
         Assert.notNull(login.getPassword(), "PASSWORD");

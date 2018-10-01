@@ -1,4 +1,4 @@
-package com.huawei.master.core.common;
+package com.huawei.master.core.bean;
 
 import com.huawei.master.core.bean.Page;
 

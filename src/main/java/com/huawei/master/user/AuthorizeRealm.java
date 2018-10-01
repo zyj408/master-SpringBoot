@@ -1,12 +1,11 @@
 package com.huawei.master.user;
 
 import com.huawei.master.user.dao.UserRepository;
+import com.huawei.master.user.domain.User;
 import com.huawei.master.user.service.AuthorizeService;
 import com.huawei.master.user.service.UserService;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -52,31 +51,31 @@ public class AuthorizeRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
 
-        /**
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("enable", 1);
-        params.put("account", token.getUsername());
-        List<?> list = sysUserService.queryList(params);
-        if (list.size() == 1) {
-            SysUser user = (SysUser)list.get(0);
-            StringBuilder sb = new StringBuilder(100);
-            for (int i = 0; i < token.getPassword().length; i++) {
-                sb.append(token.getPassword()[i]);
+        User user = userRepository.findByAccount(token.getUsername());
+        if (user != null) {
+            String password = new String(token.getPassword());
+            if (StringUtils.equals(password, user.getPassword())) {
+                //ShiroUtil.saveCurrentUser(user.getId());
+                AuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user.getAccount(), user.getPassword(), user.getAccount());
+                return authenticationInfo;
             }
-            if (user.getPassword().equals(SecurityUtil.encryptPassword(sb.toString()))) {
-                ShiroUtil.saveCurrentUser(user.getId());
-                saveSession(user.getAccount(), token.getHost());
-                AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(user.getAccount(), sb.toString(),
-                        user.getUserName());
-                return authcInfo;
-            }
-            logger.warn("USER [{}] PASSWORD IS WRONG: {}", token.getUsername(), sb.toString());
-            return null;
         } else {
             logger.warn("No user: {}", token.getUsername());
             return null;
         }
+        /**
+         if (list.size() == 1) {
 
+         if (user.getPassword().equals(SecurityUtil.encryptPassword(sb.toString()))) {
+         ShiroUtil.saveCurrentUser(user.getId());
+         saveSession(user.getAccount(), token.getHost());
+         AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(user.getAccount(), sb.toString(),
+         user.getUserName());
+         return authcInfo;
+         }
+         logger.warn("USER [{}] PASSWORD IS WRONG: {}", token.getUsername(), sb.toString());
+         return null;
+         }
          **/
         return null;
     }

@@ -1,8 +1,8 @@
-package com.huawei.master.user.controller.dto;
+package com.huawei.master.user.controller.dto.request;
 
 import java.io.Serializable;
 
-public class Login implements Serializable {
+public class LoginReq implements Serializable {
 
     private String account;
     private String password;
