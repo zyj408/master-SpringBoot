@@ -19,12 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class AuthorizeRealm extends AuthorizingRealm {
+public class ShiroRealm extends AuthorizingRealm {
 
     /**
      * 日志服务
      */
-    private static Logger logger = LoggerFactory.getLogger(AuthorizeRealm.class);
+    private static Logger logger = LoggerFactory.getLogger(ShiroRealm.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -55,28 +55,15 @@ public class AuthorizeRealm extends AuthorizingRealm {
         if (user != null) {
             String password = new String(token.getPassword());
             if (StringUtils.equals(password, user.getPassword())) {
-                //ShiroUtil.saveCurrentUser(user.getId());
-                AuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user.getAccount(), user.getPassword(), user.getAccount());
+
+                userService.saveCurrentUser(user.getId());
+
+                AuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user.getAccount(), user.getPassword(), user.getName());
                 return authenticationInfo;
             }
         } else {
             logger.warn("No user: {}", token.getUsername());
-            return null;
         }
-        /**
-         if (list.size() == 1) {
-
-         if (user.getPassword().equals(SecurityUtil.encryptPassword(sb.toString()))) {
-         ShiroUtil.saveCurrentUser(user.getId());
-         saveSession(user.getAccount(), token.getHost());
-         AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(user.getAccount(), sb.toString(),
-         user.getUserName());
-         return authcInfo;
-         }
-         logger.warn("USER [{}] PASSWORD IS WRONG: {}", token.getUsername(), sb.toString());
-         return null;
-         }
-         **/
         return null;
     }
 }

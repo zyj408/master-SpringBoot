@@ -53,8 +53,8 @@ public class RoleRestful {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public String putRole(@PathVariable String id, @RequestBody Role role) {
         role.setId(id);
-        roleRepository.save(role);
-        return "success";
+        Role store = roleRepository.save(role);
+        return JacksonMapper.serialize(new ObjectIdResp(store.getId()));
     }
 
     @ApiOperation(value = "删除角色", notes = "根据id来指定删除角色")

@@ -1,5 +1,6 @@
 package com.huawei.master.user.service.impl;
 
+import com.huawei.master.core.constant.Constants;
 import com.huawei.master.core.system.exception.BusinessException;
 import com.huawei.master.user.dao.UserRepository;
 import com.huawei.master.user.domain.User;
@@ -71,5 +72,20 @@ public class UserServiceImpl implements UserService {
             }
         }
         return null;
+    }
+
+    @Override
+    public void saveCurrentUser(Object user) {
+        setSession(Constants.CURRENT_USER, user);
+    }
+
+    private void setSession(Object key, Object value) {
+        Subject currentUser = SecurityUtils.getSubject();
+        if (null != currentUser) {
+            Session session = currentUser.getSession();
+            if (null != session) {
+                session.setAttribute(key, value);
+            }
+        }
     }
 }

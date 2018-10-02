@@ -9,4 +9,6 @@ public interface UserService {
     void register(User user);
 
     Long getCurrentUser();
+
+    void saveCurrentUser(Object user);
 }

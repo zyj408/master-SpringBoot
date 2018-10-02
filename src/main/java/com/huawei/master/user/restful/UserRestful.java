@@ -51,8 +51,8 @@ public class UserRestful {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public String putUser(@PathVariable String id, @RequestBody User user) {
         user.setId(id);
-        userRepository.save(user);
-        return "success";
+        User store = userRepository.save(user);
+        return JacksonMapper.serialize(new ObjectIdResp(store.getId()));
     }
 
     @ApiOperation(value = "删除用户", notes = "根据id来指定删除对象")
