@@ -39,7 +39,7 @@ public class ShiroConfig {
     }
 
     @Bean
-    public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator(){
+    public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator() {
         DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
         advisorAutoProxyCreator.setProxyTargetClass(true);
         return advisorAutoProxyCreator;
