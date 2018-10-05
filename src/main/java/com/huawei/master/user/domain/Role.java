@@ -13,9 +13,6 @@ public class Role {
     private String name;
 
     @DBRef
-    private User user;
-
-    @DBRef
     private List<Permission> permissions;
 
     public String getId() {
@@ -32,14 +29,6 @@ public class Role {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public List<Permission> getPermissions() {

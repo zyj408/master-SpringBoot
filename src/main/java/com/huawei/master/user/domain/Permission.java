@@ -10,9 +10,6 @@ public class Permission {
 
     private String permission;
 
-    @DBRef
-    private Role role;
-
     public String getId() {
         return id;
     }
@@ -29,11 +26,4 @@ public class Permission {
         this.permission = permission;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 }
