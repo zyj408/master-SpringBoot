@@ -24,11 +24,6 @@ public class User {
     private String password;
 
     /**
-     * 用户类型(1普通用户2管理员3系统用户)
-     */
-    private String type;
-
-    /**
      * 姓名
      */
     private String name;
@@ -71,14 +66,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getName() {

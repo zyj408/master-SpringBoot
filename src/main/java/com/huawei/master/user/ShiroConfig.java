@@ -2,6 +2,7 @@ package com.huawei.master.user;
 
 
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -9,6 +10,9 @@ import org.apache.shiro.mgt.SecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Configuration
 public class ShiroConfig {
@@ -19,10 +23,14 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
-//        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
-//        //注意过滤器配置顺序 不能颠倒
-//        //配置退出 过滤器,其中的具体的退出代码Shiro已经替我们实现了，登出后跳转配置的loginUrl
-//        filterChainDefinitionMap.put("/logout", "logout");
+        shiroFilterFactoryBean.setLoginUrl("/user/login");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/user/unauthorized");
+
+
+        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
+        //注意过滤器配置顺序 不能颠倒
+        //配置退出 过滤器,其中的具体的退出代码Shiro已经替我们实现了，登出后跳转配置的loginUrl
+        filterChainDefinitionMap.put("/user/logout", "logout");
 //        // 配置不会被拦截的链接 顺序判断
 //        filterChainDefinitionMap.put("/static/**", "anon");
 //        filterChainDefinitionMap.put("/ajaxLogin", "anon");
@@ -32,9 +40,9 @@ public class ShiroConfig {
 //        shiroFilterFactoryBean.setLoginUrl("/unauth");
 //        // 登录成功后要跳转的链接
 ////        shiroFilterFactoryBean.setSuccessUrl("/index");
-//        //未授权界面;
-////        shiroFilterFactoryBean.setUnauthorizedUrl("/403");
-//        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+
+        filterChainDefinitionMap.put("/book/query", "authc");
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
 
@@ -53,17 +61,8 @@ public class ShiroConfig {
     }
 
     @Bean
-    public HashedCredentialsMatcher hashedCredentialsMatcher() {
-        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
-        hashedCredentialsMatcher.setHashAlgorithmName("md5");
-        hashedCredentialsMatcher.setHashIterations(2);
-        return hashedCredentialsMatcher;
-    }
-
-    @Bean
-    public ShiroRealm shiroRealm() {
-        ShiroRealm shiroRealm = new ShiroRealm();
-        shiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
+    public AuthorizingRealm shiroRealm() {
+        AuthorizingRealm shiroRealm = new ShiroRealm();
         return shiroRealm;
     }
 

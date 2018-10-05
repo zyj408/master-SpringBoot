@@ -5,6 +5,7 @@ import com.huawei.master.core.system.exception.BusinessException;
 import com.huawei.master.user.dao.UserRepository;
 import com.huawei.master.user.domain.User;
 import com.huawei.master.user.service.UserService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.DisabledAccountException;
@@ -55,6 +56,7 @@ public class UserServiceImpl implements UserService {
         if (oldUser != null) {
             throw new BusinessException("USER_IS_EXISTED");
         }
+        user.setPassword(DigestUtils.sha1Hex(user.getPassword()));
         userRepository.save(user);
     }
 

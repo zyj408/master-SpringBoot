@@ -1,5 +1,6 @@
 package com.huawei.master.user;
 
+import com.huawei.master.core.system.exception.BusinessException;
 import com.huawei.master.user.dao.UserRepository;
 import com.huawei.master.user.domain.User;
 import com.huawei.master.user.service.AuthorizeService;
@@ -58,12 +59,17 @@ public class ShiroRealm extends AuthorizingRealm {
 
                 userService.saveCurrentUser(user.getId());
 
-                AuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user.getAccount(), user.getPassword(), user.getName());
+                AuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(), this.getName());
                 return authenticationInfo;
             }
+            else
+            {
+                logger.warn("user [{}] toke wrong password", token.getUsername());
+                throw new BusinessException("PASSWORD_IS_WRONG");
+            }
         } else {
-            logger.warn("No user: {}", token.getUsername());
+            logger.warn("user [{}] not existed", token.getUsername());
+            throw new BusinessException("USER_NOT_EXISTED");
         }
-        return null;
     }
 }
