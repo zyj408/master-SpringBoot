@@ -1,7 +1,9 @@
 package com.huawei.master.user.service.impl;
 
+import com.huawei.master.core.config.Resources;
 import com.huawei.master.core.constant.Constants;
 import com.huawei.master.core.system.exception.BusinessException;
+import com.huawei.master.user.controller.dto.request.EnableReq;
 import com.huawei.master.user.dao.UserRepository;
 import com.huawei.master.user.domain.User;
 import com.huawei.master.user.service.UserService;
@@ -39,14 +41,16 @@ public class UserServiceImpl implements UserService {
             return subject.isAuthenticated();
         } catch (LockedAccountException e) {
             logger.info("account [{}] locked...", account);
+            throw new BusinessException(Resources.getMessage("ACCOUNT_LOCKED"));
         } catch (DisabledAccountException e) {
             logger.info("account [{}] disabled...", account);
+            throw new BusinessException(Resources.getMessage("ACCOUNT_DISABLED"));
         } catch (ExpiredCredentialsException e) {
             logger.info("account [{}] expired...", account);
+            throw new BusinessException(Resources.getMessage("CREDENTIAL_EXPIRED"));
         } catch (Exception e) {
-            logger.error(ExceptionUtils.getStackTrace(e));
+            throw new BusinessException(Resources.getMessage(e.getMessage()));
         }
-        return false;
     }
 
 
@@ -54,7 +58,7 @@ public class UserServiceImpl implements UserService {
     public void register(User user) {
         User oldUser = userRepository.findByAccount(user.getAccount());
         if (oldUser != null) {
-            throw new BusinessException("USER_IS_EXISTED");
+            throw new BusinessException(Resources.getMessage("USER_IS_EXISTED"));
         }
         user.setPassword(DigestUtils.sha1Hex(user.getPassword()));
         userRepository.save(user);
@@ -79,6 +83,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveCurrentUser(Object user) {
         setSession(Constants.CURRENT_USER, user);
+    }
+
+    @Override
+    public void enable(EnableReq enableReq) {
+        User oldUser = userRepository.findByAccount(enableReq.getAccount());
+        if (oldUser == null) {
+            throw new BusinessException(Resources.getMessage("USER_NOT_EXISTED"));
+        }
+
+        oldUser.setEnable(enableReq.getEnable());
+        userRepository.save(oldUser);
     }
 
     private void setSession(Object key, Object value) {

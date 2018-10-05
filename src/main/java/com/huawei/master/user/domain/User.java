@@ -34,6 +34,11 @@ public class User {
     private String address;
 
     /**
+     * 密码
+     */
+    private Long createTime;
+
+    /**
      * 是否使能
      */
     private Boolean enable;
@@ -84,6 +89,14 @@ public class User {
         this.address = address;
     }
 
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
+    }
+
     public Boolean getEnable() {
         return enable;
     }
@@ -99,4 +112,6 @@ public class User {
     public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
+
+
 }

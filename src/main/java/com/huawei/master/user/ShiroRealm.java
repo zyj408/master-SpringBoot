@@ -52,7 +52,7 @@ public class ShiroRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
 
-        User user = userRepository.findByAccount(token.getUsername());
+        User user = userRepository.findByAccountAndEnable(token.getUsername(), true);
         if (user != null) {
             String password = new String(token.getPassword());
             if (StringUtils.equals(password, user.getPassword())) {
@@ -65,11 +65,11 @@ public class ShiroRealm extends AuthorizingRealm {
             else
             {
                 logger.warn("user [{}] toke wrong password", token.getUsername());
-                throw new BusinessException("PASSWORD_IS_WRONG");
+                throw new AuthenticationException("PASSWORD_IS_WRONG");
             }
         } else {
             logger.warn("user [{}] not existed", token.getUsername());
-            throw new BusinessException("USER_NOT_EXISTED");
+            throw new AuthenticationException("USER_NOT_EXISTED");
         }
     }
 }

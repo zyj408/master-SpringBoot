@@ -4,6 +4,7 @@ import com.huawei.master.core.common.AbstractController;
 import com.huawei.master.core.config.Resources;
 import com.huawei.master.core.system.HttpCode;
 import com.huawei.master.core.system.exception.LoginException;
+import com.huawei.master.user.controller.dto.request.EnableReq;
 import com.huawei.master.user.controller.dto.request.LoginReq;
 import com.huawei.master.user.domain.User;
 import com.huawei.master.user.service.UserService;
@@ -63,8 +64,22 @@ public class UserController extends AbstractController {
         Assert.notNull(user.getAccount(), "ACCOUNT");
         Assert.notNull(user.getPassword(), "PASSWORD");
 
+        user.setEnable(true);
+        user.setCreateTime(System.currentTimeMillis());
+
         userService.register(user);
 
+        return setSuccessModelMap(modelMap);
+    }
+
+    //使（失）能
+    @ApiOperation(value = "用户生效", notes = "用户生效")
+    @PostMapping("/enable")
+    @ApiImplicitParam(name = "enableReq", value = "用户生效实体", required = true, dataType = "EnableReq")
+    public Object enable(@RequestBody EnableReq enableReq, ModelMap modelMap) {
+        Assert.notNull(enableReq.getAccount(), "ACCOUNT");
+        Assert.notNull(enableReq.getEnable(), "ENABLE");
+        userService.enable(enableReq);
         return setSuccessModelMap(modelMap);
     }
 

@@ -7,6 +7,6 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     User findByAccount(String account);
 
-
+    User findByAccountAndEnable(String account, Boolean enable);
 
 }
