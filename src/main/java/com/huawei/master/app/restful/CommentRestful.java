@@ -2,6 +2,8 @@ package com.huawei.master.app.restful;
 
 import com.huawei.master.app.dao.CommentRepository;
 import com.huawei.master.app.domain.Comment;
+import com.huawei.master.core.bean.ObjectIdResp;
+import com.huawei.master.core.utils.JacksonMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -24,8 +26,8 @@ public class CommentRestful {
     @ApiOperation(value = "创建评论", notes = "根据comment对象创建评论")
     @ApiImplicitParam(name = "comment", value = "评论详细实体comment", required = true, dataType = "Comment")
     public String postComment(@RequestBody Comment comment) {
-        commentRepository.save(comment);
-        return "success";
+        Comment store = commentRepository.save(comment);
+        return JacksonMapper.serialize(new ObjectIdResp(store.getId()));
     }
 
     @GetMapping
@@ -51,8 +53,8 @@ public class CommentRestful {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public String putComment(@PathVariable String id, @RequestBody Comment comment) {
         comment.setId(id);
-        commentRepository.save(comment);
-        return "success";
+        Comment store = commentRepository.save(comment);
+        return JacksonMapper.serialize(new ObjectIdResp(store.getId()));
     }
 
     @ApiOperation(value = "删除评论", notes = "根据id来指定删除评论")

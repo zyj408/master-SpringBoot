@@ -2,6 +2,8 @@ package com.huawei.master.app.restful;
 
 import com.huawei.master.app.dao.ScoreRepository;
 import com.huawei.master.app.domain.Score;
+import com.huawei.master.core.bean.ObjectIdResp;
+import com.huawei.master.core.utils.JacksonMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -25,8 +27,8 @@ public class ScoreRestful {
     @ApiOperation(value = "创建评分", notes = "根据Score对象创建评分")
     @ApiImplicitParam(name = "score", value = "评分详细实体Score", required = true, dataType = "Score")
     public String postScore(@RequestBody Score score) {
-        scoreRepository.save(score);
-        return "success";
+        Score store = scoreRepository.save(score);
+        return JacksonMapper.serialize(new ObjectIdResp(store.getId()));
     }
 
     @GetMapping
@@ -52,8 +54,8 @@ public class ScoreRestful {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public String putScore(@PathVariable String id, @RequestBody Score score) {
         score.setId(id);
-        scoreRepository.save(score);
-        return "success";
+        Score store = scoreRepository.save(score);
+        return JacksonMapper.serialize(new ObjectIdResp(store.getId()));
     }
 
     @ApiOperation(value = "删除评分", notes = "根据id来指定删除评分")

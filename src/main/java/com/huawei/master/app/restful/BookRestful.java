@@ -2,6 +2,8 @@ package com.huawei.master.app.restful;
 
 import com.huawei.master.app.dao.BookRepository;
 import com.huawei.master.app.domain.Book;
+import com.huawei.master.core.bean.ObjectIdResp;
+import com.huawei.master.core.utils.JacksonMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -25,8 +27,8 @@ public class BookRestful {
     @ApiOperation(value = "创建书籍", notes = "根据book对象创建书籍")
     @ApiImplicitParam(name = "book", value = "书籍详细实体book", required = true, dataType = "Book")
     public String postBook(@RequestBody Book book) {
-        bookRepository.save(book);
-        return "success";
+        Book store = bookRepository.save(book);
+        return JacksonMapper.serialize(new ObjectIdResp(store.getId()));
     }
 
     @GetMapping
@@ -52,8 +54,8 @@ public class BookRestful {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public String putBook(@PathVariable String id, @RequestBody Book book) {
         book.setId(id);
-        bookRepository.save(book);
-        return "success";
+        Book store = bookRepository.save(book);
+        return JacksonMapper.serialize(new ObjectIdResp(store.getId()));
     }
 
     @ApiOperation(value = "删除书籍", notes = "根据id来指定删除书籍")

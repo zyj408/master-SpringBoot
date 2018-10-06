@@ -53,8 +53,8 @@ public class DeviceRestful {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public String putDevice(@PathVariable String id, @RequestBody Device device) {
         device.setId(id);
-        deviceRepository.save(device);
-        return "success";
+        Device store = deviceRepository.save(device);
+        return JacksonMapper.serialize(new ObjectIdResp(store.getId()));
     }
 
     @ApiOperation(value = "删除设备", notes = "根据id来指定删除设备")

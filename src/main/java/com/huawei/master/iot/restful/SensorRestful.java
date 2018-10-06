@@ -53,8 +53,8 @@ public class SensorRestful {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public String putSensor(@PathVariable String id, @RequestBody Sensor sensor) {
         sensor.setId(id);
-        sensorRepository.save(sensor);
-        return "success";
+        Sensor store = sensorRepository.save(sensor);
+        return JacksonMapper.serialize(new ObjectIdResp(store.getId()));
     }
 
     @ApiOperation(value = "删除传感器", notes = "根据id来指定删除传感器")

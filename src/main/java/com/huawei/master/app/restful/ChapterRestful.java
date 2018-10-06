@@ -3,6 +3,8 @@ package com.huawei.master.app.restful;
 
 import com.huawei.master.app.dao.ChapterRepository;
 import com.huawei.master.app.domain.Chapter;
+import com.huawei.master.core.bean.ObjectIdResp;
+import com.huawei.master.core.utils.JacksonMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -25,8 +27,8 @@ public class ChapterRestful {
     @ApiOperation(value = "创建章节", notes = "根据chapter对象创建章节")
     @ApiImplicitParam(name = "chapter", value = "章节详细实体chapter", required = true, dataType = "Chapter")
     public String postChapter(@RequestBody Chapter chapter) {
-        chapterRepository.save(chapter);
-        return "success";
+        Chapter store = chapterRepository.save(chapter);
+        return JacksonMapper.serialize(new ObjectIdResp(store.getId()));
     }
 
     @GetMapping
@@ -52,8 +54,8 @@ public class ChapterRestful {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public String putChapter(@PathVariable String id, @RequestBody Chapter chapter) {
         chapter.setId(id);
-        chapterRepository.save(chapter);
-        return "success";
+        Chapter store = chapterRepository.save(chapter);
+        return JacksonMapper.serialize(new ObjectIdResp(store.getId()));
     }
 
     @ApiOperation(value = "删除章节", notes = "根据id来指定删除章节")

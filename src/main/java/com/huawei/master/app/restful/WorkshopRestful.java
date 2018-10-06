@@ -2,6 +2,8 @@ package com.huawei.master.app.restful;
 
 import com.huawei.master.app.dao.WorkshopRepository;
 import com.huawei.master.app.domain.Workshop;
+import com.huawei.master.core.bean.ObjectIdResp;
+import com.huawei.master.core.utils.JacksonMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -24,8 +26,8 @@ public class WorkshopRestful {
     @ApiOperation(value = "创建讨论会", notes = "根据Workshop对象创建讨论会")
     @ApiImplicitParam(name = "workshop", value = "讨论会详细实体Workshop", required = true, dataType = "Workshop")
     public String postWorkshop(@RequestBody Workshop workshop) {
-        workshopRepository.save(workshop);
-        return "success";
+        Workshop store = workshopRepository.save(workshop);
+        return JacksonMapper.serialize(new ObjectIdResp(store.getId()));
     }
 
     @GetMapping
@@ -51,8 +53,8 @@ public class WorkshopRestful {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public String putWorkshop(@PathVariable String id, @RequestBody Workshop workshop) {
         workshop.setId(id);
-        workshopRepository.save(workshop);
-        return "success";
+        Workshop store = workshopRepository.save(workshop);
+        return JacksonMapper.serialize(new ObjectIdResp(store.getId()));
     }
 
     @ApiOperation(value = "删除讨论会", notes = "根据id来指定删除讨论会")
