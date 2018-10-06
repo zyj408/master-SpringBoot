@@ -2,7 +2,7 @@ package com.huawei.master.measure.domain;
 
 import org.springframework.data.annotation.Id;
 
-public class MeasureEnvironment {
+public class FlowEnvironment {
 
     @Id
     private String id;

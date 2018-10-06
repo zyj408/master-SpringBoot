@@ -65,19 +65,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Long getCurrentUser() {
+    public String getCurrentUserId() {
         Subject currentUser = SecurityUtils.getSubject();
         if (null != currentUser) {
             try {
                 Session session = currentUser.getSession();
                 if (null != session) {
-                    return (Long) session.getAttribute("CURRENT_USER");
+                    return (String) session.getAttribute(Constants.CURRENT_USER);
                 }
             } catch (InvalidSessionException e) {
                 logger.error(ExceptionUtils.getStackTrace(e));
             }
         }
         return null;
+    }
+
+    @Override
+    public User getCurrentUser() {
+        String userId = getCurrentUserId();
+        return userId == null ? null : userRepository.findById(userId).get();
     }
 
     @Override

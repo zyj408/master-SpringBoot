@@ -9,7 +9,9 @@ public interface UserService {
 
     void register(User user);
 
-    Long getCurrentUser();
+    String getCurrentUserId();
+
+    User getCurrentUser();
 
     void saveCurrentUser(Object user);
 

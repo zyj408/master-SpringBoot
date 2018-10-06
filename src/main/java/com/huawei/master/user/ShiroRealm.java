@@ -40,8 +40,8 @@ public class ShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        Long userId = userService.getCurrentUser();
-        authorizeService.queryPermissionByUserId(userId);
+        String userId = userService.getCurrentUserId();
+        //authorizeService.queryPermissionByUserId(userId);
         List<String> permissions = new ArrayList<String>();
         info.addStringPermissions(permissions);
         return info;
@@ -52,24 +52,31 @@ public class ShiroRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
 
-        User user = userRepository.findByAccountAndEnable(token.getUsername(), true);
-        if (user != null) {
-            String password = new String(token.getPassword());
-            if (StringUtils.equals(password, user.getPassword())) {
+        User user = userRepository.findByAccount(token.getUsername());
 
-                userService.saveCurrentUser(user.getId());
-
-                AuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(), this.getName());
-                return authenticationInfo;
-            }
-            else
-            {
-                logger.warn("user [{}] toke wrong password", token.getUsername());
-                throw new AuthenticationException("PASSWORD_IS_WRONG");
-            }
-        } else {
+        if (user == null) {
             logger.warn("user [{}] not existed", token.getUsername());
             throw new AuthenticationException("USER_NOT_EXISTED");
+        }
+        else if (!user.getEnable())
+        {
+            logger.warn("user [{}] is not enable", token.getUsername());
+            throw new AuthenticationException("USER_NOT_ENABLE");
+        }
+
+        return checkPassword(token, user);
+    }
+
+    private AuthenticationInfo checkPassword(UsernamePasswordToken token, User user) {
+        String password = new String(token.getPassword());
+        if (StringUtils.equals(password, user.getPassword())) {
+
+            userService.saveCurrentUser(user.getId());
+            AuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(), this.getName());
+            return authenticationInfo;
+        } else {
+            logger.warn("user [{}] toke wrong password", token.getUsername());
+            throw new AuthenticationException("PASSWORD_IS_WRONG");
         }
     }
 }
