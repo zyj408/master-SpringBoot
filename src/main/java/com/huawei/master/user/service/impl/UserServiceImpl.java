@@ -3,7 +3,7 @@ package com.huawei.master.user.service.impl;
 import com.huawei.master.core.config.Resources;
 import com.huawei.master.core.constant.Constants;
 import com.huawei.master.core.system.exception.BusinessException;
-import com.huawei.master.user.controller.dto.request.EnableReq;
+import com.huawei.master.user.controller.dto.request.UserEnableReq;
 import com.huawei.master.user.dao.UserRepository;
 import com.huawei.master.user.domain.User;
 import com.huawei.master.user.service.UserService;
@@ -86,13 +86,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void enable(EnableReq enableReq) {
-        User oldUser = userRepository.findByAccount(enableReq.getAccount());
+    public void enable(UserEnableReq userEnableReq) {
+        User oldUser = userRepository.findByAccount(userEnableReq.getAccount());
         if (oldUser == null) {
             throw new BusinessException(Resources.getMessage("USER_NOT_EXISTED"));
         }
 
-        oldUser.setEnable(enableReq.getEnable());
+        oldUser.setEnable(userEnableReq.getEnable());
         userRepository.save(oldUser);
     }
 

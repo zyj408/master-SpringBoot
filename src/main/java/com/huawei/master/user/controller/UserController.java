@@ -4,8 +4,8 @@ import com.huawei.master.core.common.AbstractController;
 import com.huawei.master.core.config.Resources;
 import com.huawei.master.core.system.HttpCode;
 import com.huawei.master.core.system.exception.LoginException;
-import com.huawei.master.user.controller.dto.request.EnableReq;
-import com.huawei.master.user.controller.dto.request.LoginReq;
+import com.huawei.master.user.controller.dto.request.UserEnableReq;
+import com.huawei.master.user.controller.dto.request.UserLoginReq;
 import com.huawei.master.user.domain.User;
 import com.huawei.master.user.service.UserService;
 import com.huawei.master.core.utils.Assert;
@@ -33,8 +33,8 @@ public class UserController extends AbstractController {
     // 登录
     @ApiOperation(value = "用户登录", notes = "用户登录")
     @PostMapping("/login")
-    @ApiImplicitParam(name = "login", value = "登陆信息", required = true, dataType = "LoginReq")
-    public Object login(@RequestBody LoginReq login, ModelMap modelMap,
+    @ApiImplicitParam(name = "login", value = "登陆信息", required = true, dataType = "UserLoginReq")
+    public Object login(@RequestBody UserLoginReq login, ModelMap modelMap,
                         HttpServletRequest request) {
         Assert.notNull(login.getAccount(), "ACCOUNT");
         Assert.notNull(login.getPassword(), "PASSWORD");
@@ -75,11 +75,11 @@ public class UserController extends AbstractController {
     //使（失）能
     @ApiOperation(value = "用户生效", notes = "用户生效")
     @PostMapping("/enable")
-    @ApiImplicitParam(name = "enableReq", value = "用户生效实体", required = true, dataType = "EnableReq")
-    public Object enable(@RequestBody EnableReq enableReq, ModelMap modelMap) {
-        Assert.notNull(enableReq.getAccount(), "ACCOUNT");
-        Assert.notNull(enableReq.getEnable(), "ENABLE");
-        userService.enable(enableReq);
+    @ApiImplicitParam(name = "userEnableReq", value = "用户生效实体", required = true, dataType = "UserEnableReq")
+    public Object enable(@RequestBody UserEnableReq userEnableReq, ModelMap modelMap) {
+        Assert.notNull(userEnableReq.getAccount(), "ACCOUNT");
+        Assert.notNull(userEnableReq.getEnable(), "ENABLE");
+        userService.enable(userEnableReq);
         return setSuccessModelMap(modelMap);
     }
 

@@ -1,7 +1,7 @@
 package com.huawei.master.user.service;
 
-import com.huawei.master.user.controller.dto.request.AddRoleReq;
+import com.huawei.master.user.controller.dto.request.RoleRelateReq;
 
 public interface RoleService {
-    void addRole(AddRoleReq addRoleReq);
+    void addRole(RoleRelateReq roleRelateReq);
 }

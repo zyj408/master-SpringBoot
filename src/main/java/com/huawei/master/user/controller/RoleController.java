@@ -2,7 +2,7 @@ package com.huawei.master.user.controller;
 
 import com.huawei.master.core.common.AbstractController;
 import com.huawei.master.core.utils.Assert;
-import com.huawei.master.user.controller.dto.request.AddRoleReq;
+import com.huawei.master.user.controller.dto.request.RoleRelateReq;
 import com.huawei.master.user.service.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -24,12 +24,12 @@ public class RoleController extends AbstractController {
 
     @ApiOperation(value = "用户关联角色", notes = "关联角色")
     @PostMapping("/add")
-    @ApiImplicitParam(name = "addRoleReq", value = "关联角色信息", required = true, dataType = "AddRoleReq")
-    public Object addRole(@RequestBody AddRoleReq addRoleReq, ModelMap modelMap) {
-        Assert.notNull(addRoleReq.getAccount(), "ACCOUNT");
-        Assert.notNull(addRoleReq.getRole(), "ROLE");
+    @ApiImplicitParam(name = "roleRelateReq", value = "关联角色信息", required = true, dataType = "RoleRelateReq")
+    public Object addRole(@RequestBody RoleRelateReq roleRelateReq, ModelMap modelMap) {
+        Assert.notNull(roleRelateReq.getAccount(), "ACCOUNT");
+        Assert.notNull(roleRelateReq.getRole(), "ROLE");
 
-        roleService.addRole(addRoleReq);
+        roleService.addRole(roleRelateReq);
 
         return setSuccessModelMap(modelMap);
     }

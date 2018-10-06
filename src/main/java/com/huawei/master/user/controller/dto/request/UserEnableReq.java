@@ -1,9 +1,9 @@
 package com.huawei.master.user.controller.dto.request;
 
-public class AddRoleReq {
+public class UserEnableReq {
     private String account;
 
-    private String role;
+    private Boolean enable;
 
     public String getAccount() {
         return account;
@@ -13,11 +13,11 @@ public class AddRoleReq {
         this.account = account;
     }
 
-    public String getRole() {
-        return role;
+    public Boolean getEnable() {
+        return enable;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setEnable(Boolean enable) {
+        this.enable = enable;
     }
 }

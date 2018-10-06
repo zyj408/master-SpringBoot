@@ -1,6 +1,6 @@
 package com.huawei.master.user.service;
 
-import com.huawei.master.user.controller.dto.request.EnableReq;
+import com.huawei.master.user.controller.dto.request.UserEnableReq;
 import com.huawei.master.user.domain.User;
 
 public interface UserService {
@@ -13,5 +13,5 @@ public interface UserService {
 
     void saveCurrentUser(Object user);
 
-    void enable(EnableReq enableReq);
+    void enable(UserEnableReq userEnableReq);
 }
