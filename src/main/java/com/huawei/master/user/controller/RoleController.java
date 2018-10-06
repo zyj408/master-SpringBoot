@@ -34,5 +34,15 @@ public class RoleController extends AbstractController {
         return setSuccessModelMap(modelMap);
     }
 
+    @ApiOperation(value = "用户取消关联角色", notes = "取消关联角色")
+    @PostMapping("/remove")
+    @ApiImplicitParam(name = "roleRelateReq", value = "关联角色信息", required = true, dataType = "RoleRelateReq")
+    public Object removeRole(@RequestBody RoleRelateReq roleRelateReq, ModelMap modelMap) {
+        Assert.notNull(roleRelateReq.getAccount(), "ACCOUNT");
+        Assert.notNull(roleRelateReq.getRole(), "ROLE");
 
+        roleService.removeRole(roleRelateReq);
+
+        return setSuccessModelMap(modelMap);
+    }
 }

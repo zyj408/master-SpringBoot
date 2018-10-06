@@ -49,4 +49,25 @@ public class RoleServiceImpl implements RoleService {
             userRepository.save(user);
         }
     }
+
+    @Override
+    public void removeRole(RoleRelateReq roleRelateReq) {
+        User user = userRepository.findByAccount(roleRelateReq.getAccount());
+        if (user == null) {
+            throw new BusinessException(Resources.getMessage("USER_NOT_EXISTED"));
+        }
+
+        Role role = roleRepository.findByName(roleRelateReq.getRole());
+        if (role == null) {
+            throw new BusinessException(Resources.getMessage("ROLE_NOT_EXISTED"));
+        }
+
+        //增加角色
+        List<Role> roles = user.getRoles();
+        if (roles != null && roles.contains(role)) {
+            roles.remove(role);
+            user.setRoles(roles);
+            userRepository.save(user);
+        }
+    }
 }
