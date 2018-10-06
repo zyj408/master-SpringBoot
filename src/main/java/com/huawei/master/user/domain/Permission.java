@@ -26,4 +26,18 @@ public class Permission {
         this.permission = permission;
     }
 
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof Permission)) {
+            return false;
+        }
+        Permission other = (Permission) obj;
+        return this.id.equals(other.id);
+    }
 }

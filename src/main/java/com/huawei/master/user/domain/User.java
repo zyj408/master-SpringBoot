@@ -114,5 +114,18 @@ public class User {
         this.roles = roles;
     }
 
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof User)) {
+            return false;
+        }
+        User other = (User) obj;
+        return this.id.equals(other.id);
+    }
 }
