@@ -34,9 +34,6 @@ public class MeasureController extends AbstractController {
 
         measureService.register(userId);
 
-
         return setSuccessModelMap(modelMap);
     }
-
-
 }

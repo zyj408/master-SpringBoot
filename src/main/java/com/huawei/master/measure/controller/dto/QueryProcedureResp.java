@@ -1,14 +1,13 @@
-package com.huawei.master.measure.domain;
+package com.huawei.master.measure.controller.dto;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+import com.huawei.master.measure.domain.Procedure;
 
-import java.util.List;
+public class QueryProcedureResp {
 
-public class MeasureProcedure {
-
-    @Id
-    private String id;
+    /**
+     * 名称
+     */
+    private String name;
 
     /**
      * 起始时间
@@ -35,18 +34,24 @@ public class MeasureProcedure {
      */
     private Long standard;
 
-    /**
-     * 测试结果
-     */
-    @DBRef
-    private List<FlowResult> results;
-
-    public String getId() {
-        return id;
+    public QueryProcedureResp(Procedure procedure) {
+        this.name = procedure.getName();
+        this.startTime = procedure.getStartTime();
+        this.endTime = procedure.getEndTime();
+        this.status = procedure.getStatus();
+        this.record = procedure.getRecord();
+        this.standard = procedure.getStandard();
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public QueryProcedureResp() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Long getStartTime() {
@@ -87,13 +92,5 @@ public class MeasureProcedure {
 
     public void setStandard(Long standard) {
         this.standard = standard;
-    }
-
-    public List<FlowResult> getResults() {
-        return results;
-    }
-
-    public void setResults(List<FlowResult> results) {
-        this.results = results;
     }
 }
