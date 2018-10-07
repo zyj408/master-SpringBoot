@@ -13,29 +13,25 @@ public class FlowResult {
     private String no;
 
     /**
-     * 流量大小
-     */
-    private Float flow;
-
-    /**
-     * 用水量
-     */
-    private Float volume;
-
-    /**
      * 记录时间
      */
     private Long time;
 
     /**
-     * 起始值
+     * 测量结果q1
      */
-    private Float start;
+    private ResultCell q1;
 
     /**
-     * 结束值
+     * 测量结果q2
      */
-    private Float end;
+    private ResultCell q2;
+
+    /**
+     * 测量结果q3
+     */
+    private ResultCell q3;
+
 
     public String getId() {
         return id;
@@ -53,22 +49,6 @@ public class FlowResult {
         this.no = no;
     }
 
-    public Float getFlow() {
-        return flow;
-    }
-
-    public void setFlow(Float flow) {
-        this.flow = flow;
-    }
-
-    public Float getVolume() {
-        return volume;
-    }
-
-    public void setVolume(Float volume) {
-        this.volume = volume;
-    }
-
     public Long getTime() {
         return time;
     }
@@ -77,19 +57,97 @@ public class FlowResult {
         this.time = time;
     }
 
-    public Float getStart() {
-        return start;
+    public ResultCell getQ1() {
+        return q1;
     }
 
-    public void setStart(Float start) {
-        this.start = start;
+    public void setQ1(ResultCell q1) {
+        this.q1 = q1;
     }
 
-    public Float getEnd() {
-        return end;
+    public ResultCell getQ2() {
+        return q2;
     }
 
-    public void setEnd(Float end) {
-        this.end = end;
+    public void setQ2(ResultCell q2) {
+        this.q2 = q2;
     }
+
+    public ResultCell getQ3() {
+        return q3;
+    }
+
+    public void setQ3(ResultCell q3) {
+        this.q3 = q3;
+    }
+
+    public static class ResultCell
+    {
+        /**
+         * 流量大小
+         */
+        private Float flow;
+
+        /**
+         * 用水量
+         */
+        private Float volume;
+
+        /**
+         * 起始值
+         */
+        private Float start;
+
+        /**
+         * 结束值
+         */
+        private Float end;
+
+        /**
+         * 误差
+         */
+        private Float deviation;
+
+        public Float getFlow() {
+            return flow;
+        }
+
+        public void setFlow(Float flow) {
+            this.flow = flow;
+        }
+
+        public Float getVolume() {
+            return volume;
+        }
+
+        public void setVolume(Float volume) {
+            this.volume = volume;
+        }
+
+        public Float getStart() {
+            return start;
+        }
+
+        public void setStart(Float start) {
+            this.start = start;
+        }
+
+        public Float getEnd() {
+            return end;
+        }
+
+        public void setEnd(Float end) {
+            this.end = end;
+        }
+
+        public Float getDeviation() {
+            return deviation;
+        }
+
+        public void setDeviation(Float deviation) {
+            this.deviation = deviation;
+        }
+    }
+
+
 }
