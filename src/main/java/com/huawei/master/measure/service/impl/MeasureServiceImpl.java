@@ -46,10 +46,33 @@ public class MeasureServiceImpl implements MeasureService {
         }
 
         List<FlowResult> results = resultCache.computeIfAbsent(procedure, v -> Lists.newArrayList());
-        Optional<FlowResult> op = results.stream().filter(r -> StringUtils.equals(reportResultReq.getNo(), r.getNo())).findFirst();
+        FlowResult result = results.stream().filter(r -> StringUtils.equals(reportResultReq.getNo(), r.getNo())).findFirst().get();
 
+        if (result == null) {
+            result = initFlowResult(reportResultReq);
+            results.add(result);
+        } else {
+            updateFlowResult(reportResultReq, result);
+        }
 
+    }
 
-        
+    private void updateFlowResult(ReportResultReq reportResultReq, FlowResult result) {
+        if(result.getQ2() == null)
+        {
+            result.setQ2(new FlowResult.ResultCell(reportResultReq.getFlow(), reportResultReq.getVolume(), reportResultReq.getStart(), reportResultReq.getEnd()));
+        }
+        else if(result.getQ3() == null)
+        {
+            result.setQ3(new FlowResult.ResultCell(reportResultReq.getFlow(), reportResultReq.getVolume(), reportResultReq.getStart(), reportResultReq.getEnd()));
+        }
+    }
+
+    private FlowResult initFlowResult(ReportResultReq reportResultReq) {
+        FlowResult result;
+        result = new FlowResult();
+        result.setNo(reportResultReq.getNo());
+        result.setQ1(new FlowResult.ResultCell(reportResultReq.getFlow(), reportResultReq.getVolume(), reportResultReq.getStart(), reportResultReq.getEnd()));
+        return result;
     }
 }

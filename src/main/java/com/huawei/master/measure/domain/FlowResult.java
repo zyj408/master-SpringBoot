@@ -81,8 +81,7 @@ public class FlowResult {
         this.q3 = q3;
     }
 
-    public static class ResultCell
-    {
+    public static class ResultCell {
         /**
          * 流量大小
          */
@@ -107,6 +106,14 @@ public class FlowResult {
          * 误差
          */
         private Float deviation;
+
+        public ResultCell(Float flow, Float volume, Float start, Float end) {
+            this.flow = flow;
+            this.volume = volume;
+            this.start = start;
+            this.end = end;
+            this.deviation = (end - start) / volume;
+        }
 
         public Float getFlow() {
             return flow;
