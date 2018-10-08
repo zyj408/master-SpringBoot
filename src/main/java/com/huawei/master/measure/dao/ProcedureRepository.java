@@ -11,4 +11,6 @@ public interface ProcedureRepository extends MongoRepository<Procedure, String> 
     List<Procedure> findByNameAndStatus(String name, String status);
 
     List<Procedure> findByNameAndStatus(String name, String status, PageRequest pageRequest);
+
+    Procedure findByName(String name);
 }

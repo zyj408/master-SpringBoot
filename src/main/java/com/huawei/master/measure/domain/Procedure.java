@@ -1,14 +1,11 @@
 package com.huawei.master.measure.domain;
 
-import org.springframework.data.annotation.Id;
+import com.huawei.master.core.bean.Entity;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.List;
 
-public class Procedure {
-
-    @Id
-    private String id;
+public class Procedure extends Entity {
 
     /**
      * 名称
@@ -45,14 +42,6 @@ public class Procedure {
      */
     @DBRef
     private List<FlowResult> results;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -109,4 +98,5 @@ public class Procedure {
     public void setResults(List<FlowResult> results) {
         this.results = results;
     }
+
 }

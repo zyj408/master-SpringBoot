@@ -1,27 +1,17 @@
 package com.huawei.master.user.domain;
 
+import com.huawei.master.core.bean.Entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.List;
 
-public class Role {
-
-    @Id
-    private String id;
+public class Role extends Entity{
 
     private String name;
 
     @DBRef
     private List<Permission> permissions;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -39,18 +29,4 @@ public class Role {
         this.permissions = permissions;
     }
 
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (!(obj instanceof Role)) {
-            return false;
-        }
-        Role other = (Role) obj;
-        return this.id.equals(other.id);
-    }
 }

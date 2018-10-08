@@ -1,18 +1,13 @@
 package com.huawei.master.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.huawei.master.core.bean.Entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.List;
 
-public class User {
-
-    /**
-     * id
-     */
-    @Id
-    private String id;
+public class User extends Entity{
 
     /**
      * 登陆帐户
@@ -49,14 +44,6 @@ public class User {
      */
     @DBRef
     private List<Role> roles;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getAccount() {
         return account;
@@ -114,18 +101,4 @@ public class User {
         this.roles = roles;
     }
 
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (!(obj instanceof User)) {
-            return false;
-        }
-        User other = (User) obj;
-        return this.id.equals(other.id);
-    }
 }

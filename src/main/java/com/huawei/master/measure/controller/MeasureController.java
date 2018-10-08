@@ -1,6 +1,8 @@
 package com.huawei.master.measure.controller;
 
 import com.huawei.master.core.common.AbstractController;
+import com.huawei.master.core.utils.Assert;
+import com.huawei.master.measure.controller.dto.ReportResultReq;
 import com.huawei.master.measure.service.MeasureService;
 import com.huawei.master.user.service.UserService;
 import io.swagger.annotations.Api;
@@ -10,8 +12,6 @@ import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @Api(value = "测量业务", description = "测量业务")
@@ -36,4 +36,19 @@ public class MeasureController extends AbstractController {
 
         return setSuccessModelMap(modelMap);
     }
+
+    @ApiOperation(value = "上传流量测量数据", notes = "上传流量测量数据")
+    @PostMapping("/report")
+    @ApiImplicitParam(name = "reportResultReq", value = "上报结果", required = true, dataType = "ReportResultReq")
+    @RequiresAuthentication
+    public Object report(@RequestBody ReportResultReq reportResultReq, ModelMap modelMap)
+    {
+        Assert.notNull(reportResultReq.getProcedure(), "NAME");
+        Assert.notNull(reportResultReq.getNo(), "NO.");
+
+        measureService.report(reportResultReq);
+
+        return setSuccessModelMap(modelMap);
+    }
+
 }
