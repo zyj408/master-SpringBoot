@@ -50,5 +50,4 @@ public class MeasureController extends AbstractController {
 
         return setSuccessModelMap(modelMap);
     }
-
 }

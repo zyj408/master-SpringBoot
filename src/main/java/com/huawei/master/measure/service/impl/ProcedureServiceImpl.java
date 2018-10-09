@@ -1,7 +1,7 @@
 package com.huawei.master.measure.service.impl;
 
-import com.huawei.master.core.bean.Page;
 import com.huawei.master.core.system.exception.BusinessException;
+import com.huawei.master.core.utils.ValueUtils;
 import com.huawei.master.measure.controller.dto.FinishProcedureReq;
 import com.huawei.master.measure.controller.dto.QueryProcedureReq;
 import com.huawei.master.measure.controller.dto.StartProcedureReq;
@@ -10,6 +10,7 @@ import com.huawei.master.measure.domain.Procedure;
 import com.huawei.master.measure.service.ProcedureService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -23,20 +24,24 @@ public class ProcedureServiceImpl implements ProcedureService {
 
 
     @Override
-    public List<Procedure> query(QueryProcedureReq queryProcedureReq) {
+    public Page<Procedure> query(QueryProcedureReq queryProcedureReq) {
 
-        String name = queryProcedureReq.getName() != null ? queryProcedureReq.getName() : "";
-        String status = queryProcedureReq.getStatus() != null ? queryProcedureReq.getStatus() : "";
+        String name = queryProcedureReq.getName();
+        String status = queryProcedureReq.getStatus();
+        name = ValueUtils.fillIfEmpty(name);
+        status = ValueUtils.fillIfEmpty(status);
 
-        Page page = queryProcedureReq.getPage();
-        PageRequest pageRequest = PageRequest.of(page.getPage() - 1, page.getRows());
-
+        PageRequest pageRequest = PageRequest.of(queryProcedureReq.getPage().getPage() - 1, queryProcedureReq.getPage().getRows());
         return procedureRepository.findByNameAndStatus(name, status, pageRequest);
     }
 
     @Override
     public String start(StartProcedureReq startProcedureReq) {
 
+        List<Procedure> procedures = procedureRepository.findByName(startProcedureReq.getName());
+        if (CollectionUtils.isNotEmpty(procedures)) {
+            throw new BusinessException("PROCEDURE_EXISTED");
+        }
         Procedure procedure = new Procedure();
         procedure.setName(startProcedureReq.getName());
         procedure.setRecord(0L);
@@ -57,7 +62,7 @@ public class ProcedureServiceImpl implements ProcedureService {
         }
 
         procedures.stream().forEach(p -> {
-            p.setStatus("end");
+            p.setStatus("finish");
             p.setEndTime(System.currentTimeMillis());
             procedureRepository.save(p);
         });

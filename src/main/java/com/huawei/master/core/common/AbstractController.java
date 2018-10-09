@@ -7,7 +7,9 @@ import com.huawei.master.core.system.HttpCode;
 import com.huawei.master.core.system.exception.IllegalParameterException;
 import com.huawei.master.core.utils.JacksonMapper;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.shiro.authz.UnauthorizedException;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -77,7 +79,7 @@ public abstract class AbstractController {
             Map<String, Object> map = Maps.newLinkedHashMap();
             map.putAll(modelMap);
             modelMap.clear();
-            for (Iterator<String> iterator = map.keySet().iterator(); iterator.hasNext();) {
+            for (Iterator<String> iterator = map.keySet().iterator(); iterator.hasNext(); ) {
                 String key = iterator.next();
                 if (!key.startsWith("org.springframework.validation.BindingResult") && !key.equals("void")) {
                     modelMap.put(key, map.get(key));
@@ -85,7 +87,11 @@ public abstract class AbstractController {
             }
         }
         if (data != null) {
-           if (data instanceof List<?>) {
+            if (data instanceof Page) {
+                modelMap.put("rows", ((Page) data).getContent());
+                modelMap.put("total", ((Page) data).getTotalElements());
+            }
+            else if (data instanceof List<?>) {
                 modelMap.put("rows", data);
                 modelMap.put("total", ((List<?>) data).size());
             } else {
@@ -104,6 +110,9 @@ public abstract class AbstractController {
     @ExceptionHandler(Exception.class)
     public void exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception ex)
             throws Exception {
+
+        System.out.println(ExceptionUtils.getStackTrace(ex));
+
         ModelMap modelMap = new ModelMap();
         if (ex instanceof BaseException) {
             ((BaseException) ex).handler(modelMap);

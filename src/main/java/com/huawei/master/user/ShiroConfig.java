@@ -41,7 +41,6 @@ public class ShiroConfig {
 //        // 登录成功后要跳转的链接
 ////        shiroFilterFactoryBean.setSuccessUrl("/index");
 
-        filterChainDefinitionMap.put("/book/query", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }

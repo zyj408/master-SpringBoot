@@ -2,7 +2,9 @@ package com.huawei.master.core.bean;
 
 import org.springframework.data.annotation.Id;
 
-public abstract class Entity {
+import java.io.Serializable;
+
+public abstract class Entity implements Serializable {
 
     @Id
     private String id;

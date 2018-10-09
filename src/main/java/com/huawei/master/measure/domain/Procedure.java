@@ -1,5 +1,6 @@
 package com.huawei.master.measure.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.huawei.master.core.bean.Entity;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
@@ -41,6 +42,7 @@ public class Procedure extends Entity {
      * 测试结果
      */
     @DBRef
+    @JsonIgnore
     private List<FlowResult> results;
 
     public String getName() {

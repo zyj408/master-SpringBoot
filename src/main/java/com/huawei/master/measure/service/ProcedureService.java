@@ -4,11 +4,10 @@ import com.huawei.master.measure.controller.dto.FinishProcedureReq;
 import com.huawei.master.measure.controller.dto.QueryProcedureReq;
 import com.huawei.master.measure.controller.dto.StartProcedureReq;
 import com.huawei.master.measure.domain.Procedure;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface ProcedureService {
-    List<Procedure> query(QueryProcedureReq queryProcedureReq);
+    Page<Procedure> query(QueryProcedureReq queryProcedureReq);
 
     String start(StartProcedureReq startProcedureReq);
 

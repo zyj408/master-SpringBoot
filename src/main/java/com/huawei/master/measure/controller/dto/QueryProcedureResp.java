@@ -93,4 +93,6 @@ public class QueryProcedureResp {
     public void setStandard(Long standard) {
         this.standard = standard;
     }
+
+
 }

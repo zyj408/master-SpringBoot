@@ -1,6 +1,8 @@
 package com.huawei.master.measure.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 public class FlowResult {
 
@@ -32,6 +34,9 @@ public class FlowResult {
      */
     private ResultCell q3;
 
+    @DBRef
+    @JsonIgnore
+    private Procedure procedure;
 
     public String getId() {
         return id;
@@ -79,6 +84,14 @@ public class FlowResult {
 
     public void setQ3(ResultCell q3) {
         this.q3 = q3;
+    }
+
+    public Procedure getProcedure() {
+        return procedure;
+    }
+
+    public void setProcedure(Procedure procedure) {
+        this.procedure = procedure;
     }
 
     public static class ResultCell {
