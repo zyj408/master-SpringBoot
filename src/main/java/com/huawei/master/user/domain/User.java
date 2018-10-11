@@ -25,6 +25,11 @@ public class User extends Entity{
     private String name;
 
     /**
+     * 姓名
+     */
+    private String email;
+
+    /**
      * 地址
      */
     private String address;
@@ -67,6 +72,14 @@ public class User extends Entity{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getAddress() {
