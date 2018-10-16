@@ -44,7 +44,7 @@ public class MeasureController extends AbstractController {
     public Object report(@RequestBody ReportResultReq reportResultReq, ModelMap modelMap)
     {
         Assert.notNull(reportResultReq.getProcedure(), "NAME");
-        Assert.notNull(reportResultReq.getNo(), "NO.");
+        Assert.notEmpty(reportResultReq.getMeterResults(), "RESULT");
 
         measureService.report(reportResultReq);
 

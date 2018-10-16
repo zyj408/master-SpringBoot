@@ -1,18 +1,16 @@
 package com.huawei.master.measure.controller.dto;
 
+import java.util.List;
+
 public class ReportResultReq {
 
     private String procedure;
 
-    private String no;
-
-    private Float start;
-
-    private Float end;
-
     private Float flow;
 
     private Float volume;
+
+    private List<MeterResult> meterResults;
 
     public String getProcedure() {
         return procedure;
@@ -20,30 +18,6 @@ public class ReportResultReq {
 
     public void setProcedure(String procedure) {
         this.procedure = procedure;
-    }
-
-    public String getNo() {
-        return no;
-    }
-
-    public void setNo(String no) {
-        this.no = no;
-    }
-
-    public Float getStart() {
-        return start;
-    }
-
-    public void setStart(Float start) {
-        this.start = start;
-    }
-
-    public Float getEnd() {
-        return end;
-    }
-
-    public void setEnd(Float end) {
-        this.end = end;
     }
 
     public Float getFlow() {
@@ -60,5 +34,45 @@ public class ReportResultReq {
 
     public void setVolume(Float volume) {
         this.volume = volume;
+    }
+
+    public List<MeterResult> getMeterResults() {
+        return meterResults;
+    }
+
+    public void setMeterResults(List<MeterResult> meterResults) {
+        this.meterResults = meterResults;
+    }
+
+    public static class MeterResult {
+        private String no;
+
+        private Float start;
+
+        private Float end;
+
+        public String getNo() {
+            return no;
+        }
+
+        public void setNo(String no) {
+            this.no = no;
+        }
+
+        public Float getStart() {
+            return start;
+        }
+
+        public void setStart(Float start) {
+            this.start = start;
+        }
+
+        public Float getEnd() {
+            return end;
+        }
+
+        public void setEnd(Float end) {
+            this.end = end;
+        }
     }
 }

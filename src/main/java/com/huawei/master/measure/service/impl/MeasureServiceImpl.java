@@ -42,9 +42,8 @@ public class MeasureServiceImpl implements MeasureService {
     }
 
     @Override
-    public void report(ReportResultReq reportResultReq) {
+    public synchronized void report(ReportResultReq reportResultReq) {
         String procedureName = reportResultReq.getProcedure();
-        String meterNo = reportResultReq.getNo();
 
         List<Procedure> procedures = procedureRepository.findByNameAndStatus(procedureName, "running");
         if (CollectionUtils.isEmpty(procedures)) {
@@ -52,42 +51,52 @@ public class MeasureServiceImpl implements MeasureService {
         }
         Procedure procedure = procedures.get(0);
 
-        FlowResult result = flowResultRepository.findByNo(meterNo);
-        if (result == null) {
-            List<FlowResult> flowResults = procedure.getResults();
-            if (CollectionUtils.isEmpty(flowResults)) {
-                flowResults = Lists.newArrayList();
-                procedure.setResults(flowResults);
+        List<ReportResultReq.MeterResult> meterResults = reportResultReq.getMeterResults();
+        Float flow = reportResultReq.getFlow();
+        Float volume = reportResultReq.getVolume();
+
+
+        for (ReportResultReq.MeterResult meterResult : meterResults) {
+            FlowResult result = flowResultRepository.findByNo(meterResult.getNo());
+
+            if (result == null) {
+                List<FlowResult> flowResults = procedure.getResults();
+                if (CollectionUtils.isEmpty(flowResults)) {
+                    flowResults = Lists.newArrayList();
+                    procedure.setResults(flowResults);
+                }
+
+                result = initFlowResult(meterResult, flow, volume);
+                result.setProcedure(procedure);
+                result = flowResultRepository.save(result);
+                flowResults.add(result);
+                procedureRepository.save(procedure);
+            } else {
+                FlowResult.ResultCell resultCell = buildResultCell(meterResult, flow, volume);
+                if (result.getQ2() == null) {
+                    result.setQ2(resultCell);
+                } else if (result.getQ3() == null) {
+                    result.setQ3(resultCell);
+                } else {
+                    throw new BusinessException("RESULT_HAVE_REPORTED");
+                }
+
+                flowResultRepository.save(result);
             }
 
-            result = initFlowResult(reportResultReq);
-            result.setProcedure(procedure);
-            result = flowResultRepository.save(result);
-            flowResults.add(result);
-            procedureRepository.save(procedure);
-        } else {
-            updateFlowResult(reportResultReq, result);
-            flowResultRepository.save(result);
         }
-
 
     }
 
-    private void updateFlowResult(ReportResultReq reportResultReq, FlowResult result) {
-        if (result.getQ2() == null) {
-            result.setQ2(new FlowResult.ResultCell(reportResultReq.getFlow(), reportResultReq.getVolume(), reportResultReq.getStart(), reportResultReq.getEnd()));
-        } else if (result.getQ3() == null) {
-            result.setQ3(new FlowResult.ResultCell(reportResultReq.getFlow(), reportResultReq.getVolume(), reportResultReq.getStart(), reportResultReq.getEnd()));
-        } else {
-            throw new BusinessException("RESULT_HAVE_REPORTED");
-        }
-    }
-
-    private FlowResult initFlowResult(ReportResultReq reportResultReq) {
+    private FlowResult initFlowResult(ReportResultReq.MeterResult reportResultReq, Float flow, Float volume) {
         FlowResult result;
         result = new FlowResult();
         result.setNo(reportResultReq.getNo());
-        result.setQ1(new FlowResult.ResultCell(reportResultReq.getFlow(), reportResultReq.getVolume(), reportResultReq.getStart(), reportResultReq.getEnd()));
+        result.setQ1(buildResultCell(reportResultReq, flow, volume));
         return result;
+    }
+
+    private FlowResult.ResultCell buildResultCell(ReportResultReq.MeterResult reportResultReq, Float flow, Float volume) {
+        return new FlowResult.ResultCell(flow, volume, reportResultReq.getStart(), reportResultReq.getEnd());
     }
 }
