@@ -54,7 +54,7 @@ public class MeasureServiceImpl implements MeasureService {
         List<ReportResultReq.MeterResult> meterResults = reportResultReq.getMeterResults();
         Float flow = reportResultReq.getFlow();
         Float volume = reportResultReq.getVolume();
-
+        long now = System.currentTimeMillis();
 
         for (ReportResultReq.MeterResult meterResult : meterResults) {
             FlowResult result = flowResultRepository.findByNo(meterResult.getNo());
@@ -68,6 +68,7 @@ public class MeasureServiceImpl implements MeasureService {
 
                 result = initFlowResult(meterResult, flow, volume);
                 result.setProcedure(procedure);
+                result.setTime(now);
                 result = flowResultRepository.save(result);
                 flowResults.add(result);
                 procedureRepository.save(procedure);
@@ -80,7 +81,7 @@ public class MeasureServiceImpl implements MeasureService {
                 } else {
                     throw new BusinessException("RESULT_HAVE_REPORTED");
                 }
-
+                result.setTime(now);
                 flowResultRepository.save(result);
             }
 

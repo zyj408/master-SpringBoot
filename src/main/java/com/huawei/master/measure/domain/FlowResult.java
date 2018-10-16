@@ -125,7 +125,7 @@ public class FlowResult {
             this.volume = volume;
             this.start = start;
             this.end = end;
-            this.deviation = (end - start) / volume;
+            this.deviation = (end - start - volume) / volume;
         }
 
         public Float getFlow() {
