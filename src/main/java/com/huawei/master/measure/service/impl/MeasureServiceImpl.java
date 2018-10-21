@@ -78,15 +78,35 @@ public class MeasureServiceImpl implements MeasureService {
                     result.setQ2(resultCell);
                 } else if (result.getQ3() == null) {
                     result.setQ3(resultCell);
+                    boolean qualified = validResult(procedure, result);
+                    procedure.setRecord(procedure.getRecord() == null ? 1 : procedure.getRecord() + 1);
+                    if (qualified) {
+                        procedure.setStandard(procedure.getStandard() == null ? 1 : procedure.getStandard() + 1);
+                    }
                 } else {
                     throw new BusinessException("RESULT_HAVE_REPORTED");
                 }
                 result.setTime(now);
                 flowResultRepository.save(result);
             }
-
         }
+    }
 
+    private boolean validResult(Procedure procedure, FlowResult result) {
+        boolean qualified = true;
+        FlowResult.ResultCell resultCell = result.getQ1();
+        if (resultCell == null || Math.abs(resultCell.getDeviation()) >= 0.20f) {
+            qualified = false;
+        }
+        resultCell = result.getQ2();
+        if (resultCell == null || Math.abs(resultCell.getDeviation()) >= 0.20f) {
+            qualified = false;
+        }
+        resultCell = result.getQ3();
+        if (resultCell == null || Math.abs(resultCell.getDeviation()) >= 0.20f) {
+            qualified = false;
+        }
+        return qualified;
     }
 
     private FlowResult initFlowResult(ReportResultReq.MeterResult reportResultReq, Float flow, Float volume) {
