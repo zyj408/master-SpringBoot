@@ -39,7 +39,7 @@ public class ResultController extends AbstractController {
     public Object query(@RequestBody QueryResultReq queryResultReq, ModelMap modelMap) {
         Assert.notNull(queryResultReq.getProcedure(), "PROCEDURE_NAME");
         Assert.notNull(queryResultReq.getPage().getPage(), "PAGE");
-        Assert.max(queryResultReq.getPage().getRows(), 20, "ROWS");
+        Assert.max(queryResultReq.getPage().getRows(), 50, "ROWS");
 
         Page<FlowResult> flowResults = resultService.query(queryResultReq);
 

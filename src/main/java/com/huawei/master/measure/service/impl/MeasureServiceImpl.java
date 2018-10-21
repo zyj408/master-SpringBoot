@@ -83,6 +83,7 @@ public class MeasureServiceImpl implements MeasureService {
                     if (qualified) {
                         procedure.setStandard(procedure.getStandard() == null ? 1 : procedure.getStandard() + 1);
                     }
+                    procedureRepository.save(procedure);
                 } else {
                     throw new BusinessException("RESULT_HAVE_REPORTED");
                 }
