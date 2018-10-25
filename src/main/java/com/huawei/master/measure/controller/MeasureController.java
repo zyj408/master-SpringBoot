@@ -27,7 +27,7 @@ public class MeasureController extends AbstractController {
 
     @ApiOperation(value = "上传流量测量数据", notes = "上传流量测量数据")
     @GetMapping("/register")
-    @RequiresAuthentication
+    //@RequiresAuthentication
     public Object register(ModelMap modelMap) {
 
         String userId = userService.getCurrentUserId();
@@ -40,7 +40,7 @@ public class MeasureController extends AbstractController {
     @ApiOperation(value = "上传流量测量数据", notes = "上传流量测量数据")
     @PostMapping("/report")
     @ApiImplicitParam(name = "reportResultReq", value = "上报结果", required = true, dataType = "ReportResultReq")
-    @RequiresAuthentication
+    //@RequiresAuthentication
     public Object report(@RequestBody ReportResultReq reportResultReq, ModelMap modelMap)
     {
         Assert.notNull(reportResultReq.getProcedure(), "NAME");

@@ -28,7 +28,7 @@ public class ProcedureController extends AbstractController {
     @ApiOperation(value = "查询测量过程", notes = "查询测量过程")
     @PostMapping("/query")
     @ApiImplicitParam(name = "queryProcedureReq", value = "查询条件", required = true, dataType = "QueryProcedureReq")
-    @RequiresAuthentication
+    //@RequiresAuthentication
     public Object query(@RequestBody QueryProcedureReq queryProcedureReq, ModelMap modelMap) {
         Assert.notNull(queryProcedureReq.getPage().getPage(), "PAGE");
         Assert.max(queryProcedureReq.getPage().getRows(), 50, "ROWS");
@@ -41,7 +41,7 @@ public class ProcedureController extends AbstractController {
     @ApiOperation(value = "启动测量过程", notes = "启动测量过程")
     @PostMapping("/start")
     @ApiImplicitParam(name = "startProcedureReq", value = "测量过程请求", required = true, dataType = "StartProcedureReq")
-    @RequiresAuthentication
+    //@RequiresAuthentication
     public Object start(@RequestBody StartProcedureReq startProcedureReq, ModelMap modelMap) {
 
         Assert.notNull(startProcedureReq.getName(), "NAME");
@@ -54,7 +54,7 @@ public class ProcedureController extends AbstractController {
     @ApiOperation(value = "结束测量过程", notes = "结束测量过程")
     @PostMapping("/finish")
     @ApiImplicitParam(name = "finishProcedureReq", value = "测量过程请求", required = true, dataType = "FinishProcedureReq")
-    @RequiresAuthentication
+    //@RequiresAuthentication
     public Object finish(@RequestBody FinishProcedureReq finishProcedureReq, ModelMap modelMap) {
 
         Assert.notNull(finishProcedureReq.getName(), "NAME");
@@ -62,4 +62,5 @@ public class ProcedureController extends AbstractController {
         procedureService.finish(finishProcedureReq);
         return setSuccessModelMap(modelMap);
     }
+
 }

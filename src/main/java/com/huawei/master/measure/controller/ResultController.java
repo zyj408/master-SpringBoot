@@ -35,7 +35,7 @@ public class ResultController extends AbstractController {
     @ApiOperation(value = "查询测量过程下的测量结果", notes = "查询测量过程下的测量结果")
     @PostMapping("/query")
     @ApiImplicitParam(name = "queryResultReq", value = "查询条件", required = true, dataType = "QueryResultReq")
-    @RequiresAuthentication
+    //@RequiresAuthentication
     public Object query(@RequestBody QueryResultReq queryResultReq, ModelMap modelMap) {
         Assert.notNull(queryResultReq.getProcedure(), "PROCEDURE_NAME");
         Assert.notNull(queryResultReq.getPage().getPage(), "PAGE");
