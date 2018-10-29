@@ -8,15 +8,22 @@ import com.huawei.master.measure.dao.ProcedureRepository;
 import com.huawei.master.measure.domain.FlowResult;
 import com.huawei.master.measure.domain.Procedure;
 import com.huawei.master.measure.service.MeasureService;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Service("measureService")
 public class MeasureServiceImpl implements MeasureService {
+
+    private Logger logger = LoggerFactory.getLogger(MeasureServiceImpl.class);
 
     @Autowired
     private ProcedureRepository procedureRepository;
@@ -51,74 +58,88 @@ public class MeasureServiceImpl implements MeasureService {
         }
         Procedure procedure = procedures.get(0);
 
-        List<ReportResultReq.MeterResult> meterResults = reportResultReq.getMeterResults();
-        Float flow = reportResultReq.getFlow();
-        Float volume = reportResultReq.getVolume();
+        List<ReportResultReq.MeasureParameter> measureParameters = reportResultReq.getMeasureParameters();
+        Map<String, ReportResultReq.MeasureParameter> parameterMap = measureParameters.stream()
+                .collect(Collectors.toMap(ReportResultReq.MeasureParameter::getId, m -> m));
+
+        Map<String, List<ReportResultReq.MeterResult>> meterResults = reportResultReq.getMeterResults();
         long now = System.currentTimeMillis();
 
-        for (ReportResultReq.MeterResult meterResult : meterResults) {
-            FlowResult result = flowResultRepository.findByNo(meterResult.getNo());
+        for (Map.Entry<String, List<ReportResultReq.MeterResult>> entry : meterResults.entrySet()) {
+            String meterNo = entry.getKey();
+            List<ReportResultReq.MeterResult> results = entry.getValue();
+            FlowResult result = flowResultRepository.findByNo(meterNo);
 
-            if (result == null) {
-                List<FlowResult> flowResults = procedure.getResults();
-                if (CollectionUtils.isEmpty(flowResults)) {
-                    flowResults = Lists.newArrayList();
-                    procedure.setResults(flowResults);
-                }
+            if (checkResult(results, result)) continue;
 
-                result = initFlowResult(meterResult, flow, volume);
-                result.setProcedure(procedure);
-                result.setTime(now);
-                result = flowResultRepository.save(result);
-                flowResults.add(result);
-                procedureRepository.save(procedure);
-            } else {
-                FlowResult.ResultCell resultCell = buildResultCell(meterResult, flow, volume);
-                if (result.getQ2() == null) {
-                    result.setQ2(resultCell);
-                } else if (result.getQ3() == null) {
-                    result.setQ3(resultCell);
-                    boolean qualified = validResult(procedure, result);
-                    procedure.setRecord(procedure.getRecord() == null ? 1 : procedure.getRecord() + 1);
-                    if (qualified) {
-                        procedure.setStandard(procedure.getStandard() == null ? 1 : procedure.getStandard() + 1);
-                    }
-                    procedureRepository.save(procedure);
-                } else {
-                    throw new BusinessException("RESULT_HAVE_REPORTED");
+            boolean qualified = true;
+            FlowResult flowResult = new FlowResult();
+            flowResult.setTime(now);
+            flowResult.setNo(meterNo);
+            flowResult.setProcedure(procedure);
+
+            for (ReportResultReq.MeterResult r : results) {
+                String parameter = r.getParameter();
+                ReportResultReq.MeasureParameter measureParameter = parameterMap.get(parameter);
+
+                Float flow = measureParameter.getFlow();
+                Float volume = measureParameter.getVolume();
+                Float start = r.getStart();
+                Float end = r.getEnd();
+
+                FlowResult.ResultCell cell = new FlowResult.ResultCell(flow, volume, start, end);
+                if (Math.abs(cell.getDeviation()) >= 0.20f) {
+                    qualified = false;
                 }
-                result.setTime(now);
-                flowResultRepository.save(result);
+                switch (parameter) {
+                    case "q1":
+                        flowResult.setQ1(cell);
+                        break;
+                    case "q2":
+                        flowResult.setQ2(cell);
+                        break;
+                    case "q3":
+                        flowResult.setQ3(cell);
+                        break;
+                }
             }
+
+            flowResult = flowResultRepository.save(flowResult);
+
+            //关联操作
+            relateResult(procedure, flowResult);
+            //更新统计
+            updateStatistic(procedure, qualified);
+            procedureRepository.save(procedure);
         }
     }
 
-    private boolean validResult(Procedure procedure, FlowResult result) {
-        boolean qualified = true;
-        FlowResult.ResultCell resultCell = result.getQ1();
-        if (resultCell == null || Math.abs(resultCell.getDeviation()) >= 0.20f) {
-            qualified = false;
+    private void updateStatistic(Procedure procedure, boolean qualified) {
+        procedure.setRecord(procedure.getRecord() == null ? 1 : procedure.getRecord() + 1);
+        if (qualified) {
+            procedure.setStandard(procedure.getStandard() == null ? 1 : procedure.getStandard() + 1);
         }
-        resultCell = result.getQ2();
-        if (resultCell == null || Math.abs(resultCell.getDeviation()) >= 0.20f) {
-            qualified = false;
-        }
-        resultCell = result.getQ3();
-        if (resultCell == null || Math.abs(resultCell.getDeviation()) >= 0.20f) {
-            qualified = false;
-        }
-        return qualified;
     }
 
-    private FlowResult initFlowResult(ReportResultReq.MeterResult reportResultReq, Float flow, Float volume) {
-        FlowResult result;
-        result = new FlowResult();
-        result.setNo(reportResultReq.getNo());
-        result.setQ1(buildResultCell(reportResultReq, flow, volume));
-        return result;
+    private void relateResult(Procedure procedure, FlowResult flowResult) {
+        List<FlowResult> flowResults = procedure.getResults();
+        if (CollectionUtils.isEmpty(flowResults)) {
+            flowResults = Lists.newArrayList();
+            procedure.setResults(flowResults);
+        }
+        flowResults.add(flowResult);
     }
 
-    private FlowResult.ResultCell buildResultCell(ReportResultReq.MeterResult reportResultReq, Float flow, Float volume) {
-        return new FlowResult.ResultCell(flow, volume, reportResultReq.getStart(), reportResultReq.getEnd());
+    private boolean checkResult(List<ReportResultReq.MeterResult> results, FlowResult result) {
+        if (result != null) {
+            logger.info("the result of meter [{}] existed...");
+            return true;
+        }
+
+        if (results.size() != 3) {
+            logger.info("the result not complete");
+            return true;
+        }
+        return false;
     }
 }

@@ -1,16 +1,24 @@
 package com.huawei.master.measure.controller.dto;
 
 import java.util.List;
+import java.util.Map;
 
 public class ReportResultReq {
 
+    /**
+     * 测量过程
+     */
     private String procedure;
 
-    private Float flow;
+    /**
+     * 测量参数
+     */
+    private List<MeasureParameter> measureParameters;
 
-    private Float volume;
-
-    private List<MeterResult> meterResults;
+    /**
+     * 测量结果
+     */
+    private Map<String, List<MeterResult>> meterResults;
 
     public String getProcedure() {
         return procedure;
@@ -20,43 +28,36 @@ public class ReportResultReq {
         this.procedure = procedure;
     }
 
-    public Float getFlow() {
-        return flow;
+    public List<MeasureParameter> getMeasureParameters() {
+        return measureParameters;
     }
 
-    public void setFlow(Float flow) {
-        this.flow = flow;
+    public void setMeasureParameters(List<MeasureParameter> measureParameters) {
+        this.measureParameters = measureParameters;
     }
 
-    public Float getVolume() {
-        return volume;
-    }
-
-    public void setVolume(Float volume) {
-        this.volume = volume;
-    }
-
-    public List<MeterResult> getMeterResults() {
+    public Map<String, List<MeterResult>> getMeterResults() {
         return meterResults;
     }
 
-    public void setMeterResults(List<MeterResult> meterResults) {
+    public void setMeterResults(Map<String, List<MeterResult>> meterResults) {
         this.meterResults = meterResults;
     }
 
     public static class MeterResult {
-        private String no;
+
+        private String parameter;
 
         private Float start;
 
         private Float end;
 
-        public String getNo() {
-            return no;
+        public String getParameter() {
+            return parameter;
         }
 
-        public void setNo(String no) {
-            this.no = no;
+        public void setParameter(String parameter) {
+            this.parameter = parameter;
         }
 
         public Float getStart() {
@@ -73,6 +74,42 @@ public class ReportResultReq {
 
         public void setEnd(Float end) {
             this.end = end;
+        }
+    }
+
+    /**
+     * 测量参数
+     */
+    public static class MeasureParameter {
+
+        private String id;
+
+        private Float flow;
+
+        private Float volume;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public Float getFlow() {
+            return flow;
+        }
+
+        public void setFlow(Float flow) {
+            this.flow = flow;
+        }
+
+        public Float getVolume() {
+            return volume;
+        }
+
+        public void setVolume(Float volume) {
+            this.volume = volume;
         }
     }
 }

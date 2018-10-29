@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @RestController
@@ -44,5 +45,11 @@ public class ResultController extends AbstractController {
         Page<FlowResult> flowResults = resultService.query(queryResultReq);
 
         return setSuccessModelMap(modelMap, flowResults);
+    }
+
+    public static void main(String[] args) {
+        Random r = new Random();
+        double d = r.nextDouble();
+        System.out.println("学号：" + 48 * d);
     }
 }
