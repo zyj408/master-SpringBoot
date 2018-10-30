@@ -18,7 +18,7 @@ public class ReportResultReq {
     /**
      * 测量结果
      */
-    private Map<String, List<MeterResult>> meterResults;
+    private List<MeterResult> meterResults;
 
     public String getProcedure() {
         return procedure;
@@ -36,21 +36,31 @@ public class ReportResultReq {
         this.measureParameters = measureParameters;
     }
 
-    public Map<String, List<MeterResult>> getMeterResults() {
+    public List<MeterResult> getMeterResults() {
         return meterResults;
     }
 
-    public void setMeterResults(Map<String, List<MeterResult>> meterResults) {
+    public void setMeterResults(List<MeterResult> meterResults) {
         this.meterResults = meterResults;
     }
 
     public static class MeterResult {
+
+        private String meterNo;
 
         private String parameter;
 
         private Float start;
 
         private Float end;
+
+        public String getMeterNo() {
+            return meterNo;
+        }
+
+        public void setMeterNo(String meterNo) {
+            this.meterNo = meterNo;
+        }
 
         public String getParameter() {
             return parameter;

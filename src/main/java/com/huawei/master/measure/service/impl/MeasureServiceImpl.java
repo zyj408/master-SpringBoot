@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -62,10 +63,11 @@ public class MeasureServiceImpl implements MeasureService {
         Map<String, ReportResultReq.MeasureParameter> parameterMap = measureParameters.stream()
                 .collect(Collectors.toMap(ReportResultReq.MeasureParameter::getId, m -> m));
 
-        Map<String, List<ReportResultReq.MeterResult>> meterResults = reportResultReq.getMeterResults();
+        Map<String, List<ReportResultReq.MeterResult>> meterResultMap = parseResultMap(reportResultReq.getMeterResults());
+
         long now = System.currentTimeMillis();
 
-        for (Map.Entry<String, List<ReportResultReq.MeterResult>> entry : meterResults.entrySet()) {
+        for (Map.Entry<String, List<ReportResultReq.MeterResult>> entry : meterResultMap.entrySet()) {
             String meterNo = entry.getKey();
             List<ReportResultReq.MeterResult> results = entry.getValue();
             FlowResult result = flowResultRepository.findByNo(meterNo);
@@ -112,6 +114,15 @@ public class MeasureServiceImpl implements MeasureService {
             updateStatistic(procedure, qualified);
             procedureRepository.save(procedure);
         }
+    }
+
+    private Map<String, List<ReportResultReq.MeterResult>> parseResultMap(List<ReportResultReq.MeterResult> meterResults) {
+        Map<String, List<ReportResultReq.MeterResult>> resultMap = new HashMap<>();
+        for (ReportResultReq.MeterResult r : meterResults) {
+            List<ReportResultReq.MeterResult> resultList = resultMap.computeIfAbsent(r.getMeterNo(), m -> Lists.newArrayList());
+            resultList.add(r);
+        }
+        return resultMap;
     }
 
     private void updateStatistic(Procedure procedure, boolean qualified) {
