@@ -1,6 +1,6 @@
 package com.huawei.master.core.system;
 
-import com.huawei.master.core.config.Resources;
+import com.huawei.master.core.utils.Resources;
 
 public enum HttpCode {
 

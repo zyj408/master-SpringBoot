@@ -1,7 +1,7 @@
 package com.huawei.master.user.controller;
 
 import com.huawei.master.core.common.AbstractController;
-import com.huawei.master.core.config.Resources;
+import com.huawei.master.core.utils.Resources;
 import com.huawei.master.core.system.HttpCode;
 import com.huawei.master.core.system.exception.LoginException;
 import com.huawei.master.user.controller.dto.request.UserEnableReq;

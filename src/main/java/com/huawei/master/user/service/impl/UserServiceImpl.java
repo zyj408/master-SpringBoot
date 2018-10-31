@@ -1,6 +1,6 @@
 package com.huawei.master.user.service.impl;
 
-import com.huawei.master.core.config.Resources;
+import com.huawei.master.core.utils.Resources;
 import com.huawei.master.core.constant.Constants;
 import com.huawei.master.core.system.exception.BusinessException;
 import com.huawei.master.user.controller.dto.request.UserEnableReq;

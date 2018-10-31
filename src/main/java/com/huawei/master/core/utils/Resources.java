@@ -1,4 +1,4 @@
-package com.huawei.master.core.config;
+package com.huawei.master.core.utils;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 
