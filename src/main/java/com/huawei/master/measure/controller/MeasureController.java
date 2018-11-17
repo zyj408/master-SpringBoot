@@ -2,6 +2,7 @@ package com.huawei.master.measure.controller;
 
 import com.huawei.master.core.common.AbstractController;
 import com.huawei.master.core.utils.Assert;
+import com.huawei.master.measure.controller.dto.ExportResultReq;
 import com.huawei.master.measure.controller.dto.ReportResultReq;
 import com.huawei.master.measure.service.MeasureService;
 import com.huawei.master.user.service.UserService;
@@ -12,6 +13,10 @@ import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @RestController
 @Api(value = "测量业务", description = "测量业务")
@@ -41,8 +46,7 @@ public class MeasureController extends AbstractController {
     @PostMapping("/report")
     @ApiImplicitParam(name = "reportResultReq", value = "上报结果", required = true, dataType = "ReportResultReq")
     //@RequiresAuthentication
-    public Object report(@RequestBody ReportResultReq reportResultReq, ModelMap modelMap)
-    {
+    public Object report(@RequestBody ReportResultReq reportResultReq, ModelMap modelMap) {
         Assert.notNull(reportResultReq.getProcedure(), "NAME");
         Assert.notEmpty(reportResultReq.getMeasureParameters(), "PARAMETER");
         Assert.notEmpty(reportResultReq.getMeterResults(), "REPORT");
@@ -50,5 +54,13 @@ public class MeasureController extends AbstractController {
         measureService.report(reportResultReq);
 
         return setSuccessModelMap(modelMap);
+    }
+
+    @ApiOperation(value = "导出测量结果", notes = "导出测量结果")
+    @RequestMapping("/export/{name}")
+    @ApiImplicitParam(name = "exportResultReq", value = "上报结果", required = true, dataType = "ExportResultReq")
+    public void export(@PathVariable("name") String name, HttpServletResponse response) throws IOException {
+        Assert.notNull(name, "NAME");
+        measureService.export(name, response);
     }
 }

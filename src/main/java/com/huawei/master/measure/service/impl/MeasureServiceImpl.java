@@ -8,13 +8,15 @@ import com.huawei.master.measure.dao.ProcedureRepository;
 import com.huawei.master.measure.domain.FlowResult;
 import com.huawei.master.measure.domain.Procedure;
 import com.huawei.master.measure.service.MeasureService;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,6 +116,21 @@ public class MeasureServiceImpl implements MeasureService {
             updateStatistic(procedure, qualified);
             procedureRepository.save(procedure);
         }
+    }
+
+    @Override
+    public void export(String name, HttpServletResponse response) throws IOException {
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet("信息表");
+        String[] headers = { "学号", "姓名", "身份类型", "登录密码"};
+        HSSFRow row = sheet.createRow(0);
+
+        for(int i=0;i<headers.length;i++){
+            HSSFCell cell = row.createCell(i);
+            HSSFRichTextString text = new HSSFRichTextString(headers[i]);
+            cell.setCellValue(text);
+        }
+        workbook.write(response.getOutputStream());
     }
 
     private Map<String, List<ReportResultReq.MeterResult>> parseResultMap(List<ReportResultReq.MeterResult> meterResults) {

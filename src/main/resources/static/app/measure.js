@@ -1,5 +1,6 @@
 var IP = '47.106.130.222';
 var measureUrl = 'http://' + IP + '/master/procedure/query';
+var exportUrl = 'http://' + IP + '/master/measure/export';
 
 function updateMeasure(request, callback) {
     $.ajax({
@@ -35,4 +36,24 @@ function transform(measureData) {
     });
 
     return result;
+}
+
+function exportMeasure(procedureName) {
+    $.ajax({
+        type: "GET",
+        url: exportUrl + "/" + procedureName,
+        success: function (data) {
+            if (data.code && data.code == 200) {
+                callback(data.rows);
+            }
+            else {
+                callback();
+            }
+        }
+    });
+
+    var url = exportUrl + "/" + procedureName;
+    var fileName = "testAjaxDownload.txt";
+    var form = $("<form></form>").attr("action", url).attr("method", "get");
+    form.appendTo('body').submit().remove();
 }
