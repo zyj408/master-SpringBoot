@@ -9,6 +9,7 @@ import com.huawei.master.measure.domain.FlowResult;
 import com.huawei.master.measure.domain.Procedure;
 import com.huawei.master.measure.service.MeasureService;
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -121,17 +124,92 @@ public class MeasureServiceImpl implements MeasureService {
     @Override
     public void export(String name, HttpServletResponse response) throws IOException {
         HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet("信息表");
-        String[] headers = { "学号", "姓名", "身份类型", "登录密码"};
-        HSSFRow row = sheet.createRow(0);
+        HSSFSheet sheet = workbook.createSheet("流量记录单");
+//        String[] headers = { "学号", "姓名", "身份类型", "登录密码"};
+//        HSSFRow row = sheet.createRow(0);
+//
+//        for(int i=0;i<headers.length;i++){
+//            HSSFCell cell = row.createCell(i);
+//            HSSFRichTextString text = new HSSFRichTextString(headers[i]);
+//            cell.setCellValue(text);
+//        }
+        createHeaderInfo(sheet);
 
-        for(int i=0;i<headers.length;i++){
-            HSSFCell cell = row.createCell(i);
-            HSSFRichTextString text = new HSSFRichTextString(headers[i]);
-            cell.setCellValue(text);
-        }
         workbook.write(response.getOutputStream());
     }
+
+    private static void createHeaderInfo(HSSFSheet sheet) {
+        HSSFRow[] infoRow = new HSSFRow[4];
+        HSSFCell[][] infoGrid = new HSSFCell[4][16];
+        for (int i = 0; i < 4; i++) {
+            HSSFRow row = sheet.createRow(i);
+            infoRow[i] = row;
+            for (int j = 0; j < 16; j++) {
+                infoGrid[i][j] = row.createCell(j);
+            }
+        }
+
+        //第一行
+        infoGrid[0][0].setCellValue("型号规格");
+        infoGrid[0][2].setCellValue("Q3");
+        infoGrid[0][4].setCellValue("Q3/Q1");
+        infoGrid[0][6].setCellValue("Q2/Q1");
+        infoGrid[0][8].setCellValue("设备编号");
+        infoGrid[0][10].setCellValue("室温");
+        infoGrid[0][12].setCellValue("水温");
+        infoGrid[0][14].setCellValue("水压");
+
+        infoGrid[1][0].setCellValue("序号");
+        sheet.addMergedRegion(new CellRangeAddress(1, 3, 0, 0));
+        infoGrid[1][1].setCellValue("表号");
+        sheet.addMergedRegion(new CellRangeAddress(1, 3, 1, 1));
+
+        infoGrid[1][2].setCellValue("常用流量：");
+        sheet.addMergedRegion(new CellRangeAddress(1, 1, 2, 4));
+
+        infoGrid[2][2].setCellValue("用水量：");
+        sheet.addMergedRegion(new CellRangeAddress(2, 2, 2, 4));
+
+        infoGrid[1][5].setCellValue("常用流量：");
+        sheet.addMergedRegion(new CellRangeAddress(1, 1, 5, 7));
+
+        infoGrid[2][5].setCellValue("用水量：");
+        sheet.addMergedRegion(new CellRangeAddress(2, 2, 5, 7));
+
+        infoGrid[1][8].setCellValue("常用流量：");
+        sheet.addMergedRegion(new CellRangeAddress(1, 1, 8, 10));
+
+        infoGrid[2][8].setCellValue("用水量：");
+        sheet.addMergedRegion(new CellRangeAddress(2, 2, 8, 10));
+
+        infoGrid[1][11].setCellValue("耐压");
+        sheet.addMergedRegion(new CellRangeAddress(1, 3, 11, 11));
+
+        infoGrid[1][12].setCellValue("始动");
+        sheet.addMergedRegion(new CellRangeAddress(1, 3, 12, 12));
+
+        infoGrid[1][13].setCellValue("结论");
+        sheet.addMergedRegion(new CellRangeAddress(1, 3, 13, 13));
+
+        for(int i=0; i<3; i++)
+        {
+            infoGrid[3][2 + i * 3].setCellValue("初值");
+            infoGrid[3][3 + i * 3].setCellValue("末值");
+            infoGrid[3][4 + i * 3].setCellValue("误差%");
+        }
+
+    }
+
+    public static void main(String[] args) throws IOException {
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet("流量记录单");
+        createHeaderInfo(sheet);
+
+        FileOutputStream fileOut = new FileOutputStream("test.xls");
+        workbook.write(fileOut);
+        fileOut.close();
+    }
+
 
     private Map<String, List<ReportResultReq.MeterResult>> parseResultMap(List<ReportResultReq.MeterResult> meterResults) {
         Map<String, List<ReportResultReq.MeterResult>> resultMap = new HashMap<>();
