@@ -8,18 +8,21 @@ import com.huawei.master.measure.dao.ProcedureRepository;
 import com.huawei.master.measure.domain.FlowResult;
 import com.huawei.master.measure.domain.Procedure;
 import com.huawei.master.measure.service.MeasureService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -125,20 +128,53 @@ public class MeasureServiceImpl implements MeasureService {
     public void export(String name, HttpServletResponse response) throws IOException {
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("流量记录单");
-//        String[] headers = { "学号", "姓名", "身份类型", "登录密码"};
-//        HSSFRow row = sheet.createRow(0);
-//
-//        for(int i=0;i<headers.length;i++){
-//            HSSFCell cell = row.createCell(i);
-//            HSSFRichTextString text = new HSSFRichTextString(headers[i]);
-//            cell.setCellValue(text);
-//        }
-        createHeaderInfo(sheet);
+
+
+        List<Procedure> procedures = procedureRepository.findByName(name);
+        if (CollectionUtils.isNotEmpty(procedures)) {
+            Procedure procedure = procedures.get(0);
+            List<FlowResult> flowResults = procedure.getResults();
+            if (CollectionUtils.isNotEmpty(flowResults)) {
+                createHeaderInfo(sheet, flowResults.get(0));
+                for (int i=0; i<flowResults.size(); i++) {
+                    createRecord(sheet, flowResults.get(i), i);
+                }
+            }
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        //设置文件名
+        String excelName = name + "_" + sdf.format(new Date()) + ".xlsx";
+        response.setHeader("Content-Disposition", "attachment; filename="+ excelName);
 
         workbook.write(response.getOutputStream());
     }
 
-    private static void createHeaderInfo(HSSFSheet sheet) {
+    private void createRecord(HSSFSheet sheet, FlowResult flowResult, int i) {
+        HSSFRow row = sheet.createRow(i + 4);
+        //序号
+        row.createCell(0).setCellValue(i+1);
+
+        //表号
+        row.createCell(1).setCellValue(flowResult.getNo());
+
+        //Q3
+        row.createCell(2).setCellValue(flowResult.getQ3().getStart());
+        row.createCell(3).setCellValue(flowResult.getQ3().getEnd());
+        row.createCell(4).setCellValue(new DecimalFormat("#.00").format(flowResult.getQ3().getDeviation()));
+
+        //Q2
+        row.createCell(5).setCellValue(flowResult.getQ2().getStart());
+        row.createCell(6).setCellValue(flowResult.getQ2().getEnd());
+        row.createCell(7).setCellValue(new DecimalFormat("#.00").format(flowResult.getQ2().getDeviation()));
+
+        //Q1
+        row.createCell(8).setCellValue(flowResult.getQ1().getStart());
+        row.createCell(9).setCellValue(flowResult.getQ1().getEnd());
+        row.createCell(10).setCellValue(new DecimalFormat("#.00").format(flowResult.getQ1().getDeviation()));
+    }
+
+    private static void createHeaderInfo(HSSFSheet sheet, FlowResult flowResult) {
         HSSFRow[] infoRow = new HSSFRow[4];
         HSSFCell[][] infoGrid = new HSSFCell[4][16];
         for (int i = 0; i < 4; i++) {
@@ -150,10 +186,17 @@ public class MeasureServiceImpl implements MeasureService {
         }
 
         //第一行
+        FlowResult.ResultCell q3 = flowResult.getQ3();
+        FlowResult.ResultCell q2 = flowResult.getQ2();
+        FlowResult.ResultCell q1 = flowResult.getQ1();
+
         infoGrid[0][0].setCellValue("型号规格");
         infoGrid[0][2].setCellValue("Q3");
+        infoGrid[0][3].setCellValue(q3.getVolume());
         infoGrid[0][4].setCellValue("Q3/Q1");
+        infoGrid[0][5].setCellValue(Math.round(q3.getVolume() / q1.getVolume()));
         infoGrid[0][6].setCellValue("Q2/Q1");
+        infoGrid[0][7].setCellValue(Math.round(q2.getVolume() / q1.getVolume()));
         infoGrid[0][8].setCellValue("设备编号");
         infoGrid[0][10].setCellValue("室温");
         infoGrid[0][12].setCellValue("水温");
@@ -164,22 +207,22 @@ public class MeasureServiceImpl implements MeasureService {
         infoGrid[1][1].setCellValue("表号");
         sheet.addMergedRegion(new CellRangeAddress(1, 3, 1, 1));
 
-        infoGrid[1][2].setCellValue("常用流量：");
+        infoGrid[1][2].setCellValue("常用流量（Q3）：" + q3.getFlow());
         sheet.addMergedRegion(new CellRangeAddress(1, 1, 2, 4));
 
-        infoGrid[2][2].setCellValue("用水量：");
+        infoGrid[2][2].setCellValue("用水量（Q3）：" + q3.getVolume());
         sheet.addMergedRegion(new CellRangeAddress(2, 2, 2, 4));
 
-        infoGrid[1][5].setCellValue("常用流量：");
+        infoGrid[1][5].setCellValue("常用流量（Q2）：" + q2.getFlow());
         sheet.addMergedRegion(new CellRangeAddress(1, 1, 5, 7));
 
-        infoGrid[2][5].setCellValue("用水量：");
+        infoGrid[2][5].setCellValue("用水量（Q2）：" + q2.getVolume());
         sheet.addMergedRegion(new CellRangeAddress(2, 2, 5, 7));
 
-        infoGrid[1][8].setCellValue("常用流量：");
+        infoGrid[1][8].setCellValue("常用流量（Q1）：" + q1.getFlow());
         sheet.addMergedRegion(new CellRangeAddress(1, 1, 8, 10));
 
-        infoGrid[2][8].setCellValue("用水量：");
+        infoGrid[2][8].setCellValue("用水量（Q1）：" + q1.getVolume());
         sheet.addMergedRegion(new CellRangeAddress(2, 2, 8, 10));
 
         infoGrid[1][11].setCellValue("耐压");
@@ -191,25 +234,13 @@ public class MeasureServiceImpl implements MeasureService {
         infoGrid[1][13].setCellValue("结论");
         sheet.addMergedRegion(new CellRangeAddress(1, 3, 13, 13));
 
-        for(int i=0; i<3; i++)
-        {
+        for (int i = 0; i < 3; i++) {
             infoGrid[3][2 + i * 3].setCellValue("初值");
             infoGrid[3][3 + i * 3].setCellValue("末值");
             infoGrid[3][4 + i * 3].setCellValue("误差%");
         }
 
     }
-
-    public static void main(String[] args) throws IOException {
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet("流量记录单");
-        createHeaderInfo(sheet);
-
-        FileOutputStream fileOut = new FileOutputStream("test.xls");
-        workbook.write(fileOut);
-        fileOut.close();
-    }
-
 
     private Map<String, List<ReportResultReq.MeterResult>> parseResultMap(List<ReportResultReq.MeterResult> meterResults) {
         Map<String, List<ReportResultReq.MeterResult>> resultMap = new HashMap<>();

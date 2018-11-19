@@ -31,7 +31,7 @@ public class ProcedureController extends AbstractController {
     //@RequiresAuthentication
     public Object query(@RequestBody QueryProcedureReq queryProcedureReq, ModelMap modelMap) {
         Assert.notNull(queryProcedureReq.getPage().getPage(), "PAGE");
-        Assert.max(queryProcedureReq.getPage().getRows(), 50, "ROWS");
+        //Assert.max(queryProcedureReq.getPage().getRows(), 200, "ROWS");
 
         Page<Procedure> procedures = procedureService.query(queryProcedureReq);
 

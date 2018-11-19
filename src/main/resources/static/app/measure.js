@@ -39,18 +39,18 @@ function transform(measureData) {
 }
 
 function exportMeasure(procedureName) {
-    $.ajax({
-        type: "GET",
-        url: exportUrl + "/" + procedureName,
-        success: function (data) {
-            if (data.code && data.code == 200) {
-                callback(data.rows);
-            }
-            else {
-                callback();
-            }
-        }
-    });
+    // $.ajax({
+    //     type: "GET",
+    //     url: exportUrl + "/" + procedureName,
+    //     success: function (data) {
+    //         if (data.code && data.code == 200) {
+    //             callback(data.rows);
+    //         }
+    //         else {
+    //             callback();
+    //         }
+    //     }
+    // });
 
     var url = exportUrl + "/" + procedureName;
     var fileName = "testAjaxDownload.txt";
