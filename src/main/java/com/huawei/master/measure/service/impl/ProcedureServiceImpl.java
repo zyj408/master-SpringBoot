@@ -71,7 +71,7 @@ public class ProcedureServiceImpl implements ProcedureService {
 
     @Override
     public void restart(StartProcedureReq startProcedureReq) {
-        List<Procedure> procedures = procedureRepository.findByNameAndStatus(startProcedureReq.getName(), "running");
+        List<Procedure> procedures = procedureRepository.findByNameAndStatus(startProcedureReq.getName(), "finish");
         if (CollectionUtils.isEmpty(procedures)) {
             throw new BusinessException("PROCEDURE_NOT_EXISTED");
         }

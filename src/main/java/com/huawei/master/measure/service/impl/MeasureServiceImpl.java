@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -136,7 +137,7 @@ public class MeasureServiceImpl implements MeasureService {
             List<FlowResult> flowResults = procedure.getResults();
             if (CollectionUtils.isNotEmpty(flowResults)) {
                 createHeaderInfo(sheet, flowResults.get(0));
-                for (int i=0; i<flowResults.size(); i++) {
+                for (int i = 0; i < flowResults.size(); i++) {
                     createRecord(sheet, flowResults.get(i), i);
                 }
             }
@@ -145,7 +146,7 @@ public class MeasureServiceImpl implements MeasureService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
         //设置文件名
         String excelName = name + "_" + sdf.format(new Date()) + ".xlsx";
-        response.setHeader("Content-Disposition", "attachment; filename="+ excelName);
+        response.setHeader("Content-Disposition", "attachment; filename=" + excelName);
 
         workbook.write(response.getOutputStream());
     }
@@ -153,7 +154,7 @@ public class MeasureServiceImpl implements MeasureService {
     private void createRecord(HSSFSheet sheet, FlowResult flowResult, int i) {
         HSSFRow row = sheet.createRow(i + 4);
         //序号
-        row.createCell(0).setCellValue(i+1);
+        row.createCell(0).setCellValue(i + 1);
 
         //表号
         row.createCell(1).setCellValue(flowResult.getNo());
@@ -161,17 +162,20 @@ public class MeasureServiceImpl implements MeasureService {
         //Q3
         row.createCell(2).setCellValue(flowResult.getQ3().getStart());
         row.createCell(3).setCellValue(flowResult.getQ3().getEnd());
-        row.createCell(4).setCellValue(new DecimalFormat("#.00").format(flowResult.getQ3().getDeviation()));
+        double q3Div = new BigDecimal(flowResult.getQ3().getDeviation() * 100).setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
+        row.createCell(4).setCellValue(q3Div);
 
         //Q2
         row.createCell(5).setCellValue(flowResult.getQ2().getStart());
         row.createCell(6).setCellValue(flowResult.getQ2().getEnd());
-        row.createCell(7).setCellValue(new DecimalFormat("#.00").format(flowResult.getQ2().getDeviation()));
+        double q2Div = new BigDecimal(flowResult.getQ2().getDeviation() * 100).setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
+        row.createCell(7).setCellValue(q2Div);
 
         //Q1
         row.createCell(8).setCellValue(flowResult.getQ1().getStart());
         row.createCell(9).setCellValue(flowResult.getQ1().getEnd());
-        row.createCell(10).setCellValue(new DecimalFormat("#.00").format(flowResult.getQ1().getDeviation()));
+        double q1Div = new BigDecimal(flowResult.getQ1().getDeviation() * 100).setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
+        row.createCell(10).setCellValue(q1Div);
     }
 
     private static void createHeaderInfo(HSSFSheet sheet, FlowResult flowResult) {
