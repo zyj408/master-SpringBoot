@@ -1,5 +1,6 @@
 var IP = '47.106.130.222';
 var measureUrl = 'http://' + IP + '/master/procedure/query';
+var finishUrl = 'http://' + IP + '/master/procedure/finish';
 var exportUrl = 'http://' + IP + '/master/measure/export';
 
 function updateMeasure(request, callback) {
@@ -39,21 +40,33 @@ function transform(measureData) {
 }
 
 function exportMeasure(procedureName) {
-    // $.ajax({
-    //     type: "GET",
-    //     url: exportUrl + "/" + procedureName,
-    //     success: function (data) {
-    //         if (data.code && data.code == 200) {
-    //             callback(data.rows);
-    //         }
-    //         else {
-    //             callback();
-    //         }
-    //     }
-    // });
-
     var url = exportUrl + "/" + procedureName;
     var fileName = "testAjaxDownload.txt";
     var form = $("<form></form>").attr("action", url).attr("method", "get");
     form.appendTo('body').submit().remove();
+}
+
+function finishMeasure(procedureName, callback) {
+    $.ajax({
+        type: "POST",
+        url: finishUrl,
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: JSON.stringify({name : procedureName}),
+        success: function (data) {
+            if (data.code && data.code == 200) {
+                callback();
+            }
+            else {
+                callback("error");
+            }
+        }
+    });
+
+}
+
+function detailMeasure(procedureName) {
+    alert("detail" + procedureName);
 }

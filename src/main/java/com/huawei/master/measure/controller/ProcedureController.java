@@ -63,4 +63,15 @@ public class ProcedureController extends AbstractController {
         return setSuccessModelMap(modelMap);
     }
 
+    @ApiOperation(value = "重新开启测量过程", notes = "重新开启测量过程")
+    @PostMapping("/restart")
+    @ApiImplicitParam(name = "StartProcedureReq", value = "测量过程请求", required = true, dataType = "startProcedureReq")
+    //@RequiresAuthentication
+    public Object restart(@RequestBody StartProcedureReq startProcedureReq, ModelMap modelMap) {
+
+        Assert.notNull(startProcedureReq.getName(), "NAME");
+
+        procedureService.restart(startProcedureReq);
+        return setSuccessModelMap(modelMap);
+    }
 }

@@ -12,4 +12,6 @@ public interface ProcedureService {
     String start(StartProcedureReq startProcedureReq);
 
     void finish(FinishProcedureReq finishProcedureReq);
+
+    void restart(StartProcedureReq startProcedureReq);
 }

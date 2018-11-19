@@ -13,9 +13,11 @@
 
     <!-- FooTable -->
     <link href="css/plugins/footable/footable.core.css" rel="stylesheet">
+    <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
 
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+
 
 </head>
 
@@ -126,6 +128,7 @@
                                 </div>
                             </div>
                             <div class="ibox-content">
+
                                 <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
                                     <thead>
                                         <tr>
@@ -178,6 +181,8 @@
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
+    <script src="js/plugins/toastr/toastr.min.js"></script>
+
     <script src="app/date.js"></script>
     <script src="app/measure.js"></script>
 
@@ -191,11 +196,11 @@
 
             {{if status=='finish'}}
                 <td><span class="label label-primary">已完成</span></td>
-                <td><span class="label"><a href="javascript:exportMeasure('${name}')">导出</a></span></td>
             {{else}}
                 <td><span class="label label-warning">进行中</span></td>
-                <td><span class="label"><a href="javascript:exportMeasure('${name}')">导出</a></span></td>
             {{/if}}
+                <td><span class="label"><a href="javascript:exportMeasure('${name}')">导出</a></span>
+                    <span class="label label-info"><a href="javascript:finish('${name}')">完成</a></span></td>
         </tr>
     </script>
 
@@ -218,6 +223,20 @@
 
         });
 
+        function finish(name) {
+            finishMeasure(name, function (data) {
+                toastr.options = {
+                    "positionClass": "toast-top-right",
+                    "timeOut": 5000
+                }
+                if (data) {
+                    toastr.error('完成测量过程 ' + name + ' 请求失败', '请求失败');
+                }
+                else{
+                    toastr.success('测量过程 ' + name + ' 已完成，请手动刷新页面', '测量过程已完成');
+                }
+            })
+        }
     </script>
 
 </body>

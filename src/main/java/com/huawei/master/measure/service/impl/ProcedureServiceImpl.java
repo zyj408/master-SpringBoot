@@ -68,4 +68,18 @@ public class ProcedureServiceImpl implements ProcedureService {
         });
 
     }
+
+    @Override
+    public void restart(StartProcedureReq startProcedureReq) {
+        List<Procedure> procedures = procedureRepository.findByNameAndStatus(startProcedureReq.getName(), "running");
+        if (CollectionUtils.isEmpty(procedures)) {
+            throw new BusinessException("PROCEDURE_NOT_EXISTED");
+        }
+
+        procedures.stream().forEach(p -> {
+            p.setStatus("running");
+            p.setEndTime(System.currentTimeMillis());
+            procedureRepository.save(p);
+        });
+    }
 }
