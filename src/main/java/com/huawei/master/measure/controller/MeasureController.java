@@ -57,7 +57,7 @@ public class MeasureController extends AbstractController {
     }
 
     @ApiOperation(value = "导出测量结果", notes = "导出测量结果")
-    @RequestMapping("/export/{name}")
+    @GetMapping("/export/{name}")
     @ApiImplicitParam(name = "exportResultReq", value = "上报结果", required = true, dataType = "ExportResultReq")
     public void export(@PathVariable("name") String name, HttpServletResponse response) throws IOException {
         Assert.notNull(name, "NAME");

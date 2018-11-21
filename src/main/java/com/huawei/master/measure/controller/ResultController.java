@@ -32,7 +32,6 @@ public class ResultController extends AbstractController {
     @Autowired
     private ResultService resultService;
 
-
     @ApiOperation(value = "查询测量过程下的测量结果", notes = "查询测量过程下的测量结果")
     @PostMapping("/query")
     @ApiImplicitParam(name = "queryResultReq", value = "查询条件", required = true, dataType = "QueryResultReq")
@@ -45,11 +44,5 @@ public class ResultController extends AbstractController {
         Page<FlowResult> flowResults = resultService.query(queryResultReq);
 
         return setSuccessModelMap(modelMap, flowResults);
-    }
-
-    public static void main(String[] args) {
-        Random r = new Random();
-        double d = r.nextDouble();
-        System.out.println("学号：" + 48 * d);
     }
 }
