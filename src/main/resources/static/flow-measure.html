@@ -129,7 +129,8 @@
                             </div>
                             <div class="ibox-content">
 
-                                <table class="footable table table-stripped" data-limit-navigation="5" data-page-size="15" data-filter=#filter>
+                                <table class="footable table table-stripped" data-limit-navigation="5" data-page-size="15"
+                                    data-filter=#filter>
                                     <thead>
                                         <tr>
                                             <th>名称</th>
@@ -217,6 +218,30 @@
 
             {{if status=='finish'}}
                 <td><span class="label label-primary">已完成</span></td>
+                <td><div class="btn-group">
+                    <button class="btn-white btn btn-xs export-btn" data-name="${name}">导出</button>
+                    <button class="btn-white btn btn-xs detail-btn" data-name="${name}">详情</button>
+                </div></td>
+            {{else}}
+                <td><span class="label label-warning">进行中</span></td>
+                <td><div class="btn-group">
+                    <button class="btn-white btn btn-xs export-btn" data-name="${name}">导出</button>
+                    <button class="btn-white btn btn-xs detail-btn" data-name="${name}">详情</button>
+                </div></td>
+            {{/if}}
+                
+        </tr>
+    </script>
+    <script id="measureDetailTemplate" type="text/x-jquery-tmpl">
+        <tr>
+            <td>${name}</td>
+            <td>${startTime}</td>
+            <td>${record}</td>
+            <td>${standard}</td>
+            <td>${standardRate * 100}%</td>
+
+            {{if status=='finish'}}
+                <td><span class="label label-primary">已完成</span></td>
                 <td><span class="label"><a href="javascript:exportMeasure('${name}')">导出</a></span>
                     <span class="label label-info"><a href="javascript:enable('${name}', true)">开启</a></span></td>
             {{else}}
@@ -229,6 +254,7 @@
                 
         </tr>
     </script>
+
     <script src="app/measure.js"></script>
 
 

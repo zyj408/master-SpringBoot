@@ -95,7 +95,7 @@ $(document).ready(function () {
         $('#measureDetailModel').modal();
     })
     $(document).on('click', '.export-btn', function (e) {
-        name = $(e.currentTarget).data('name');
+        var name = $(e.currentTarget).data('name');
         exportMeasure(name);
     })
 });
