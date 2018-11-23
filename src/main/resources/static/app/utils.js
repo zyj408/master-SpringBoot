@@ -22,3 +22,19 @@ Date.prototype.Format = function (fmt) {
         }
         return fmt;
     }
+
+function showSuccess(info) {
+    toastr.options = {
+        "positionClass": "toast-top-right",
+        "timeOut": 5000
+    }
+    toastr.success(info);
+}
+
+function showError(info) {
+    toastr.options = {
+        "positionClass": "toast-top-right",
+        "timeOut": 5000
+    }
+    toastr.error(info);
+}

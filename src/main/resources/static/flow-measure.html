@@ -205,7 +205,7 @@
     <script src="js/plugins/pace/pace.min.js"></script>
     <script src="js/plugins/toastr/toastr.min.js"></script>
 
-    <script src="app/date.js"></script>
+    <script src="app/utils.js"></script>
 
     <script id="measureTemplate" type="text/x-jquery-tmpl">
         <tr>
@@ -222,49 +222,12 @@
             {{else}}
                 <td><span class="label label-warning">进行中</span></td>
                 <td><div class="btn-group">
-                    <button class="btn-white btn btn-xs">导出</button>
+                    <button class="btn-white btn btn-xs export-btn" data-name="${name}">导出</button>
                     <button class="btn-white btn btn-xs detail-btn" data-name="${name}">详情</button>
                 </div></td>
             {{/if}}
                 
         </tr>
-    </script>
-
-    
-    <script>
-        $(document).ready(function () {
-            updateMeasure({
-                page: {
-                    page: 1,
-                    rows: 2000
-                }
-            }, function (data) {
-                if (data) {
-                    $('#measureTemplate').tmpl(transform(data)).appendTo('#measureContent');
-                    $('.footable').footable();
-                }
-                else {
-                    alert("请求服务器错误");
-                }
-            });
-
-        });
-
-        function enable(name, status) {
-            enableMeasure(name, status, function (data) {
-                toastr.options = {
-                    "positionClass": "toast-top-right",
-                    "timeOut": 5000
-                }
-                if (data) {
-                    toastr.error('完成测量过程 ' + name + ' 操作失败', '操作失败');
-                }
-                else {
-                    toastr.success('测量过程 ' + name + ' 操作成功，请手动刷新页面', '操作成功');
-                }
-            })
-        }
-
     </script>
     <script src="app/measure.js"></script>
 

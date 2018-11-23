@@ -4,7 +4,7 @@ var finishUrl = 'http://' + IP + '/master/procedure/finish';
 var restartUrl = 'http://' + IP + '/master/procedure/restart';
 var exportUrl = 'http://' + IP + '/master/measure/export';
 
-function updateMeasure(request, callback) {
+function updateMeasure(callback) {
     $.ajax({
         type: "POST",
         url: measureUrl,
@@ -12,13 +12,18 @@ function updateMeasure(request, callback) {
         headers: {
             'Content-Type': 'application/json'
         },
-        data: JSON.stringify(request),
+        data: JSON.stringify({
+            page: {
+                page: 1,
+                rows: 2000
+            }
+        }),
         success: function (data) {
             if (data.code && data.code == 200) {
                 callback(data.rows);
             }
             else {
-                callback();
+                showError("获取测量过程失败，请检查网络");
             }
         }
     });
@@ -56,13 +61,13 @@ function enableMeasure(procedureName, status, callback) {
         headers: {
             'Content-Type': 'application/json'
         },
-        data: JSON.stringify({name : procedureName}),
+        data: JSON.stringify({ name: procedureName }),
         success: function (data) {
             if (data.code && data.code == 200) {
                 callback();
             }
             else {
-                callback("error");
+                showError("获取测量过程失败，请检查网络");
             }
         }
     });
@@ -74,16 +79,27 @@ function detailMeasure(procedureName) {
 }
 
 $(document).ready(function () {
+
+    updateMeasure(function (data) {
+        if (data) {
+            $('#measureTemplate').tmpl(transform(data)).appendTo('#measureContent');
+            $('.footable').footable();
+        }
+    });
+
     // 查看详情弹框示例
     var name = '';
 
-    $('#myModal').on('show.bs.modal', function(e) {
+    $('#myModal').on('show.bs.modal', function (e) {
         // 这里通过请求获取详情并把详情填入到html中
         $('#myModalBody').html(name);
     });
-    $(document).on('click', '.detail-btn', function(e) {
+    $(document).on('click', '.detail-btn', function (e) {
         name = $(e.currentTarget).data('name');
         $('#myModal').modal();
     })
-
+    $(document).on('click', '.export-btn', function (e) {
+        name = $(e.currentTarget).data('name');
+        exportMeasure(name);
+    })
 });
