@@ -165,6 +165,28 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModal"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="myModalBody">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
     <!-- Mainly scripts -->
@@ -184,7 +206,6 @@
     <script src="js/plugins/toastr/toastr.min.js"></script>
 
     <script src="app/date.js"></script>
-    <script src="app/measure.js"></script>
 
     <script id="measureTemplate" type="text/x-jquery-tmpl">
         <tr>
@@ -196,15 +217,13 @@
 
             {{if status=='finish'}}
                 <td><span class="label label-primary">已完成</span></td>
-                <td><div class="btn-group">
-                        <button class="btn-white btn btn-xs" onclick="exportMeasure('${name}')">导出</button>
-                        <button class="btn-white btn btn-xs">详情</button>
-                    </div></td>
+                <td><span class="label"><a href="javascript:exportMeasure('${name}')">导出</a></span>
+                    <span class="label label-info"><a href="javascript:enable('${name}', true)">开启</a></span></td>
             {{else}}
                 <td><span class="label label-warning">进行中</span></td>
                 <td><div class="btn-group">
-                    <button class="btn-white btn btn-xs" onclick="exportMeasure('${name}')">导出</button>
-                    <button class="btn-white btn btn-xs">详情</button>
+                    <button class="btn-white btn btn-xs">导出</button>
+                    <button class="btn-white btn btn-xs detail-btn" data-name="${name}">详情</button>
                 </div></td>
             {{/if}}
                 
@@ -247,6 +266,8 @@
         }
 
     </script>
+    <script src="app/measure.js"></script>
+
 
 </body>
 

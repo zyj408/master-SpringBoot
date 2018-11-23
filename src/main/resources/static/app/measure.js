@@ -72,3 +72,18 @@ function enableMeasure(procedureName, status, callback) {
 function detailMeasure(procedureName) {
     alert("detail" + procedureName);
 }
+
+$(document).ready(function () {
+    // 查看详情弹框示例
+    var name = '';
+
+    $('#myModal').on('show.bs.modal', function(e) {
+        // 这里通过请求获取详情并把详情填入到html中
+        $('#myModalBody').html(name);
+    });
+    $(document).on('click', '.detail-btn', function(e) {
+        name = $(e.currentTarget).data('name');
+        $('#myModal').modal();
+    })
+
+});
