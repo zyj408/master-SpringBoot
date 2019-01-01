@@ -8,5 +8,9 @@ var exportUrl = 'http://' + IP + '/master/measure/export';
 $(document).ready(function () {
     var loc = location.href;
     var procedure = getUrlParam("procedure");
-    alert("procedure" + procedure);
+    if (!procedure) {
+        return;
+    }
+    
+    $(".procedureName").text(procedure);
 });

@@ -85,7 +85,7 @@ $(document).ready(function () {
 
     $(document).on('click', '.detail-btn', function (e) {
         name = $(e.currentTarget).data('name');
-        var url = "flow-measure-detail.html?procedure=" + index;
+        var url = "flow-measure-detail.html?procedure=" + name;
         window.location = url;
     });
     $(document).on('click', '.export-btn', function (e) {
