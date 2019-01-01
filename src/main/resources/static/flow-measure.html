@@ -166,31 +166,7 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="measureDetailModel" tabindex="-1" role="dialog" aria-labelledby="measureDetailModel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="myModalTitle">测量详情</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="myModalBody">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary">保存</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-    <!-- Mainly scripts -->
+        <!-- Mainly scripts -->
     <script src="js/jquery-3.1.1.min.js"></script>
     <script src="js/jquery.tmpl.min.js"></script>
     <script src="js/popper.min.js"></script>
@@ -218,40 +194,13 @@
 
             {{if status=='finish'}}
                 <td><span class="label label-primary">已完成</span></td>
-                <td><div class="btn-group">
-                    <button class="btn-white btn btn-xs export-btn" data-name="${name}">导出</button>
-                    <button class="btn-white btn btn-xs detail-btn" data-name="${name}">详情</button>
-                </div></td>
             {{else}}
                 <td><span class="label label-warning">进行中</span></td>
-                <td><div class="btn-group">
-                    <button class="btn-white btn btn-xs export-btn" data-name="${name}">导出</button>
-                    <button class="btn-white btn btn-xs detail-btn" data-name="${name}">详情</button>
-                </div></td>
             {{/if}}
-                
-        </tr>
-    </script>
-    <script id="measureDetailTemplate" type="text/x-jquery-tmpl">
-        <tr>
-            <td>${name}</td>
-            <td>${startTime}</td>
-            <td>${record}</td>
-            <td>${standard}</td>
-            <td>${standardRate * 100}%</td>
-
-            {{if status=='finish'}}
-                <td><span class="label label-primary">已完成</span></td>
-                <td><span class="label"><a href="javascript:exportMeasure('${name}')">导出</a></span>
-                    <span class="label label-info"><a href="javascript:enable('${name}', true)">开启</a></span></td>
-            {{else}}
-                <td><span class="label label-warning">进行中</span></td>
-                <td><div class="btn-group">
-                    <button class="btn-white btn btn-xs export-btn" data-name="${name}">导出</button>
-                    <button class="btn-white btn btn-xs detail-btn" data-name="${name}">详情</button>
-                </div></td>
-            {{/if}}
-                
+            <td><div class="btn-group">
+                <button class="btn-white btn btn-xs export-btn" data-name="${name}">导出</button>
+                <button class="btn-white btn btn-xs detail-btn" data-name="${name}">详情</button>
+            </div></td>
         </tr>
     </script>
 

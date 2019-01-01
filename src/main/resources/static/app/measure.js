@@ -83,19 +83,13 @@ $(document).ready(function () {
         }
     });
 
-    // 查看详情弹框示例
-    var name = '';
-
-    $('#measureDetailModel').on('show.bs.modal', function (e) {
-        // 这里通过请求获取详情并把详情填入到html中
-        $('#myModalBody').html(name);
-    });
     $(document).on('click', '.detail-btn', function (e) {
         name = $(e.currentTarget).data('name');
-        $('#measureDetailModel').modal();
-    })
+        var url = "flow-measure-detail.html?procedure=" + index;
+        window.location = url;
+    });
     $(document).on('click', '.export-btn', function (e) {
         var name = $(e.currentTarget).data('name');
         exportMeasure(name);
-    })
+    });
 });
