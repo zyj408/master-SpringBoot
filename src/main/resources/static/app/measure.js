@@ -13,9 +13,9 @@ function updateMeasure(callback) {
                 rows: 2000
             }
         }),
-        success: function (data) {
-            if (data.code && data.code == 200) {
-                callback(data.rows);
+        success: function (resp) {
+            if (resp.code && resp.code == 200) {
+                callback(resp.rows);
             }
             else {
                 showError("获取测量过程失败，请检查网络");
@@ -57,8 +57,8 @@ function enableMeasure(procedureName, status, callback) {
             'Content-Type': 'application/json'
         },
         data: JSON.stringify({ name: procedureName }),
-        success: function (data) {
-            if (data.code && data.code == 200) {
+        success: function (resp) {
+            if (resp.code && resp.code == 200) {
                 callback();
             }
             else {
