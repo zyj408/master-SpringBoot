@@ -52,7 +52,6 @@ public class MeasureServiceImpl implements MeasureService {
      */
     private ConcurrentHashMap<Procedure, List<FlowResult>> resultCache = new ConcurrentHashMap<Procedure, List<FlowResult>>();
 
-
     @Override
     public void register(String userId) {
 
@@ -121,6 +120,8 @@ public class MeasureServiceImpl implements MeasureService {
             relateResult(procedure, flowResult);
             //更新统计
             updateStatistic(procedure, qualified);
+            //更新最新上传时间
+            procedure.setLastTime(System.currentTimeMillis());
             procedureRepository.save(procedure);
         }
     }

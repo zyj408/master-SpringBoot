@@ -39,6 +39,10 @@ public class Procedure extends Entity {
     private Long standard;
 
     /**
+     * 最近上报时间
+     */
+    private Long lastTime;
+    /**
      * 测试结果
      */
     @DBRef
@@ -101,4 +105,11 @@ public class Procedure extends Entity {
         this.results = results;
     }
 
+    public Long getLastTime() {
+        return lastTime;
+    }
+
+    public void setLastTime(Long lastTime) {
+        this.lastTime = lastTime;
+    }
 }
