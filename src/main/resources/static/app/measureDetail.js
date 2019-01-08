@@ -39,7 +39,7 @@ $(document).ready(function () {
                 }
 
                 setChart(procedure.name);
-                console.log(JSON.stringify(procedure));
+
             }
             else {
                 showError("获取测量过程失败，请检查网络");
@@ -50,13 +50,14 @@ $(document).ready(function () {
 
 function setChart(procedure) {
 
-    var respCount = 0;
-    var serverTotal = -1;
-    while(respCount < serverTotal) {
+    var result = [];
+    var serverTotal = 0;
+    do {
         $.ajax({
             type: "POST",
             url: resultUrl,
             dataType: "json",
+            async: false,
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -64,38 +65,54 @@ function setChart(procedure) {
                 procedure: procedure,
                 page: {
                     page: 1,
-                    rows: 2000
+                    rows: 50
                 }
             }),
             success: function (resp) {
                 if (resp.code && resp.code == 200) {
-                  
+                    resp.rows.forEach(e => {
+                        result.push(e);
+                    });
+
+                    serverTotal = resp.total;
                 }
                 else {
-                    showError("获取测量过程失败，请检查网络");
+                    showError("获取记录程失败，请检查网络");
                 }
             }
         });
-    }
-    
+    } while (result.length < serverTotal);
 
 
-
-
-    var doughnutData = {
-        labels: ["App","Software","Laptop" ],
-        datasets: [{
-            data: [300,50,100],
-            backgroundColor: ["#a3e1d4","#dedede","#b5b8cf"]
-        }]
-    } ;
-
-
-    var doughnutOptions = {
-        responsive: true
-    };
+    console.log(JSON.stringify(result));
+    var totalData = calcTotalChartData(result);
 
 
     var ctx4 = document.getElementById("doughnutChart").getContext("2d");
-    new Chart(ctx4, {type: 'doughnut', data: doughnutData, options:doughnutOptions});
+    new Chart(ctx4, { type: 'doughnut', data: totalData, options: { responsive: true } });
 }
+
+
+var totalSegment = [0.05, 0.10, 0.15];
+var step = ["q1", "q2", "q3"];
+function calcTotalChartData(result) {
+
+    result.forEach(e => {
+        for(var i in step) {
+            var deviation = e[step[i]].deviation;
+        }
+    });
+
+
+    var doughnutData = {
+        labels: ["0-", "Software", "Laptop"],
+        datasets: [{
+            data: [300, 50, 100],
+            backgroundColor: ["#a3e1d4", "#dedede", "#b5b8cf"]
+        }]
+    };
+
+    return doughnutData;
+}
+
+
