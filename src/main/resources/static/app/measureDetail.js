@@ -93,16 +93,30 @@ function setChart(procedure) {
 }
 
 
-var totalSegment = [0.05, 0.10, 0.15];
+var segment = [0, 0.05, 0.10, 0.15, 1.0];
 var step = ["q1", "q2", "q3"];
+
+
 function calcTotalChartData(result) {
 
+    statistics = getDigitalArray(segment.length);
     result.forEach(e => {
-        for(var i in step) {
-            var deviation = e[step[i]].deviation;
+        for (var i in step) {
+            var deviation = Math.abs(e[step[i]].deviation);
+            for (var j = 0; j < segment.length - 1; j++) {
+                if (segment[j] <= deviation && deviation < segment[j + 1]) {
+                    statistics[j] += 1;
+                    break;
+                }
+                if (deviation >= segment[segment.length - 1]) {
+                    statistics[segment.length - 1] += 1;
+                    break;
+                }
+            }
         }
     });
 
+    console.log(JSON.stringify(statistics));
 
     var doughnutData = {
         labels: ["0-", "Software", "Laptop"],

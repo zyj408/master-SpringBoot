@@ -23,6 +23,15 @@ Date.prototype.Format = function (fmt) {
     return fmt;
 }
 
+function getDigitalArray(length) {
+    var array = [];
+    for (var i = 0; i < length; i++) {
+        array[i] = 0;
+    }
+
+    return array;
+}
+
 function getUrlParam(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);  //匹配目标参数   
