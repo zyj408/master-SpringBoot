@@ -84,17 +84,49 @@ function setChart(procedure) {
     } while (result.length < serverTotal);
 
 
-    var chartData_1 = calcTotalChartData(result, "q1");
-    var chartData_2 = calcTotalChartData(result, "q2");
-    var chartData_3 = calcTotalChartData(result, "q3");
-
-
+    var statistic_1 = calcStepStatistic(result, "q1");
+    var statistic_2 = calcStepStatistic(result, "q2");
+    var statistic_3 = calcStepStatistic(result, "q3");
+    var statistic_total = arrayAdd(statistic_1, arrayAdd(statistic_2, statistic_3));
+    
     var ctx4_1 = document.getElementById("chartQ1").getContext("2d");
-    new Chart(ctx4_1, { type: 'doughnut', data: chartData_1, options: { responsive: true } });
+    new Chart(ctx4_1, { type: 'doughnut', data: getDoughnutStruct(statistic_1), options: { responsive: true } });
     var ctx4_2 = document.getElementById("chartQ2").getContext("2d");
-    new Chart(ctx4_2, { type: 'doughnut', data: chartData_2, options: { responsive: true } });
+    new Chart(ctx4_2, { type: 'doughnut', data: getDoughnutStruct(statistic_2), options: { responsive: true } });
     var ctx4_3 = document.getElementById("chartQ3").getContext("2d");
-    new Chart(ctx4_3, { type: 'doughnut', data: chartData_3, options: { responsive: true } });
+    new Chart(ctx4_3, { type: 'doughnut', data: getDoughnutStruct(statistic_3), options: { responsive: true } });
+
+    var ctx4_total = document.getElementById("chartTotal").getContext("2d");
+    new Chart(ctx4_total, { type: 'doughnut', data: getDoughnutStruct(statistic_total), options: { responsive: true } });
+
+
+    var lineData = {
+        labels: ["January", "February", "March", "April", "May", "June", "July"],
+        datasets: [
+
+            {
+                label: "Data 1",
+                backgroundColor: 'rgba(26,179,148,0.5)',
+                borderColor: "rgba(26,179,148,0.7)",
+                pointBackgroundColor: "rgba(26,179,148,1)",
+                pointBorderColor: "#fff",
+                data: [28, 48, 40, 19, 86, 27, 90]
+            },{
+                label: "Data 2",
+                backgroundColor: 'rgba(220, 220, 220, 0.5)',
+                pointBorderColor: "#fff",
+                data: [65, 59, 80, 81, 56, 55, 40]
+            }
+        ]
+    };
+
+    var lineOptions = {
+        responsive: true
+    };
+
+
+    var ctx = document.getElementById("timeChart").getContext("2d");
+    new Chart(ctx, {type: 'line', data: lineData, options:lineOptions});
 }
 
 
@@ -110,7 +142,7 @@ function getSegmentTitle() {
     return title;
 }
 
-function calcTotalChartData(result, step) {
+function calcStepStatistic(result, step) {
 
     statistics = getDigitalArray(segment.length);
     result.forEach(e => {
@@ -126,24 +158,15 @@ function calcTotalChartData(result, step) {
             }
         }
     });
+    return statistics;
+}
 
-    console.log(JSON.stringify(statistics));
+function getDoughnutStruct(data) {
     var doughnutData = {};
     doughnutData.labels = getSegmentTitle();
     doughnutData.datasets = [{
-        data: statistics,
+        data: data,
         backgroundColor: segmentColor
     }];
-
-    // var doughnutData = {
-    //     labels: ["0-", "Software", "Laptop"],
-    //     datasets: [{
-    //         data: [300, 50, 100],
-    //         backgroundColor: ["#a3e1d4", "#dedede", "#b5b8cf"]
-    //     }]
-    // };
-
     return doughnutData;
 }
-
-

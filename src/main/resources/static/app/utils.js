@@ -23,6 +23,13 @@ Date.prototype.Format = function (fmt) {
     return fmt;
 }
 
+/**
+ * 
+ */
+Number.prototype.toPercent = function () {
+    return (Math.round(this * 10000) / 100).toFixed(2) + '%';
+}
+
 function getDigitalArray(length) {
     var array = [];
     for (var i = 0; i < length; i++) {
@@ -30,6 +37,14 @@ function getDigitalArray(length) {
     }
 
     return array;
+}
+
+function arrayAdd(array1, array2) {
+    var result = [];
+    for (var i = 0; i < array1.length; i++) {
+        result[i] = array1[i] + array2[i];
+    }
+    return result;
 }
 
 function getUrlParam(name) {

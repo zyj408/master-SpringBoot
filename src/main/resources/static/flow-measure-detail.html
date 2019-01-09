@@ -101,7 +101,7 @@
                     </ol>
                 </div>
                 <div class="col-lg-2">
-
+                        <button class="btn-white btn btn-xs export-btn" data-name="${name}">导出</button>
                 </div>
             </div>
             <div class="wrapper wrapper-content animated fadeInRight">
@@ -113,10 +113,24 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="m-b-md">
-                                                <a href="#" class="btn btn-white btn-xs float-right">导出</a>
+                                                <a href="#" class="btn btn-primary btn-xs float-right">导出</a>
                                                 <h2 class="procedureName"></h2>
                                             </div>
 
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="ibox">
+                                                <div class="ibox-title">
+                                                    <h5>记录上传统计</h5>
+                                                </div>
+                                                <div class="ibox-content">
+                                                    <div>
+                                                        <canvas id="timeChart" height="70"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -130,6 +144,7 @@
                                                     <canvas id="chartQ3" height="140"></canvas>
                                                 </div>
                                             </div>
+
                                         </div>
                                         <div class="col-lg-4">
                                             <div class="ibox">
@@ -140,7 +155,9 @@
                                                     <canvas id="chartQ2" height="140"></canvas>
                                                 </div>
                                             </div>
+
                                         </div>
+
                                         <div class="col-lg-4">
                                             <div class="ibox">
                                                 <div class="ibox-title">
@@ -153,25 +170,6 @@
                                         </div>
 
                                     </div>
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <dl class="row mb-0">
-                                                <div class="col-sm-2 text-sm-right">
-                                                    <dt>Completed:</dt>
-                                                </div>
-                                                <div class="col-sm-10 text-sm-left">
-                                                    <dd>
-                                                        <div class="progress m-b-1">
-                                                            <div style="width: 60%;" class="progress-bar progress-bar-striped progress-bar-animated"></div>
-                                                        </div>
-                                                        <small>Project completed in <strong>60%</strong>. Remaining
-                                                            close the project, sign a contract and invoice.</small>
-                                                    </dd>
-                                                </div>
-                                            </dl>
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
@@ -221,6 +219,14 @@
                                     <dd id="endTime" class="mb-1">未结束</dd>
                                 </div>
                             </dl>
+                        </div>
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>总体误差统计</h5>
+                            </div>
+                            <div>
+                                <canvas id="chartTotal" height="140"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
