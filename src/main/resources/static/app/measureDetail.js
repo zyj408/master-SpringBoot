@@ -1,8 +1,8 @@
+var procedureName = null;
 
 $(document).ready(function () {
-    var loc = location.href;
-    var procedure = getUrlParam("procedure");
-    if (!procedure) {
+    procedureName = getUrlParam("procedure");
+    if (!procedureName) {
         return;
     }
 
@@ -14,7 +14,7 @@ $(document).ready(function () {
             'Content-Type': 'application/json'
         },
         data: JSON.stringify({
-            name: procedure,
+            name: procedureName,
             page: {
                 page: 1,
                 rows: 2000
@@ -47,6 +47,13 @@ $(document).ready(function () {
         }
     });
 });
+
+function exportMeasure() {
+    var url = exportUrl + "/" + procedureName;
+    var fileName = "testAjaxDownload.txt";
+    var form = $("<form></form>").attr("action", url).attr("method", "get");
+    form.appendTo('body').submit().remove();
+}
 
 function setChart(procedure) {
 
@@ -88,7 +95,14 @@ function setChart(procedure) {
     var statistic_2 = calcStepStatistic(result, "q2");
     var statistic_3 = calcStepStatistic(result, "q3");
     var statistic_total = arrayAdd(statistic_1, arrayAdd(statistic_2, statistic_3));
+
+    var timeSortedResult = result.sort(function (a, b) {
+        return a.time - b.time;
+    });
     
+    console.log(JSON.stringify(timeSortedResult));
+
+
     var ctx4_1 = document.getElementById("chartQ1").getContext("2d");
     new Chart(ctx4_1, { type: 'doughnut', data: getDoughnutStruct(statistic_1), options: { responsive: true } });
     var ctx4_2 = document.getElementById("chartQ2").getContext("2d");
@@ -111,7 +125,7 @@ function setChart(procedure) {
                 pointBackgroundColor: "rgba(26,179,148,1)",
                 pointBorderColor: "#fff",
                 data: [28, 48, 40, 19, 86, 27, 90]
-            },{
+            }, {
                 label: "Data 2",
                 backgroundColor: 'rgba(220, 220, 220, 0.5)',
                 pointBorderColor: "#fff",
@@ -126,7 +140,7 @@ function setChart(procedure) {
 
 
     var ctx = document.getElementById("timeChart").getContext("2d");
-    new Chart(ctx, {type: 'line', data: lineData, options:lineOptions});
+    new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
 }
 
 
