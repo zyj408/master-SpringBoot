@@ -1,5 +1,5 @@
 var procedureName = null;
-
+var TIME_SEPARATE = 10;
 $(document).ready(function () {
     procedureName = getUrlParam("procedure");
     if (!procedureName) {
@@ -96,11 +96,6 @@ function setChart(procedure) {
     var statistic_3 = calcStepStatistic(result, "q3");
     var statistic_total = arrayAdd(statistic_1, arrayAdd(statistic_2, statistic_3));
 
-    var timeSortedResult = result.sort(function (a, b) {
-        return a.time - b.time;
-    });
-    
-    console.log(JSON.stringify(timeSortedResult));
 
 
     var ctx4_1 = document.getElementById("chartQ1").getContext("2d");
@@ -113,13 +108,38 @@ function setChart(procedure) {
     var ctx4_total = document.getElementById("chartTotal").getContext("2d");
     new Chart(ctx4_total, { type: 'doughnut', data: getDoughnutStruct(statistic_total), options: { responsive: true } });
 
+    //画时间-上传数目的图线
+    var timeSortedResult = result.sort(function (a, b) {
+        return a.time - b.time;
+    });
 
-    var lineData = {
-        labels: ["January", "February", "March", "April", "May", "June", "July"],
-        datasets: [
+    var timeData = calcTimeData(timeSortedResult);
+    var ctx = document.getElementById("timeChart").getContext("2d");
+    new Chart(ctx, {
+        type: 'line', data: timeData, options: {
+            responsive: true
+        }
+    });
+}
 
+
+var segment = [0, 0.05, 0.10, 0.15, 1.0];
+var segmentColor = ["#024a18", "#157b2f", "#50be65","#b7b5b5","#84858a"];
+function getSegmentTitle() {
+    var title = [];
+    for (var i = 0; i < segment.length - 1; i++) {
+        title[i] = segment[i] + " ~ " + segment[i + 1];
+    }
+    title[segment.length - 1] = segment[segment.length - 1] + " 以上";
+    return title;
+}
+
+function calcTimeData(timeSortedResult) {
+
+    var timeData = {
+        labels: [], datasets: [
             {
-                label: "Data 1",
+                label: "提交时间统计",
                 backgroundColor: 'rgba(26,179,148,0.5)',
                 borderColor: "rgba(26,179,148,0.7)",
                 pointBackgroundColor: "rgba(26,179,148,1)",
@@ -134,26 +154,12 @@ function setChart(procedure) {
         ]
     };
 
-    var lineOptions = {
-        responsive: true
-    };
+    timeSortedResult.forEach(e => {
+        var date = new Date(e.time).Format("yyyy-MM-dd");
+        //
+    });
 
-
-    var ctx = document.getElementById("timeChart").getContext("2d");
-    new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
-}
-
-
-var segment = [0, 0.05, 0.10, 0.15, 1.0];
-var segmentColor = ["#1bb394", "#3ac7aa", "#a3e1d4", "#cce7e2", "#dedede"];
-//#f8ae5e
-function getSegmentTitle() {
-    var title = [];
-    for (var i = 0; i < segment.length - 1; i++) {
-        title[i] = segment[i] + " ~ " + segment[i + 1];
-    }
-    title[segment.length - 1] = segment[segment.length - 1] + " 以上";
-    return title;
+    return timeData;
 }
 
 function calcStepStatistic(result, step) {
