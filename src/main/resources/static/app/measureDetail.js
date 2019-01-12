@@ -23,23 +23,11 @@ $(document).ready(function () {
         success: function (resp) {
             if (resp.code && resp.code == 200) {
                 var procedure = resp.rows[0];
-
-                $(".procedureName").text(procedure.name);
-                $("#recordNum").text(procedure.record);
-                $("#standardNum").text(procedure.standard);
-                $("#ceateTime").text(new Date(procedure.startTime).Format("yyyy-MM-dd hh:mm:ss"));
-                $("#lastTime").text(new Date(procedure.lastTime).Format("yyyy-MM-dd hh:mm:ss"));
-
-                if (procedure.status == "running") {
-                    $("#procedureStatus").text("进行中");
-                }
-                else {
-                    $("#procedureStatus").text("已完成");
-                    $("#lastTime").text(new Date(procedure.endTime).Format("yyyy-MM-dd hh:mm:ss"));
-                }
-
+                setProcedureInfo(procedure);
+                
                 setChart(procedure.name);
 
+                $('.footable').footable();
             }
             else {
                 showError("获取测量过程失败，请检查网络");
@@ -47,6 +35,22 @@ $(document).ready(function () {
         }
     });
 });
+
+function setProcedureInfo(procedure) {
+    $(".procedureName").text(procedure.name);
+    $("#recordNum").text(procedure.record);
+    $("#standardNum").text(procedure.standard);
+    $("#ceateTime").text(new Date(procedure.startTime).Format("yyyy-MM-dd hh:mm:ss"));
+    $("#lastTime").text(new Date(procedure.lastTime).Format("yyyy-MM-dd hh:mm:ss"));
+
+    if (procedure.status == "running") {
+        $("#procedureStatus").text("进行中");
+    }
+    else {
+        $("#procedureStatus").text("已完成");
+        $("#lastTime").text(new Date(procedure.endTime).Format("yyyy-MM-dd hh:mm:ss"));
+    }
+}
 
 function exportMeasure() {
     var url = exportUrl + "/" + procedureName;
@@ -108,23 +112,11 @@ function setChart(procedure) {
     var ctx4_total = document.getElementById("chartTotal").getContext("2d");
     new Chart(ctx4_total, { type: 'doughnut', data: getDoughnutStruct(statistic_total), options: { responsive: true } });
 
-    //画时间-上传数目的图线
-    var timeSortedResult = result.sort(function (a, b) {
-        return a.time - b.time;
-    });
-
-    var timeData = calcTimeData(timeSortedResult);
-    var ctx = document.getElementById("timeChart").getContext("2d");
-    new Chart(ctx, {
-        type: 'line', data: timeData, options: {
-            responsive: true
-        }
-    });
 }
 
 
 var segment = [0, 0.05, 0.10, 0.15, 1.0];
-var segmentColor = ["#024a18", "#157b2f", "#50be65","#b7b5b5","#84858a"];
+var segmentColor = ["#1ab394", "#79d2c0", "#dddddd", "#d3d3d3", "#b5b8cf"];
 function getSegmentTitle() {
     var title = [];
     for (var i = 0; i < segment.length - 1; i++) {
@@ -132,34 +124,6 @@ function getSegmentTitle() {
     }
     title[segment.length - 1] = segment[segment.length - 1] + " 以上";
     return title;
-}
-
-function calcTimeData(timeSortedResult) {
-
-    var timeData = {
-        labels: [], datasets: [
-            {
-                label: "提交时间统计",
-                backgroundColor: 'rgba(26,179,148,0.5)',
-                borderColor: "rgba(26,179,148,0.7)",
-                pointBackgroundColor: "rgba(26,179,148,1)",
-                pointBorderColor: "#fff",
-                data: [28, 48, 40, 19, 86, 27, 90]
-            }, {
-                label: "Data 2",
-                backgroundColor: 'rgba(220, 220, 220, 0.5)',
-                pointBorderColor: "#fff",
-                data: [65, 59, 80, 81, 56, 55, 40]
-            }
-        ]
-    };
-
-    timeSortedResult.forEach(e => {
-        var date = new Date(e.time).Format("yyyy-MM-dd");
-        //
-    });
-
-    return timeData;
 }
 
 function calcStepStatistic(result, step) {
