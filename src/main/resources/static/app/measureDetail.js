@@ -25,9 +25,12 @@ $(document).ready(function () {
                 var procedure = resp.rows[0];
                 setProcedureInfo(procedure);
                 
-                setChart(procedure.name);
+                var procedureDetails = getDetails(procedure.name);
+                setChart(procedureDetails);
 
+                $('#detailTemplate').tmpl(transform(procedureDetails)).appendTo('#detailContent');
                 $('.footable').footable();
+
             }
             else {
                 showError("获取测量过程失败，请检查网络");
@@ -35,6 +38,28 @@ $(document).ready(function () {
         }
     });
 });
+
+
+function transform(details) {
+    var result = [];
+    details.forEach(e => {
+        result.push({
+            no: e.no,
+            q3dev: e.q3.deviation.toPercent(),
+            q2dev: e.q2.deviation.toPercent(),
+            q1dev: e.q1.deviation.toPercent(),
+            time: new Date(e.time).Format("yyyy-MM-dd"),
+            q3start: e.q3.start,
+            q3end: e.q3.end,
+            q2start: e.q2.start,
+            q2end: e.q2.end,
+            q1start: e.q1.start,
+            q1end: e.q1.end,
+        });
+    });
+
+    return result;
+}
 
 function setProcedureInfo(procedure) {
     $(".procedureName").text(procedure.name);
@@ -59,8 +84,7 @@ function exportMeasure() {
     form.appendTo('body').submit().remove();
 }
 
-function setChart(procedure) {
-
+function getDetails(procedureName) {
     var result = [];
     var serverTotal = 0;
     do {
@@ -73,7 +97,7 @@ function setChart(procedure) {
                 'Content-Type': 'application/json'
             },
             data: JSON.stringify({
-                procedure: procedure,
+                procedure: procedureName,
                 page: {
                     page: 1,
                     rows: 50
@@ -94,13 +118,15 @@ function setChart(procedure) {
         });
     } while (result.length < serverTotal);
 
+    return result;
+}
 
-    var statistic_1 = calcStepStatistic(result, "q1");
-    var statistic_2 = calcStepStatistic(result, "q2");
-    var statistic_3 = calcStepStatistic(result, "q3");
+function setChart(detail) {
+
+    var statistic_1 = calcStepStatistic(detail, "q1");
+    var statistic_2 = calcStepStatistic(detail, "q2");
+    var statistic_3 = calcStepStatistic(detail, "q3");
     var statistic_total = arrayAdd(statistic_1, arrayAdd(statistic_2, statistic_3));
-
-
 
     var ctx4_1 = document.getElementById("chartQ1").getContext("2d");
     new Chart(ctx4_1, { type: 'doughnut', data: getDoughnutStruct(statistic_1), options: { responsive: true } });

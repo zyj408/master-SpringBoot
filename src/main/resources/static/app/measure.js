@@ -32,7 +32,7 @@ function transform(measureData) {
             startTime: new Date(e.startTime).Format("yyyy-MM-dd hh:mm:ss"),
             record: e.record,
             standard: e.standard,
-            standardRate: e.record > 0 ? e.standard / e.record : 1,
+            standardRate: e.record > 0 ? (e.standard / e.record).toPercent() : "100%",
             status: e.status
         });
     });
