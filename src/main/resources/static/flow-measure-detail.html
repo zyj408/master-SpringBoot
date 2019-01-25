@@ -166,6 +166,8 @@
                                                             <th>Q3误差</th>
                                                             <th>Q2误差</th>
                                                             <th>Q1误差</th>
+                                                            <th>是否合格（厂标）</th>
+                                                            <th>是否合格（国标）</th>
                                                             <th>上传时间</th>
                                                             <th data-hide="all">Q3起末值</th>
                                                             <th data-hide="all">Q2起末值</th>
@@ -334,6 +336,18 @@
             <td>${q3dev}</td>
             <td>${q2dev}</td>
             <td>${q1dev}</td>
+            {{if factory==true}}
+                <td><i class="fa fa-check text-navy"></i></td>
+            {{else}}
+                <td><i class="fa fa-times text-navy"></i></td>
+            {{/if}}
+
+            {{if national==true}}
+                <td><i class="fa fa-check text-navy"></i></td>
+            {{else}}
+                <td><i class="fa fa-times text-navy"></i></td>
+            {{/if}}
+        
             <td>${time}</td>
             <td>初始值：${q3start}      结束值：${q3end}</td>
             <td>初始值：${q2start}      结束值：${q3end}</td>

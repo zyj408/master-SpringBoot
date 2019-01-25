@@ -48,6 +48,8 @@ function transform(details) {
             q3dev: e.q3.deviation.toPercent(),
             q2dev: e.q2.deviation.toPercent(),
             q1dev: e.q1.deviation.toPercent(),
+            national: e.nationalQualified,
+            factory: e.factoryQualified,
             time: new Date(e.time).Format("yyyy-MM-dd"),
             q3start: e.q3.start,
             q3end: e.q3.end,
@@ -129,6 +131,8 @@ function setChart(detail) {
     var statistic_3 = calcStepStatistic(detail, "q3");
     var statistic_total = arrayAdd(statistic_1, arrayAdd(statistic_2, statistic_3));
 
+    var statistic_1 = calcStepStatistic(detail, "q1");
+
     var ctx4_1 = document.getElementById("chartQ1").getContext("2d");
     new Chart(ctx4_1, { type: 'doughnut', data: getDoughnutStruct(statistic_1), options: { responsive: true } });
     var ctx4_2 = document.getElementById("chartQ2").getContext("2d");
@@ -143,13 +147,13 @@ function setChart(detail) {
 
 
 var segment = [0, 0.015, 0.02];
-var segmentColor = ["#1ab394", "#79d2c0", "#dddddd", "#d3d3d3", "#b5b8cf"];
+var segmentColor = ["#a3e1d4", "#dedede", "#b5b8cf"];
 function getSegmentTitle() {
     var title = [];
     for (var i = 0; i < segment.length - 1; i++) {
-        title[i] = segment[i] + " ~ " + segment[i + 1];
+        title[i] = segment[i].toPercent() + " ~ " + segment[i + 1].toPercent();
     }
-    title[segment.length - 1] = segment[segment.length - 1] + " 以上";
+    title[segment.length - 1] = segment[segment.length - 1].toPercent() + " 以上";
     return title;
 }
 
