@@ -29,7 +29,7 @@ $(document).ready(function () {
                 setChart(procedureDetails);
 
                 $('#detailTemplate').tmpl(transform(procedureDetails)).appendTo('#detailContent');
-                $('.footable').footable();
+                $('.footable').footable();2
 
             }
             else {
@@ -64,7 +64,8 @@ function transform(details) {
 function setProcedureInfo(procedure) {
     $(".procedureName").text(procedure.name);
     $("#recordNum").text(procedure.record);
-    $("#standardNum").text(procedure.standard);
+    $("#factoryStandardNum").text(procedure.factoryQualified);
+    $("#nationalStandardNum").text(procedure.nationalQualified);
     $("#ceateTime").text(new Date(procedure.startTime).Format("yyyy-MM-dd hh:mm:ss"));
     $("#lastTime").text(new Date(procedure.lastTime).Format("yyyy-MM-dd hh:mm:ss"));
 
