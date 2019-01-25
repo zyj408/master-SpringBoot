@@ -32,7 +32,12 @@ public class QueryProcedureResp {
     /**
      * 合格总数
      */
-    private Long standard;
+    private Long nationalQualified;
+
+    /**
+     * 合格总数
+     */
+    private Long factoryQualified;
 
     public QueryProcedureResp(Procedure procedure) {
         this.name = procedure.getName();
@@ -40,7 +45,8 @@ public class QueryProcedureResp {
         this.endTime = procedure.getEndTime();
         this.status = procedure.getStatus();
         this.record = procedure.getRecord();
-        this.standard = procedure.getStandard();
+        this.nationalQualified = procedure.getNationalQualified();
+        this.factoryQualified = procedure.getFactoryQualified();
     }
 
     public QueryProcedureResp() {
@@ -86,13 +92,19 @@ public class QueryProcedureResp {
         this.record = record;
     }
 
-    public Long getStandard() {
-        return standard;
+    public Long getNationalQualified() {
+        return nationalQualified;
     }
 
-    public void setStandard(Long standard) {
-        this.standard = standard;
+    public void setNationalQualified(Long nationalQualified) {
+        this.nationalQualified = nationalQualified;
     }
 
+    public Long getFactoryQualified() {
+        return factoryQualified;
+    }
 
+    public void setFactoryQualified(Long factoryQualified) {
+        this.factoryQualified = factoryQualified;
+    }
 }

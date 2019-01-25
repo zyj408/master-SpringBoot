@@ -34,6 +34,16 @@ public class FlowResult {
      */
     private ResultCell q3;
 
+    /**
+     * 国标合格
+     */
+    private Boolean nationalQualified;
+
+    /**
+     * 厂标合格
+     */
+    private Boolean factoryQualified;
+
     @DBRef
     @JsonIgnore
     private Procedure procedure;
@@ -92,6 +102,22 @@ public class FlowResult {
 
     public void setProcedure(Procedure procedure) {
         this.procedure = procedure;
+    }
+
+    public Boolean getNationalQualified() {
+        return nationalQualified;
+    }
+
+    public void setNationalQualified(Boolean nationalQualified) {
+        this.nationalQualified = nationalQualified;
+    }
+
+    public Boolean getFactoryQualified() {
+        return factoryQualified;
+    }
+
+    public void setFactoryQualified(Boolean factoryQualified) {
+        this.factoryQualified = factoryQualified;
     }
 
     public static class ResultCell {

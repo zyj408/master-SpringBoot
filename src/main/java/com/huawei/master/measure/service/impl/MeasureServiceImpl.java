@@ -17,11 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,6 +31,16 @@ import java.util.stream.Collectors;
 public class MeasureServiceImpl implements MeasureService {
 
     private Logger logger = LoggerFactory.getLogger(MeasureServiceImpl.class);
+
+    /**
+     * 国家标准
+     */
+    private static float NATIONAL_STANDARDS = 0.02f;
+
+    /**
+     * 厂家标准
+     */
+    private static float FACTORY_STANDARDS = 0.015f;
 
     @Autowired
     private ProcedureRepository procedureRepository;
@@ -82,7 +89,9 @@ public class MeasureServiceImpl implements MeasureService {
 
             if (checkResult(results, result)) continue;
 
-            boolean qualified = true;
+            boolean nationalQualified = true;
+            boolean factoryQualified = true;
+
             FlowResult flowResult = new FlowResult();
             flowResult.setTime(now);
             flowResult.setNo(meterNo);
@@ -98,9 +107,9 @@ public class MeasureServiceImpl implements MeasureService {
                 Float end = r.getEnd();
 
                 FlowResult.ResultCell cell = new FlowResult.ResultCell(flow, volume, start, end);
-                if (Math.abs(cell.getDeviation()) >= 0.20f) {
-                    qualified = false;
-                }
+                if (Math.abs(cell.getDeviation()) >= NATIONAL_STANDARDS) nationalQualified = false;
+                if (Math.abs(cell.getDeviation()) >= FACTORY_STANDARDS) factoryQualified = false;
+
                 switch (parameter) {
                     case "q1":
                         flowResult.setQ1(cell);
@@ -114,12 +123,14 @@ public class MeasureServiceImpl implements MeasureService {
                 }
             }
 
+            flowResult.setFactoryQualified(factoryQualified);
+            flowResult.setNationalQualified(nationalQualified);
             flowResult = flowResultRepository.save(flowResult);
 
             //关联操作
             relateResult(procedure, flowResult);
             //更新统计
-            updateStatistic(procedure, qualified);
+            updateStatistic(procedure, nationalQualified, factoryQualified);
             //更新最新上传时间
             procedure.setLastTime(System.currentTimeMillis());
             procedureRepository.save(procedure);
@@ -256,11 +267,12 @@ public class MeasureServiceImpl implements MeasureService {
         return resultMap;
     }
 
-    private void updateStatistic(Procedure procedure, boolean qualified) {
+    private void updateStatistic(Procedure procedure, boolean nationalQualified, boolean factoryQualified) {
         procedure.setRecord(procedure.getRecord() == null ? 1 : procedure.getRecord() + 1);
-        if (qualified) {
-            procedure.setStandard(procedure.getStandard() == null ? 1 : procedure.getStandard() + 1);
-        }
+        if (nationalQualified)
+            procedure.setNationalQualified(procedure.getNationalQualified() == null ? 1 : procedure.getNationalQualified() + 1);
+        if (factoryQualified)
+            procedure.setFactoryQualified(procedure.getFactoryQualified() == null ? 1 : procedure.getFactoryQualified() + 1);
     }
 
     private void relateResult(Procedure procedure, FlowResult flowResult) {

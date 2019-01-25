@@ -136,8 +136,8 @@
                                             <th>名称</th>
                                             <th>创建时间</th>
                                             <th>记录数量</th>
-                                            <th>合格数量</th>
-                                            <th>合格率</th>
+                                            <th>国标合格率（2%）</th>
+                                            <th>厂家合格率（1.5%）</th>
                                             <th>状态</th>
                                             <th>操作</th>
                                         </tr>
@@ -190,8 +190,8 @@
             <td>${name}</td>
             <td>${startTime}</td>
             <td>${record}</td>
-            <td>${standard}</td>
-            <td>${standardRate}</td>
+            <td>${nationalQualifiedRate}</td>
+            <td>${factoryQualifiedRate}</td>
 
             {{if status=='finish'}}
                 <td><span class="label label-primary">已完成</span></td>

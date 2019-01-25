@@ -36,7 +36,12 @@ public class Procedure extends Entity {
     /**
      * 合格总数
      */
-    private Long standard;
+    private Long nationalQualified;
+
+    /**
+     * 合格总数
+     */
+    private Long factoryQualified;
 
     /**
      * 最近上报时间
@@ -89,12 +94,20 @@ public class Procedure extends Entity {
         this.record = record;
     }
 
-    public Long getStandard() {
-        return standard;
+    public Long getNationalQualified() {
+        return nationalQualified;
     }
 
-    public void setStandard(Long standard) {
-        this.standard = standard;
+    public void setNationalQualified(Long nationalQualified) {
+        this.nationalQualified = nationalQualified;
+    }
+
+    public Long getFactoryQualified() {
+        return factoryQualified;
+    }
+
+    public void setFactoryQualified(Long factoryQualified) {
+        this.factoryQualified = factoryQualified;
     }
 
     public List<FlowResult> getResults() {

@@ -31,8 +31,8 @@ function transform(measureData) {
             name: e.name,
             startTime: new Date(e.startTime).Format("yyyy-MM-dd hh:mm:ss"),
             record: e.record,
-            standard: e.standard,
-            standardRate: e.record > 0 ? (e.standard / e.record).toPercent() : "100%",
+            nationalQualifiedRate: e.record > 0 ? (e.nationalQualified / e.record).toPercent() : "100%",
+            factoryQualifiedRate:  e.record > 0 ? (e.factoryQualified / e.record).toPercent() : "100%",
             status: e.status
         });
     });
@@ -42,7 +42,6 @@ function transform(measureData) {
 
 function exportMeasure(procedureName) {
     var url = exportUrl + "/" + procedureName;
-    var fileName = "testAjaxDownload.txt";
     var form = $("<form></form>").attr("action", url).attr("method", "get");
     form.appendTo('body').submit().remove();
 }

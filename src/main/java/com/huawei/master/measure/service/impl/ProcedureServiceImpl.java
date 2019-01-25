@@ -45,7 +45,8 @@ public class ProcedureServiceImpl implements ProcedureService {
         Procedure procedure = new Procedure();
         procedure.setName(startProcedureReq.getName());
         procedure.setRecord(0L);
-        procedure.setStandard(0L);
+        procedure.setNationalQualified(0L);
+        procedure.setFactoryQualified(0L);
         procedure.setStartTime(System.currentTimeMillis());
         procedure.setStatus("running");
 
