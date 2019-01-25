@@ -1,5 +1,11 @@
 var procedureName = null;
 var TIME_SEPARATE = 10;
+
+
+var SEGMENT_UNIVERSAL = [0, 0.015, 0.02];
+var SEGMENT_Q1 = [0, 0.015, 0.03];
+var SEGMENT_COLOR = ["#a3e1d4", "#dedede", "#b5b8cf"];
+
 $(document).ready(function () {
     procedureName = getUrlParam("procedure");
     if (!procedureName) {
@@ -126,29 +132,27 @@ function getDetails(procedureName) {
 
 function setChart(detail) {
 
-    var statistic_1 = calcStepStatistic(detail, "q1");
-    var statistic_2 = calcStepStatistic(detail, "q2");
-    var statistic_3 = calcStepStatistic(detail, "q3");
+    var statistic_1 = calcStepStatistic(detail, "q1", SEGMENT_UNIVERSAL);
+    var statistic_2 = calcStepStatistic(detail, "q2", SEGMENT_UNIVERSAL);
+    var statistic_3 = calcStepStatistic(detail, "q3", SEGMENT_UNIVERSAL);
     var statistic_total = arrayAdd(statistic_1, arrayAdd(statistic_2, statistic_3));
 
-    var statistic_1 = calcStepStatistic(detail, "q1");
-
-    var ctx4_1 = document.getElementById("chartQ1").getContext("2d");
-    new Chart(ctx4_1, { type: 'doughnut', data: getDoughnutStruct(statistic_1), options: { responsive: true } });
+   
     var ctx4_2 = document.getElementById("chartQ2").getContext("2d");
-    new Chart(ctx4_2, { type: 'doughnut', data: getDoughnutStruct(statistic_2), options: { responsive: true } });
+    new Chart(ctx4_2, { type: 'doughnut', data: getDoughnutStruct(statistic_2, SEGMENT_UNIVERSAL), options: { responsive: true } });
     var ctx4_3 = document.getElementById("chartQ3").getContext("2d");
-    new Chart(ctx4_3, { type: 'doughnut', data: getDoughnutStruct(statistic_3), options: { responsive: true } });
+    new Chart(ctx4_3, { type: 'doughnut', data: getDoughnutStruct(statistic_3, SEGMENT_UNIVERSAL), options: { responsive: true } });
 
     var ctx4_total = document.getElementById("chartTotal").getContext("2d");
-    new Chart(ctx4_total, { type: 'doughnut', data: getDoughnutStruct(statistic_total), options: { responsive: true } });
+    new Chart(ctx4_total, { type: 'doughnut', data: getDoughnutStruct(statistic_total, SEGMENT_UNIVERSAL), options: { responsive: true } });
 
+
+    statistic_1 = calcStepStatistic(detail, "q1", SEGMENT_Q1);
+    var ctx4_1 = document.getElementById("chartQ1").getContext("2d");
+    new Chart(ctx4_1, { type: 'doughnut', data: getDoughnutStruct(statistic_1, SEGMENT_Q1), options: { responsive: true } });
 }
 
-
-var segment = [0, 0.015, 0.02];
-var segmentColor = ["#a3e1d4", "#dedede", "#b5b8cf"];
-function getSegmentTitle() {
+function getSegmentTitle(segment) {
     var title = [];
     for (var i = 0; i < segment.length - 1; i++) {
         title[i] = segment[i].toPercent() + " ~ " + segment[i + 1].toPercent();
@@ -157,7 +161,7 @@ function getSegmentTitle() {
     return title;
 }
 
-function calcStepStatistic(result, step) {
+function calcStepStatistic(result, step, segment) {
 
     statistics = getDigitalArray(segment.length);
     result.forEach(e => {
@@ -176,12 +180,12 @@ function calcStepStatistic(result, step) {
     return statistics;
 }
 
-function getDoughnutStruct(data) {
+function getDoughnutStruct(data, segment) {
     var doughnutData = {};
-    doughnutData.labels = getSegmentTitle();
+    doughnutData.labels = getSegmentTitle(segment);
     doughnutData.datasets = [{
         data: data,
-        backgroundColor: segmentColor
+        backgroundColor: SEGMENT_COLOR
     }];
     return doughnutData;
 }
