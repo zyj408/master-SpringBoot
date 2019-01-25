@@ -142,7 +142,7 @@ function setChart(detail) {
 }
 
 
-var segment = [0, 0.05, 0.10, 0.15, 1.0];
+var segment = [0, 0.015, 0.02];
 var segmentColor = ["#1ab394", "#79d2c0", "#dddddd", "#d3d3d3", "#b5b8cf"];
 function getSegmentTitle() {
     var title = [];
