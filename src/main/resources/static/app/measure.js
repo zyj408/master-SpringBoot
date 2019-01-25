@@ -86,4 +86,5 @@ $(document).ready(function () {
         var name = $(e.currentTarget).data('name');
         exportMeasure(name);
     });
+
 });
