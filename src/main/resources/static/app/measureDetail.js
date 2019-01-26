@@ -1,4 +1,5 @@
 var procedureName = null;
+var procedureInfo = null;
 var TIME_SEPARATE = 10;
 
 
@@ -29,6 +30,8 @@ $(document).ready(function () {
         success: function (resp) {
             if (resp.code && resp.code == 200) {
                 var procedure = resp.rows[0];
+                procedureInfo = procedure;
+
                 setProcedureInfo(procedure);
 
                 var procedureDetails = getDetails(procedure.name);
@@ -108,6 +111,29 @@ function deleteMeasure() {
             }
             else {
                 showError("删除测量过程失败，请检查网络");
+            }
+        }
+    });
+}
+
+function switchMeasure() {
+    var url = procedureInfo.status == "running" ? finishUrl : restartUrl;
+
+    $.ajax({
+        type: "POST",
+        url: url,
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: JSON.stringify({ name: procedureName }),
+        success: function (resp) {
+            if (resp.code && resp.code == 200) {
+                showSuccess("切换测量状态成功，3秒后自动跳转");
+                setTimeout("location.reload()", 3000);
+            }
+            else {
+                showError("切换测量状态失败，请检查网络");
             }
         }
     });
