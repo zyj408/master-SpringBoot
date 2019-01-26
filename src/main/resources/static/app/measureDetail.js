@@ -129,7 +129,7 @@ function switchMeasure() {
         data: JSON.stringify({ name: procedureName }),
         success: function (resp) {
             if (resp.code && resp.code == 200) {
-                showSuccess("切换测量状态成功，3秒后自动跳转");
+                showSuccess("切换测量状态成功，3秒后自动刷新");
                 setTimeout("location.reload()", 3000);
             }
             else {
