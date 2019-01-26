@@ -104,7 +104,7 @@ function deleteMeasure() {
         success: function (resp) {
             if (resp.code && resp.code == 200) {
                 showSuccess("删除测量过程成功，3秒后自动跳转");
-                setTimeout("self.location=document.referrer",3000);
+                setTimeout("history.go(-1);location.reload()", 3000);
             }
             else {
                 showError("删除测量过程失败，请检查网络");
