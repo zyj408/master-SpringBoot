@@ -117,7 +117,7 @@
                                         <i class="fa fa-wrench"></i>
                                     </a>
                                     <ul class="dropdown-menu dropdown-user">
-                                        <li><a href="#" class="dropdown-item" data-toggle="modal" data-target="#newProcedure">新建</a>
+                                        <li><a href="#" class="dropdown-item" data-toggle="modal" data-target="#newMeasureModal">新建</a>
                                         </li>
                                         <li><a href="#" class="dropdown-item">删除</a>
                                         </li>
@@ -128,7 +128,7 @@
                                 </div>
                             </div>
 
-                            <div class="modal inmodal" id="newProcedure" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal inmodal" id="newMeasureModal" tabindex="-1" role="dialog" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content animated fadeIn">
                                         <div class="modal-header">
@@ -137,12 +137,12 @@
                                         </div>
                                         <div class="modal-body">
                                             <p>新建测量过程前，需要指定测量过程的名称</p>
-                                            <div class="form-group"><label>测量名称：</label> <input type="text"
+                                            <div class="form-group"><label>测量名称：</label> <input id="newMeasureName" type="text"
                                                     placeholder="请输入名称" class="form-control"></div>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                                            <button type="button" class="btn btn-primary new-btn">提交</button>
+                                            <button type="button" class="btn btn-primary new-msr-btn">提交</button>
                                         </div>
                                     </div>
                                 </div>

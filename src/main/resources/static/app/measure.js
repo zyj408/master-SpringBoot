@@ -40,13 +40,13 @@ function transform(measureData) {
     return result;
 }
 
-function exportMeasure(procedureName) {
-    var url = exportUrl + "/" + procedureName;
+function exportMeasure(name) {
+    var url = exportUrl + "/" + name;
     var form = $("<form></form>").attr("action", url).attr("method", "get");
     form.appendTo('body').submit().remove();
 }
 
-function enableMeasure(procedureName, status, callback) {
+function enableMeasure(name, status, callback) {
     var url = status == true ? restartUrl : finishUrl;
     $.ajax({
         type: "POST",
@@ -55,7 +55,7 @@ function enableMeasure(procedureName, status, callback) {
         headers: {
             'Content-Type': 'application/json'
         },
-        data: JSON.stringify({ name: procedureName }),
+        data: JSON.stringify({ name: name }),
         success: function (resp) {
             if (resp.code && resp.code == 200) {
                 callback();
@@ -66,6 +66,26 @@ function enableMeasure(procedureName, status, callback) {
         }
     });
 
+}
+
+function newMeasure(name, callback) {
+    $.ajax({
+        type: "POST",
+        url: startUrl,
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: JSON.stringify({ name: name }),
+        success: function (resp) {
+            if (resp.code && resp.code == 200) {
+                callback();
+            }
+            else {
+                showError("创建测量过程失败，请检查网络");
+            }
+        }
+    });
 }
 
 $(document).ready(function () {
@@ -86,5 +106,17 @@ $(document).ready(function () {
         var name = $(e.currentTarget).data('name');
         exportMeasure(name);
     });
+    $(document).on('click', '.new-msr-btn', function (e) {
+        var name = $('#newMeasureName').val();
+        if(!name) {
+            showError("输入不能为空");
+        }
+        else {
+            newMeasure(name ,function(){
+                showSuccess("测量过程 [ " + name + " ] 创建成功，请刷新页面");
+                $('#newMeasureModal').modal('hide');
+            });
+        }
 
+    });   
 });
