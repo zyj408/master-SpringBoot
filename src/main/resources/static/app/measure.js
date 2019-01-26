@@ -113,8 +113,8 @@ $(document).ready(function () {
         }
         else {
             newMeasure(name ,function(){
-                showSuccess("测量过程 [ " + name + " ] 创建成功，请刷新页面");
-                $('#newMeasureModal').modal('hide');
+                showSuccess("测量过程 [ " + name + " ] 创建成功，3秒钟以后自动刷新页面");
+                setTimeout("location.reload()",3000);
             });
         }
 
