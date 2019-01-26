@@ -30,12 +30,12 @@ $(document).ready(function () {
             if (resp.code && resp.code == 200) {
                 var procedure = resp.rows[0];
                 setProcedureInfo(procedure);
-                
+
                 var procedureDetails = getDetails(procedure.name);
                 setChart(procedureDetails);
 
                 $('#detailTemplate').tmpl(transform(procedureDetails)).appendTo('#detailContent');
-                $('.footable').footable();2
+                $('.footable').footable(); 2
 
             }
             else {
@@ -88,9 +88,28 @@ function setProcedureInfo(procedure) {
 
 function exportMeasure() {
     var url = exportUrl + "/" + procedureName;
-    var fileName = "testAjaxDownload.txt";
     var form = $("<form></form>").attr("action", url).attr("method", "get");
     form.appendTo('body').submit().remove();
+}
+
+function deleteMeasure() {
+    $.ajax({
+        type: "POST",
+        url: deleteUrl,
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: JSON.stringify({ name: procedureName }),
+        success: function (resp) {
+            if (resp.code && resp.code == 200) {
+                showError("删除测量过程成功");
+            }
+            else {
+                showError("删除测量过程失败，请检查网络");
+            }
+        }
+    });
 }
 
 function getDetails(procedureName) {
@@ -137,7 +156,7 @@ function setChart(detail) {
     var statistic_3 = calcStepStatistic(detail, "q3", SEGMENT_UNIVERSAL);
     var statistic_total = arrayAdd(statistic_1, arrayAdd(statistic_2, statistic_3));
 
-   
+
     var ctx4_2 = document.getElementById("chartQ2").getContext("2d");
     new Chart(ctx4_2, { type: 'doughnut', data: getDoughnutStruct(statistic_2, SEGMENT_UNIVERSAL), options: { responsive: true } });
     var ctx4_3 = document.getElementById("chartQ3").getContext("2d");
