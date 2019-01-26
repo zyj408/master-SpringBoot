@@ -1,5 +1,6 @@
 package com.huawei.master.measure.service;
 
+import com.huawei.master.measure.controller.dto.DeleteProcedureReq;
 import com.huawei.master.measure.controller.dto.FinishProcedureReq;
 import com.huawei.master.measure.controller.dto.QueryProcedureReq;
 import com.huawei.master.measure.controller.dto.StartProcedureReq;
@@ -14,4 +15,6 @@ public interface ProcedureService {
     void finish(FinishProcedureReq finishProcedureReq);
 
     void restart(StartProcedureReq startProcedureReq);
+
+    void delete(DeleteProcedureReq deleteProcedureReq);
 }

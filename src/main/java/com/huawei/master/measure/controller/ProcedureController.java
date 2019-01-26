@@ -61,6 +61,17 @@ public class ProcedureController extends AbstractController {
         procedureService.finish(finishProcedureReq);
         return setSuccessModelMap(modelMap);
     }
+    @ApiOperation(value = "删除测量过程", notes = "删除测量过程")
+    @PostMapping("/delete")
+    @ApiImplicitParam(name = "deleteProcedureReq", value = "测量过程请求", required = true, dataType = "DeleteProcedureReq")
+    //@RequiresAuthentication
+    public Object delete(@RequestBody DeleteProcedureReq deleteProcedureReq, ModelMap modelMap)
+    {
+        Assert.notNull(deleteProcedureReq.getName(), "NAME");
+
+        procedureService.delete(deleteProcedureReq);
+        return setSuccessModelMap(modelMap);
+    }
 
     @ApiOperation(value = "重新开启测量过程", notes = "重新开启测量过程")
     @PostMapping("/restart")

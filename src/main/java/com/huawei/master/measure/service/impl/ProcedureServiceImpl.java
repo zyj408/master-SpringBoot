@@ -2,6 +2,7 @@ package com.huawei.master.measure.service.impl;
 
 import com.huawei.master.core.system.exception.BusinessException;
 import com.huawei.master.core.utils.ValueUtils;
+import com.huawei.master.measure.controller.dto.DeleteProcedureReq;
 import com.huawei.master.measure.controller.dto.FinishProcedureReq;
 import com.huawei.master.measure.controller.dto.QueryProcedureReq;
 import com.huawei.master.measure.controller.dto.StartProcedureReq;
@@ -82,5 +83,17 @@ public class ProcedureServiceImpl implements ProcedureService {
             p.setEndTime(System.currentTimeMillis());
             procedureRepository.save(p);
         });
+    }
+
+    @Override
+    public void delete(DeleteProcedureReq deleteProcedureReq) {
+        List<Procedure> procedures = procedureRepository.findByNameAndStatus(deleteProcedureReq.getName(), "running");
+        if (CollectionUtils.isEmpty(procedures)) {
+            throw new BusinessException("PROCEDURE_NOT_EXISTED");
+        }
+        procedures.stream().forEach(p -> {
+            procedureRepository.delete(p);
+        });
+
     }
 }
