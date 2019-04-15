@@ -3,6 +3,8 @@ package com.huawei.master.core.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
+
 public class JacksonMapper {
     /**
      * 对象映射
@@ -29,6 +31,16 @@ public class JacksonMapper {
         try {
             return getInstance().writeValueAsString(object);
         } catch (JsonProcessingException e) {
+            return null;
+        }
+
+    }
+
+    public static <T> T deserialize(String string, Class<T> clazz)
+    {
+        try {
+            return getInstance().readValue(string, clazz);
+        } catch (IOException e) {
             return null;
         }
 
