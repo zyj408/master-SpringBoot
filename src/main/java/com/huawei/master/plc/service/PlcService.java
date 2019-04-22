@@ -1,4 +1,6 @@
-package com.huawei.master.plc;
+package com.huawei.master.plc.service;
+
+import com.huawei.master.plc.bean.PlcStatus;
 
 public interface PlcService {
 
@@ -7,4 +9,9 @@ public interface PlcService {
     boolean cancel(String uuid);
 
     String handle(String uuid, String data);
+
+    PlcStatus getPlcStatus();
+
+
+
 }

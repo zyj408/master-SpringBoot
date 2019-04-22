@@ -38,7 +38,7 @@ $(document).ready(function () {
                 setChart(procedureDetails);
 
                 $('#detailTemplate').tmpl(transform(procedureDetails)).appendTo('#detailContent');
-                $('.footable').footable(); 2
+                $('.footable').footable();
 
             }
             else {

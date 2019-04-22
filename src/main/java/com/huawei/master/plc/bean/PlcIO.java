@@ -1,4 +1,4 @@
-package com.huawei.master.plc;
+package com.huawei.master.plc.bean;
 
 public class PlcIO {
     private int x;

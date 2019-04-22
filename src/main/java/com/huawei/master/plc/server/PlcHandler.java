@@ -1,7 +1,7 @@
 package com.huawei.master.plc.server;
 
 import com.huawei.master.core.utils.SpringContextHolder;
-import com.huawei.master.plc.PlcService;
+import com.huawei.master.plc.service.PlcService;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.apache.commons.lang3.StringUtils;
